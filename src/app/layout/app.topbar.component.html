@@ -13,16 +13,14 @@
     <button
         #menubutton
         class="p-link layout-menu-button layout-topbar-button"
-        (click)="layoutService.onMenuToggle()"
-    >
+        (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
     </button>
 
     <button
         #topbarmenubutton
         class="p-link layout-topbar-menu-button layout-topbar-button"
-        (click)="layoutService.showProfileSidebar()"
-    >
+        (click)="layoutService.showProfileSidebar()">
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
@@ -32,15 +30,11 @@
         [ngClass]="{
             'layout-topbar-menu-mobile-active':
                 layoutService.state.profileSidebarVisible
-        }"
-    >
-        <button class="p-link layout-topbar-button">
+        }">
+        <button type="button" pButton label="Perfil" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
             <i class="pi pi-user"></i>
-            <span>Perfil</span>
         </button>
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-cog"></i>
-            <span>Configuraciones</span>
-        </button>
+        <p-menu #menu [popup]="true" [model]="tieredItems"></p-menu>
+
     </div>
 </div>

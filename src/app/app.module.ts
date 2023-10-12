@@ -5,17 +5,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { CountryService } from './demo/service/country.service';
+import { TrackingService } from './demo/service/tracking.service';
 
-@NgModule({
-    declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule],
+@NgModule( {
+    declarations: [
+        AppComponent,
+        NotfoundComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        AppLayoutModule
+    ],
     providers: [
         {
             provide: LocationStrategy,
             useClass: HashLocationStrategy,
         },
         CountryService,
+        TrackingService
     ],
-    bootstrap: [AppComponent],
-})
+    bootstrap: [ AppComponent ],
+} )
 export class AppModule {}
