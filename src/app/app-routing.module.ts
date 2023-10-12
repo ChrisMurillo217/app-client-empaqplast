@@ -10,7 +10,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             { path: '', component: AppLayoutComponent, children: [
                     { path: 'dashboard', loadChildren: () => import( './demo/components/dashboard/dashboard.module' ).then( m => m.DashboardModule ) },
                     { path: 'tracking-list', loadChildren: () => import( './demo/components/tracking-list/tracking-list.module' ).then( m => m.TrackingListModule ) },
-                    { path: 'factura', loadChildren: () => import( './demo/components/factura/factura.module' ).then( m => m.FacturaModule ) },
+                    { path: 'documentos', loadChildren: () => import( './demo/components/factura/factura.module' ).then( m => m.FacturaModule ) },
                     { path: 'stock', loadChildren: () => import( './demo/components/stock/stock.module' ).then( m => m.StockModule ) }
                 ]
             },
