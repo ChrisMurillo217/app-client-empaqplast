@@ -4,7 +4,7 @@
 			<h5>Pedidos</h5>
             <p-table
                 #dt1
-                [globalFilterFields]="['docNum','seriesName','docDate','taxDate']"
+                [globalFilterFields]="['docNum']"
                 class="table table-responsive"
                 responsiveLayout="stack"
                 [value]="pedidos.slice(first, first + 5)"
