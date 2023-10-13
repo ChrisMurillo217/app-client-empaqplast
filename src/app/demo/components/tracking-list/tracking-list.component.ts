@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { ProgressBar } from 'primeng/progressbar';
 import { TrackingService } from './../../service/tracking.service';
 import { Pedidos } from './../../models/pedido.model';
 import { Items } from './../../models/item.model';
-import { ProgressBar } from 'primeng/progressbar';
-import { Guia } from '../../models/guia.model';
 import { Fabricacion } from '../../models/fabricacion.model';
 
 @Component( {
@@ -80,8 +79,6 @@ export class TrackingListComponent implements OnInit {
         this.trackingService.getPedidosByDocNum( this.cardCode, this.docNum ).subscribe(
             ( data ) => {
                 this.items = data[0].items;
-                this.numeroItem = data[0].items.length;
-
             },
             ( error ) => {
                 console.error( error );

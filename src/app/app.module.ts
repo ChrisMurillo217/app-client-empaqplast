@@ -6,6 +6,7 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { CountryService } from './demo/service/country.service';
 import { TrackingService } from './demo/service/tracking.service';
+import { DocumentService } from './demo/service/documents.service';
 
 @NgModule( {
     declarations: [
@@ -22,7 +23,8 @@ import { TrackingService } from './demo/service/tracking.service';
             useClass: HashLocationStrategy,
         },
         CountryService,
-        TrackingService
+        TrackingService,
+        DocumentService
     ],
     bootstrap: [ AppComponent ],
 } )

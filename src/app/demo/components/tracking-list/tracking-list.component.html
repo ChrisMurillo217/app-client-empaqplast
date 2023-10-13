@@ -3,6 +3,8 @@
 		<div class="card">
 			<h5>Pedidos</h5>
             <p-table
+                #dt1
+                [globalFilterFields]="['docNum','seriesName','docDate','taxDate']"
                 class="table table-responsive"
                 responsiveLayout="stack"
                 [value]="pedidos.slice(first, first + 5)"
@@ -105,7 +107,7 @@
                                         </ng-template>
 
                                         <!-- Contenido dinamico que se mostrará en la tabla -->
-                                        <ng-template pTemplate="body" let-item  let-columns="columns">
+                                        <ng-template pTemplate="body" let-item let-columns="columns">
                                             <tr>
                                                 <td class="align-middle">{{ item.itemCode }}</td>
                                                 <td class="align-middle">{{ item.dscription }}</td>
