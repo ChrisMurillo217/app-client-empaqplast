@@ -7,7 +7,7 @@ import { Document } from '../models/document.model';
   providedIn: 'root'
 } )
 export class DocumentService {
-    urlAPI : string = 'http://192.168.20.14:8086/api';
+    urlAPI:                     string = 'http://192.168.20.14:8086/api';
 
     constructor( private __http: HttpClient ) { }
 

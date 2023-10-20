@@ -4,10 +4,17 @@
 			<h5>Pedidos</h5>
             <p-table
                 #dt1
-                [globalFilterFields]="['docNum']"
                 class="table table-responsive"
                 responsiveLayout="stack"
-                [value]="pedidos.slice(first, first + 5)"
+                [value]="pedidos"
+                [rowHover]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[5,10,20]"
+                [loading]="loading"
+                [paginator]="true"
+                currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} pedidos"
+                [globalFilterFields]="['docNum']"
                 [tableStyle]="{ 'min-width': '50rem' }">
 
                 <!-- Input de busqueda -->
@@ -15,7 +22,14 @@
                     <div class="flex justify-content-between flex-column sm:flex-row">
                         <span class="p-input-icon-left mb-2">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar" class="w-full"/>
+                            <input
+                                #filter
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt1, $event)"
+                                placeholder="Buscar"
+                                class="w-full"
+                            />
                         </span>
                     </div>
                 </ng-template>
@@ -23,55 +37,77 @@
                 <!-- Cabecera de la tabla -->
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th style="min-width: 12rem" scope="col">
+                        <th pSortableColumn="docNum">
                             <div class="flex justify-content-between align-items-center">
                                 N° de Pedido
+                                <p-sortIcon field="docNum"></p-sortIcon>
                             </div>
                         </th>
-                        <th style="min-width: 12rem" scope="col">
+                        <th pSortableColumn="seriesName">
                             <div class="flex justify-content-between align-items-center">
                                 Sucursal
+                                <p-sortIcon field="seriesName"></p-sortIcon>
                             </div>
                         </th>
-                        <th style="min-width: 10rem" scope="col">
+                        <th pSortableColumn="docStatus">
+                            <div class="flex justify-content-between align-items-center">
+                                Estado
+                                <p-sortIcon field="docStatus"></p-sortIcon>
+                            </div>
+                        </th>
+                        <th pSortableColumn="docDate">
                             <div class="flex justify-content-between align-items-center">
                                 Fecha de Ingreso
+                                <p-sortIcon field="docDate"></p-sortIcon>
                             </div>
                         </th>
-                        <th style="min-width: 10rem" scope="col">
+                        <th pSortableColumn="taxDate">
                             <div class="flex justify-content-between align-items-center">
                                 Fecha de Entrega
+                                <p-sortIcon field="taxDate"></p-sortIcon>
                             </div>
                         </th>
-                        <th style="min-width: 10rem" scope="col">
-                            <div class="flex justify-content-between align-items-center">
-                                Detalles
-                            </div>
-                        </th>
-                        <th style="min-width: 10rem" scope="col">
-                            <div class="flex justify-content-between align-items-center">
-                                Tracking
-                            </div>
+                        <th>
                         </th>
                     </tr>
                 </ng-template>
 
                 <!-- Contenido dinamico que se mostrará en la tabla -->
-                <ng-template pTemplate="body" let-pedido  let-columns="columns">
+                <ng-template pTemplate="body" let-pedido let-columns="columns">
                     <tr>
                         <td class="align-middle">{{ pedido.docNum }}</td>
                         <td class="align-middle">{{ pedido.seriesName }}</td>
+                        <td class="align-middle">{{ pedido.docStatus }}</td>
                         <td class="align-middle">{{ formatDate( pedido.docDate ) }}</td>
-                        <td class="align-middle">{{ formatDate( pedido.taxDate ) }}</td>
-                        <td class="text-left">
+                        <td class="align-middle">{{ formatDate( pedido.docDueDate ) }}</td>
+                        <td class="align-middle">
+                            <!-- Botones que abren los modal -->
+                            <div class="flex justify-content-center">
+                                <!-- Botón detalles -->
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-list"
+                                    class="p-button-rounded p-button-info mr-2"
+                                    (click)="itemClick(pedido.docNum); details=true">
+                                </button>
+                                <!-- Botón tracking -->
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-truck"
+                                    class="p-button-rounded p-button-success"
+                                    (click)="detailsClick(pedido.docNum); tracking=true">
+                                </button>
+                            </div>
+
                             <!-- Modal de los detalles del pedido -->
                             <p-dialog
                                 header="Detalles del pedido"
                                 [(visible)]="details"
                                 [modal]="true"
-                                showEffect="fade"
-                                [style]="{ width: '60vw' }"
-                                [breakpoints]="{ '960px': '75vw' }">
+                                [style]="{ width: '700px' }"
+                                styleClass="p-fluid">
                                 <h6 class="text-inline text-md-left text-sm-center">
                                     <strong>N° de pedido:</strong>
                                     {{ docNum }}
@@ -118,27 +154,24 @@
                                 </ng-template>
                             </p-dialog>
 
-                            <!-- Botón que abre modal -->
-                            <div class="col-12">
-                                <button (click)="itemClick(pedido.docNum); details=true" pButton label="Detalle" class="p-button-outlined mb-2"></button>
-                            </div>
-                        </td>
-                        <td class="text-left">
-                            <!-- Modal-->
+                            <!-- Modal del tracking -->
                             <p-dialog
                                 header="Tracking"
                                 [(visible)]="tracking"
                                 [modal]="true"
-                                showEffect="fade"
-                                [style]="{ width: '90vw' }"
-                                [breakpoints]="{ '960px': '75vw' }">
+                                [style]="{ width: '700px' }"
+                                styleClass="p-fluid">
                                 <div class=" position-relative">
                                     <div class="row margin-top-icon text-center">
                                         <div class="col-md-3 col-sm-3 col-3">
                                             <i class="pi pi-file icon" style="font-size: 2.5rem"></i>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-6">
-                                            <i class="pi pi-cog icon" [ngClass]="{'pi-spin': mostrarSpinner}" style="font-size: 2.5rem"></i>
+                                            <i
+                                                class="pi pi-cog icon"
+                                                [ngClass]="{'pi-spin': mostrarSpinner}"
+                                                style="font-size: 2.5rem">
+                                            </i>
                                         </div>
                                         <div class="col-md-3 col-sm-3 col-3">
                                             <i class="pi pi-check-circle icon" style="font-size: 2.5rem"></i>
@@ -148,7 +181,11 @@
                                     <div class="row margin-top-progress bottom-0">
                                         <div class="col-1"></div>
                                         <div class="col-10">
-                                            <p-progressBar [value]="progressBarValue" [style]="{ height: '16px' }" #myProgressBar></p-progressBar>
+                                            <p-progressBar
+                                                #myProgressBar
+                                                [value]="progressBarValue"
+                                                [style]="{ height: '16px' }">
+                                            </p-progressBar>
                                         </div>
                                         <div class="col-1"></div>
                                     </div>
@@ -185,7 +222,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <h6 class="text-inline text-md-left text-sm-center">
                                                         <strong>Fecha de entrega:</strong>
-                                                        {{ taxDate }}
+                                                        {{ docDueDate }}
                                                     </h6>
                                                 </div>
                                             </li>
@@ -201,11 +238,6 @@
                                     </div>
                                 </div>
                             </p-dialog>
-
-                            <!-- Botón que abre modal -->
-                            <div class="col-12">
-                                <button (click)="detailsClick(pedido.docNum); tracking=true" pButton label="Tracking" class="p-button-outlined mb-2"></button>
-                            </div>
                         </td>
                     </tr>
                 </ng-template>
@@ -216,15 +248,7 @@
                         <td colspan="8">No se encontraron pedidos.</td>
                     </tr>
                 </ng-template>
-
-                <!-- Mensaje de busqueda de información -->
-                <ng-template pTemplate="loadingbody">
-                    <tr>
-                        <td colspan="8">Cargando información de pedidos. Espera, por favor.</td>
-                    </tr>
-                </ng-template>
             </p-table>
-            <p-paginator [rows]="5" [totalRecords]="pedidos.length" [first]="first" (onPageChange)="onPageChange( $event )"></p-paginator>
-		</div>
+        </div>
 	</div>
 </div>

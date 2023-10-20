@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { AuthService } from '../demo/service/auth.service';
 
 @Component( {
     selector: 'app-topbar',
@@ -17,7 +19,11 @@ export class AppTopBarComponent implements OnInit {
 
     @ViewChild( 'topbarmenu' ) menu!: ElementRef;
 
-    constructor( public layoutService: LayoutService ) { }
+    constructor(
+        public layoutService: LayoutService,
+        private authService: AuthService,
+        private router: Router
+    ) { }
 
     ngOnInit() {
         this.tieredItems = [
@@ -35,11 +41,18 @@ export class AppTopBarComponent implements OnInit {
                     {
                         label: 'Cerrar Sesión',
                         icon: 'pi pi-fw pi-sign-out',
-                        routerLink: [ '/auth/login' ]
+                        command: () => {
+                            this.logout()
+                        }
                     }
                 ]
             }
         ];
+    }
+
+    logout() {
+        this.authService.logout();
+        this.router.navigate( [ '/auth/login' ] );
     }
 
     toggleMenu() {

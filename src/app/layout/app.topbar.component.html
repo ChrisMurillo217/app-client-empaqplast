@@ -31,10 +31,14 @@
             'layout-topbar-menu-mobile-active':
                 layoutService.state.profileSidebarVisible
         }">
-        <button type="button" pButton label="Perfil" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
+        <button
+            pButton
+            type="button"
+            label="Perfil"
+            class="p-link layout-topbar-button"
+            (click)="menu.toggle($event)">
             <i class="pi pi-user"></i>
         </button>
         <p-menu #menu [popup]="true" [model]="tieredItems"></p-menu>
-
     </div>
 </div>

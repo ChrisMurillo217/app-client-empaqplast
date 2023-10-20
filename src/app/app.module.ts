@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -7,6 +8,8 @@ import { NotfoundComponent } from './demo/components/notfound/notfound.component
 import { CountryService } from './demo/service/country.service';
 import { TrackingService } from './demo/service/tracking.service';
 import { DocumentService } from './demo/service/documents.service';
+import { AuthService } from './demo/service/auth.service';
+import { UserDataService } from './demo/service/user-data.service';
 
 @NgModule( {
     declarations: [
@@ -24,7 +27,10 @@ import { DocumentService } from './demo/service/documents.service';
         },
         CountryService,
         TrackingService,
-        DocumentService
+        DocumentService,
+        AuthService,
+        MessageService,
+        UserDataService,
     ],
     bootstrap: [ AppComponent ],
 } )

@@ -3,9 +3,11 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProgressBar } from 'primeng/progressbar';
 import { TrackingService } from './../../service/tracking.service';
+import { UserDataService } from '../../service/user-data.service';
 import { Pedidos } from './../../models/pedido.model';
 import { Items } from './../../models/item.model';
 import { Fabricacion } from '../../models/fabricacion.model';
+import { Usuarios } from '../../models/usuarios.model';
 
 @Component( {
     templateUrl: './tracking-list.component.html',
@@ -15,32 +17,44 @@ import { Fabricacion } from '../../models/fabricacion.model';
     ]
 } )
 export class TrackingListComponent implements OnInit {
-    cardCode:           string = 'CN0590055328001';
+    cardCode:           string = 'CN1790175197001';
     docNum:             number = 0;
     first:              number = 0;
     i:                  number = 0;
     pedidos:            Pedidos[] = [];
     items:              Items[] = [];
     ofs:                Fabricacion[] = [];
+    userData:           Usuarios[] = [];
     docDate:            string = '';
     docStatus:          string = '';
-    taxDate:            string = '';
+    docDueDate:         string = '';
     tiempoEntrega:      string = '';
     numeroItem:         number = 0;
     progress:           number = 0;
     progressG:          number = 0;
     progressBarValue:   number = 0;
     mostrarSpinner:     boolean = true;
+    loading:            boolean = true;
 
     @ViewChild( 'filter' ) filter!: ElementRef;
     @ViewChild( 'myProgressBar' ) progressBar!: ProgressBar;
 
-    constructor( private trackingService: TrackingService ) {}
+    constructor(
+        private trackingService: TrackingService,
+        private userDataService: UserDataService
+    ) {}
 
     ngOnInit(): void {
+        this.userDataService.getUserData().subscribe(
+            ( data ) => {
+                this.userData = data;
+                this.cardCode = this.userData[0].datosLogin.cardCode;
+            }
+        );
         this.trackingService.getPedidosList( this.cardCode ).subscribe(
             ( data ) => {
                 this.pedidos = data;
+                this.loading = false;
             },
             ( error ) => {
                 console.error( error );
@@ -50,16 +64,16 @@ export class TrackingListComponent implements OnInit {
 
     formatDate( dateString: string ): string {
         const date = new Date( dateString );
-        const day = ( date.getDate() + 1 ).toString().padStart( 2, '0' );
+        const day = ( date.getDate() ).toString().padStart( 2, '0' );
         const month = ( date.getMonth() + 1 ).toString().padStart( 2, '0' );
         const year = date.getFullYear().toString();
 
         return `${ day }/${ month }/${ year }`;
     }
 
-    calcularTiempoEntrega( docDate: Date, taxDate: Date ): string {
+    calcularTiempoEntrega( docDate: Date, docDueDate: Date ): string {
         const fechaIngreso = new Date( docDate );
-        const fechaEntrega = new Date( taxDate );
+        const fechaEntrega = new Date( docDueDate );
         const tiempoMilisegundos = fechaEntrega.getTime() - fechaIngreso.getTime();
         const diasEntrega = tiempoMilisegundos / ( 1000 * 60 * 60 * 24 );
         return `${ Math.floor( diasEntrega ) } días`;
@@ -94,10 +108,10 @@ export class TrackingListComponent implements OnInit {
             ( data ) => {
                 this.docDate = this.formatDate( data[0].docDate );
                 this.docStatus = data[0].docStatus;
-                this.taxDate = this.formatDate( data[0].taxDate );
+                this.docDueDate = this.formatDate( data[0].docDueDate );
                 this.tiempoEntrega = this.calcularTiempoEntrega(
                     data[0].docDate,
-                    data[0].taxDate
+                    data[0].docDueDate
                 );
                 this.items = data[0].items;
 
@@ -107,21 +121,21 @@ export class TrackingListComponent implements OnInit {
                 this.items.forEach( ( item ) => {
                     if ( item.itemCode in itemCodeMap ) {
                         // Si ya existe, suma la cantidad al valor existente
-                        itemCodeMap[ item.itemCode ] += item.quantity; // Cambia esto según tu lógica
+                        itemCodeMap[item.itemCode] += item.quantity; // Cambia esto según tu lógica
                     } else {
                         // Si no existe, agrega una entrada al mapa
-                        itemCodeMap[ item.itemCode ] = item.quantity; // Inicializa la cantidad en 1, cámbialo según tu lógica
+                        itemCodeMap[item.itemCode] = item.quantity; // Inicializa la cantidad en 1, cámbialo según tu lógica
                     }
                 } );
 
                 // Luego, actualizamos this.items con elementos únicos y cantidades sumadas
                 this.items = Object.keys( itemCodeMap ).map( ( itemCode ) => {
-                    const originalItem = this.items.find((item) => item.itemCode === itemCode);
+                    const originalItem = this.items.find( ( item ) => item.itemCode === itemCode );
                     return {
                         docEntry: originalItem.docEntry, // Agrega el valor correcto para docEntry
                         dscription: originalItem.dscription, // Agrega el valor correcto para dscription
                         itemCode: itemCode,
-                        quantity: itemCodeMap[ itemCode ],
+                        quantity: itemCodeMap[itemCode],
                     };
                 } );
 
@@ -130,11 +144,27 @@ export class TrackingListComponent implements OnInit {
                 this.trackingService.getOF( this.cardCode, this.docNum ).subscribe(
                     ( ofData ) => {
                         let itemQuantities = [];
+
+                        this.items.forEach( ( item ) => {
+                            const divisor = this.numeroItem * 2;
+                            if (divisor !== 0) {
+                                this.progress = 100 / divisor;
+                            }
+
+                            if ( ofData.length !== 0 ) {
+                                ofData.forEach( ( ofItem ) => {
+                                    if ( item.itemCode === ofItem.itemCode ) {
+                                        this.progressBarValue = parseFloat( ( this.progressBarValue + this.progress ).toFixed( 2 ) );
+                                    }
+                                } );
+                            }
+                        } );
+
                         this.trackingService.getGuia( this.cardCode, this.docNum ).subscribe(
                             ( guiaData ) => {
-                                for (let i = 0; i < guiaData.length; i++) {
+                                for ( let i = 0; i < guiaData.length; i++ ) {
                                     const items = guiaData[i].items;
-                                    for (let j = 0; j < guiaData.length; j++) {
+                                    for ( let j = 0; j < guiaData.length; j++ ) {
                                         const itemG = items[j];
                                         if ( itemG && itemG.itemCode !== null ) {
                                             // Verificar si el elemento ya está en el array itemQuantities
@@ -156,20 +186,17 @@ export class TrackingListComponent implements OnInit {
                                 }
 
                                 const itemsQ = new Set( this.items.map( item => item.itemCode ) );
-                                itemQuantities = itemQuantities.filter(item => itemsQ.has(item.itemCode));
+                                itemQuantities = itemQuantities.filter( item => itemsQ.has( item.itemCode ) );
 
                                 this.items.forEach( ( item ) => {
                                     itemQuantities.forEach( ( itemG ) => {
                                         const divisor = this.numeroItem * 2;
-                                        if (divisor !== 0) {
+                                        if ( divisor !== 0 ) {
                                             this.progress = 100 / divisor;
                                         }
 
                                         if ( ofData.length !== 0 ) {
                                             ofData.forEach( ( ofItem ) => {
-                                                if ( itemG.itemCode === ofItem.itemCode && item.itemCode === ofItem.itemCode ) {
-                                                    this.progressBarValue = parseFloat( ( this.progressBarValue + this.progress ).toFixed( 2 ) );
-                                                }
                                                 if ( itemG.itemCode === item.itemCode ) {
                                                     if ( itemG.itemCode === ofItem.itemCode ) {
                                                         if ( itemG.quantity >= item.quantity ) {
@@ -207,7 +234,7 @@ export class TrackingListComponent implements OnInit {
                                 } );
                             },
                             ( error ) => {
-                                console.error(error);
+                                console.error( error );
                             }
                         );
                     },

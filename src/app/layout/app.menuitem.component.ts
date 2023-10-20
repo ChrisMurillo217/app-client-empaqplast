@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Host, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
@@ -93,7 +93,8 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
         public layoutService: LayoutService,
         private cd: ChangeDetectorRef,
         public router: Router,
-        private menuService: MenuService ) {
+        private menuService: MenuService
+    ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe( value => {
             Promise.resolve( null ).then( () => {
                 if ( value.routeEvent ) {
@@ -129,7 +130,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
 
     updateActiveStateFromRoute() {
         let activeRoute = this.router.isActive(
-            this.item.routerLink[ 0 ],
+            this.item.routerLink[0],
             {
                 paths: 'exact',
                 queryParams: 'ignored',

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { AuthService } from '../../../service/auth.service';
+import { UserDataService } from '../../../service/user-data.service';
+import { Usuarios } from './../../../models/usuarios.model';
 
 @Component( {
     selector: 'app-login',
@@ -14,10 +19,34 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     `]
 } )
 export class LoginComponent {
+    mail            : string;
+    password        : string;
+    usuarios        : Usuarios[] = [];
+    isLoggedIn      : boolean = false;
 
-    valCheck: string[] = [ 'remember' ];
+    constructor(
+        public layoutService: LayoutService,
+        private authService: AuthService,
+        private router: Router,
+        private messageService: MessageService,
+        private userDataService: UserDataService
+    ) { }
 
-    password!: string;
-
-    constructor( public layoutService: LayoutService ) { }
+    login() {
+        this.authService.getLogin( this.mail, this.password ).subscribe(
+            ( data ) => {
+                this.usuarios = data;
+                this.userDataService.setUserData( data );
+                this.router.navigate( [ '/dashboard' ] );
+            },
+            ( error ) => {
+                console.error( error );
+                this.messageService.add( {
+                    severity:'error',
+                    summary: 'Error',
+                    detail: 'El usuario o contraseña son incorrectos o no existen.'
+                } );
+            }
+        );
+    }
 }
