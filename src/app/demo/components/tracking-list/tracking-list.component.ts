@@ -3,7 +3,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProgressBar } from 'primeng/progressbar';
 import { TrackingService } from './../../service/tracking.service';
-import { UserDataService } from '../../service/user-data.service';
+import { TokenService } from '../../service/token.service';
 import { Pedidos } from './../../models/pedido.model';
 import { Items } from './../../models/item.model';
 import { Fabricacion } from '../../models/fabricacion.model';
@@ -14,7 +14,8 @@ import { Usuarios } from '../../models/usuarios.model';
     providers: [
         MessageService,
         ConfirmationService
-    ]
+    ],
+    styleUrls: ['./tracking-list.component.css']
 } )
 export class TrackingListComponent implements OnInit {
     cardCode:           string = 'CN1790175197001';
@@ -35,17 +36,20 @@ export class TrackingListComponent implements OnInit {
     progressBarValue:   number = 0;
     mostrarSpinner:     boolean = true;
     loading:            boolean = true;
+    dataLoaded:         boolean = false;
+    guiaLoaded:         boolean = false;
+    detailsLoaded:      boolean = false;
 
     @ViewChild( 'filter' ) filter!: ElementRef;
     @ViewChild( 'myProgressBar' ) progressBar!: ProgressBar;
 
     constructor(
         private trackingService: TrackingService,
-        private userDataService: UserDataService
+        private tokenService: TokenService
     ) {}
 
     ngOnInit(): void {
-        this.userDataService.getUserData().subscribe(
+        this.tokenService.getUserData().subscribe(
             ( data ) => {
                 this.userData = data;
                 this.cardCode = this.userData[0].datosLogin.cardCode;
@@ -53,8 +57,27 @@ export class TrackingListComponent implements OnInit {
         );
         this.trackingService.getPedidosList( this.cardCode ).subscribe(
             ( data ) => {
-                this.pedidos = data;
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                data.forEach(
+                    ( item ) => {
+                        const docDate = new Date( item.docDate )
+                        if ( docDate.getFullYear().toString() === currentYear.toString() ) {
+                            this.pedidos.push( item );
+                        }
+                    }
+                );
+
+                this.pedidos.sort(
+                    ( a, b ) => {
+                        const dateA = new Date( a.docDate ).getTime();
+                        const dateB = new Date( b.docDate ).getTime();
+                        return dateB - dateA;
+                    }
+                );
+
                 this.loading = false;
+                this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
@@ -93,6 +116,7 @@ export class TrackingListComponent implements OnInit {
         this.trackingService.getPedidosByDocNum( this.cardCode, this.docNum ).subscribe(
             ( data ) => {
                 this.items = data[0].items;
+                this.detailsLoaded = true;
             },
             ( error ) => {
                 console.error( error );
@@ -162,6 +186,7 @@ export class TrackingListComponent implements OnInit {
 
                         this.trackingService.getGuia( this.cardCode, this.docNum ).subscribe(
                             ( guiaData ) => {
+                                this.guiaLoaded = true;
                                 for ( let i = 0; i < guiaData.length; i++ ) {
                                     const items = guiaData[i].items;
                                     for ( let j = 0; j < guiaData.length; j++ ) {

@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
-import { UserDataService } from '../demo/service/user-data.service';
+import { TokenService } from '../demo/service/token.service';
 import { Usuarios } from '../demo/models/usuarios.model';
 
 @Component( {
@@ -15,13 +15,15 @@ export class AppMenuComponent implements OnInit {
 
     constructor(
         public layoutService: LayoutService,
-        private userDataService: UserDataService
+        private tokenService: TokenService
     ) { }
 
     ngOnInit() {
-        this.userDataService.getUserData().subscribe(
+        this.tokenService.getUserData().subscribe(
             ( data ) => {
-                data[0].seccionPagina.forEach((seccionPagina) => {
+                const sortedData = data[0].seccionPagina.sort( ( a, b ) => a.idSeccion - b.idSeccion );
+
+                sortedData.forEach((seccionPagina) => {
                     const seccionLabel = seccionPagina.nombreSeccion;
                     const paginaLabel = seccionPagina.nombrePagina;
                     const iconLabel = seccionPagina.icon;
@@ -46,6 +48,6 @@ export class AppMenuComponent implements OnInit {
                 });
             }
         );
-        
+
     }
 }

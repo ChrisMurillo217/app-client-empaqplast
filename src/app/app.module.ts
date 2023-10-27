@@ -1,23 +1,26 @@
 import { NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
-import { CountryService } from './demo/service/country.service';
 import { TrackingService } from './demo/service/tracking.service';
 import { DocumentService } from './demo/service/documents.service';
 import { AuthService } from './demo/service/auth.service';
-import { UserDataService } from './demo/service/user-data.service';
+import { TokenService } from './demo/service/token.service';
+import { UsuariosService } from './demo/service/usuarios.service';
+import { StockService } from './demo/service/stock.service';
 
 @NgModule( {
     declarations: [
         AppComponent,
-        NotfoundComponent
+        NotfoundComponent,
     ],
     imports: [
         AppRoutingModule,
+        HttpClientModule,
         AppLayoutModule
     ],
     providers: [
@@ -25,12 +28,13 @@ import { UserDataService } from './demo/service/user-data.service';
             provide: LocationStrategy,
             useClass: HashLocationStrategy,
         },
-        CountryService,
         TrackingService,
         DocumentService,
         AuthService,
         MessageService,
-        UserDataService,
+        TokenService,
+        UsuariosService,
+        StockService,
     ],
     bootstrap: [ AppComponent ],
 } )

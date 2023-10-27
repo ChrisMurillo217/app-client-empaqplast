@@ -1,392 +1,430 @@
 <div class="grid">
 	<div class="col-12">
-		<div class="card">
-			<h5>Documentos</h5>
-			<p-table
-                #dt1
-                class="table table-responsive"
-                responsiveLayout="stack"
-                [value]="documentos"
-                [rowHover]="true"
-                [rows]="5"
-                [showCurrentPageReport]="true"
-                [rowsPerPageOptions]="[5,10,20]"
-                [loading]="loading"
-                [paginator]="true"
-                currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} documentos"
-                [globalFilterFields]="['series','docNum']"
-                [tableStyle]="{ 'min-width': '50rem' }">
+        <div *ngIf="!dataLoaded; else dataIsLoaded">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus facturas.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
+        </div>
 
-                <!-- Input de busqueda -->
-				<ng-template pTemplate="caption">
-					<div class="flex justify-content-between flex-column sm:flex-row">
-						<span class="p-input-icon-left mb-2">
-							<i class="pi pi-search"></i>
-							<input
-                                #filter
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt1, $event)"
-                                placeholder="Buscar"
-                                class="w-full"
-                            />
-						</span>
-					</div>
-				</ng-template>
+        <ng-template #dataIsLoaded>
+            <div class="card">
+                <h5>Documentos</h5>
+                <p-table
+                    #dt1
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="documentos"
+                    [loading]="loading"
+                    [rowHover]="true"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} documentos"
+                    [globalFilterFields]="['series','docNum']"
+                    [tableStyle]="{ 'min-width': '50rem' }">
 
-                <!-- Cabecera de la tabla -->
-				<ng-template pTemplate="header" let-columns>
-					<tr>
-                        <th pSortableColumn="series">
-                            <div class="flex justify-content-between align-items-center">
-                                Tipo de documento
-                                <p-sortIcon field="series"></p-sortIcon>
-                            </div>
-                        </th>
-						<th pSortableColumn="docNum">
-							<div class="flex justify-content-between align-items-center">
-								N° de documento
-                                <p-sortIcon field="docNum"></p-sortIcon>
-							</div>
-						</th>
-						<th pSortableColumn="ffact">
-							<div class="flex justify-content-between align-items-center">
-								Fecha de creación
-                                <p-sortIcon field="ffact"></p-sortIcon>
-							</div>
-						</th>
-                        <th pSortableColumn="ffactV">
-							<div class="flex justify-content-between align-items-center">
-								Fecha de vencimiento
-                                <p-sortIcon field="ffactV"></p-sortIcon>
-							</div>
-						</th>
-                        <th>
-							<div class="flex justify-content-between align-items-center">
-							</div>
-						</th>
-					</tr>
-				</ng-template>
+                    <!-- Input de busqueda -->
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt1, $event)"
+                                    placeholder="Buscar"
+                                    class="w-full"
+                                />
+                            </span>
+                        </div>
+                    </ng-template>
 
-                <!-- Contenido dinamico que se mostrará en la tabla -->
-				<ng-template pTemplate="body" let-documento let-columns="columns">
-					<tr>
-						<td class="align-middle">
-                            <span *ngIf="documento.series === 'FEUIO'">{{ documento.series }} - Factura</span>
-                            <span *ngIf="documento.series === 'NCUIO1'">{{ documento.series }} - Nota de Crédito</span>
-                        </td>
-                        <td class="align-middle">{{ documento.docNum }}</td>
-                        <td class="align-middle">{{ formatDate( documento.ffact ) }}</td>
-						<td class="align-middle">{{ formatDate( documento.ffactV ) }}</td>
-						<td class="text-left">
-                            <!-- Botón que abre modal -->
-                            <div class="flex justify-content-center">
-                                <button (click)="itemClick(documento.docNum); details=true" pButton label="Ver" class="p-button-outlined mb-2"></button>
-                            </div>
-
-                            <!-- Modal-->
-                            <p-dialog
-                                header="{{ documento.series === 'FEUIO' ? 'Factura' : (documento.series === 'NCUIO1' ? 'Nota de Crédito' : '') }}"
-                                [(visible)]="details"
-                                [modal]="true"
-                                showEffect="fade"
-                                [style]="{ width: '75vw' }"
-                                [maximizable]="true">
-                                <br>
-                                <div class="card-container" #cardContainer>
-                                    <div class="grid flex m-2">
-                                        <div class="flex-1 pr-5 pl-3 pt-3">
-                                            <div class="grid">
-                                                <div class="col-12 py-3 flex justify-content-center">
-                                                    <img
-                                                        src="assets/layout/images/logo-factura.svg"
-                                                        height="80"
-                                                        class="mb-5 w-15rem flex-shrink-0 justify-content-center"
-                                                    >
-                                                </div>
-                                                <div class="col-12 py-3 card">
-                                                    <div class="text-center">
-                                                        <h4>EMPAQPLAST SA</h4>
-                                                        <br><br>
-                                                    </div>
-                                                    <div>
-                                                        <strong>Dirección Matriz:</strong>
-                                                        KM 2.5 VIA AMAGUAA - SANGOLGUI
-                                                        <br><br>
-                                                    </div>
-                                                    <div>
-                                                        <strong>Dirección Sucursal:</strong>
-                                                        KM 24 VIA PERIMETRAL
-                                                        <br><br>
-                                                    </div>
-                                                    <div>
-                                                        <strong>Contribuyente Especial No.</strong>
-                                                        5368
-                                                        <br>
-                                                        <strong>Obligado a llevar Contabilidad:</strong>
-                                                        SI
-                                                        <br><br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 pr-5 pl-3 py-3 card">
-                                            <div class="grid">
-                                                <div class="col-12 text-center">
-                                                    <br>
-                                                    <h4>R.U.C.: 1791240111001</h4>
-                                                    <h3>F A C T U R A</h3>
-                                                    <br>
-                                                </div>
-                                                <div class="col-12">
-                                                    <strong>No.:</strong> {{ docs.unDocsri }}
-                                                    <br>
-                                                    <br>
-                                                    <strong>Número de autorización:</strong> {{ docs.autoSri }}
-                                                    <br>
-                                                    <br>
-                                                    <strong>CLAVE DE ACCESO:</strong><br>
-                                                    <svg #barcode></svg>
-                                                    {{ docs.autoSri }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card m-2 py-3 px-3">
-                                        <div class="card-container">
-                                            <div class="flex">
-                                                <div class="flex-1 flex">
-                                                    <strong>Razón Social / Nombres y Apellidos:</strong> &nbsp; {{ docs.nomCli }}
-                                                </div>
-                                                <div class="flex-1 flex">
-                                                    <strong>Identificación:</strong> &nbsp; {{ docs.codClient }}
-                                                </div>
-                                            </div>
-                                            <div class="flex">
-                                                <div class="flex-1 flex">
-                                                    <strong>Fecha Emisión:</strong> &nbsp; {{ formatDate( docs.ffact ) }}
-                                                </div>
-                                                <div class="flex-1 flex">
-                                                    <strong>Dirección:</strong> &nbsp; {{ docs.address }}
-                                                </div>
-                                            </div>
-                                            <div class="flex">
-                                                <div class="flex-1 flex">
-                                                    <strong>Guía Remisión:</strong> &nbsp; {{ docs.noGuia }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid flex m-2">
-                                        <div class="flex-1 px-3 card">
-                                            <p-table
-                                                [value]="itemsF"
-                                                [tableStyle]="{'min-width': '50rem'}">
-                                                <ng-template pTemplate="header">
-                                                    <tr>
-                                                        <th>Cod. Principal</th>
-                                                        <th>Descripción</th>
-                                                        <th>Cantidad</th>
-                                                        <th>Precio Unitario</th>
-                                                        <th>Precio Total</th>
-                                                    </tr>
-                                                </ng-template>
-                                                <ng-template pTemplate="body" let-itemF>
-                                                    <tr>
-                                                        <td>{{ itemF.itemCode }}</td>
-                                                        <td>{{ itemF.dscription }}</td>
-                                                        <td class="text-right">{{ itemF.quantity }}</td>
-                                                        <td class="text-right">{{ itemF.pryUnit }}</td>
-                                                        <td class="text-right">{{ itemF.totalLinea }}</td>
-                                                    </tr>
-                                                </ng-template>
-                                            </p-table>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid flex m-2">
-                                        <div class="flex-1 py-3">
-                                            <div class="grid">
-                                                <div class="col-12">
-                                                    <div class="flex">
-                                                        <div class="col-6">
-                                                            <strong>Forma de Pago</strong>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <strong>Valor</strong>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <strong>Plazo</strong>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <strong>Tiempo</strong>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="flex">
-                                                        <div class="col-6">
-                                                            {{ docs.uFormaPago }}
-                                                        </div>
-                                                        <div class="col-2">
-                                                            {{ docTotal }}
-                                                        </div>
-                                                        <div class="col-2">
-                                                            {{ plazo }}
-                                                        </div>
-                                                        <div class="col-2">
-                                                            {{ tiempo }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 px-5">
-                                                    <strong>Información Adicional</strong>
-                                                    <hr>
-                                                    <div class="grid">
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    emailcliente:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.eMail }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    Vendedor:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.vendedor }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    Dirección:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.address }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    Teléfono:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.phone1 }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    Condiciónes de pago:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.pymntGroup }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12" style="height: 3rem;">
-                                                            <div class="grid">
-                                                                <div class="col-3">
-                                                                    comentarios:
-                                                                </div>
-                                                                <div class="col-9">
-                                                                    {{ docs.comments }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex-1 px-5 py-3">
-                                            <div class="grid">
-                                                <div class="col-8 text-right">
-                                                    <strong>Subtotal 12.00%:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Subtotal 0%:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Subtotal no Objeto de IVA:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Subtotal Excento de IVA:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Subtotal sin impuestos:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Total descuento:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>ICE:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>IVA 12.00%</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>IRBPNR:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Propina:</strong>
-                                                    <hr class="opacity-0">
-                                                    <strong>Valor Total:</strong>
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    {{ subtotal }}
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    {{ subtotal }}
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    {{ iva }}
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    0.00
-                                                    <hr>
-                                                    {{ docTotal }}
-                                                    <hr>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <!-- Cabecera de la tabla -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="series">
+                                <div class="flex justify-content-between align-items-center">
+                                    Tipo de documento
+                                    <p-sortIcon field="series"></p-sortIcon>
                                 </div>
-                                <ng-template pTemplate="footer">
-                                    <p-button
-                                        icon="pi pi-print"
-                                        (click)="imprimirContenido()"
-                                        label="Imprimir"
-                                        styleClass="p-button-text">
-                                    </p-button>
-                                    <p-button
-                                        icon="pi pi-times"
-                                        (click)="details=false"
-                                        label="Cerrar"
-                                        styleClass="p-button-text">
-                                    </p-button>
-                                </ng-template>
-                            </p-dialog>
-						</td>
-					</tr>
-				</ng-template>
+                            </th>
+                            <th pSortableColumn="docNum">
+                                <div class="flex justify-content-between align-items-center">
+                                    N° de documento
+                                    <p-sortIcon field="docNum"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="ffact">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de creación
+                                    <p-sortIcon field="ffact"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="ffactV">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de vencimiento
+                                    <p-sortIcon field="ffactV"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
 
-                <!-- Mensaje en caso de que no exista información -->
-				<ng-template pTemplate="emptymessage">
-					<tr>
-						<td colspan="8">No se encontraron documentos.</td>
-					</tr>
-				</ng-template>
-    		</p-table>
-		</div>
+                    <!-- Contenido dinamico que se mostrará en la tabla -->
+                    <ng-template pTemplate="body" let-documento let-columns="columns">
+                        <tr>
+                            <td class="align-middle">
+                                <span *ngIf="documento.series === 'NCUIO1'">{{ documento.series }} - Nota de Crédito</span>
+                                <span *ngIf="documento.series === 'FEUIO'">{{ documento.series }} - Factura</span>
+                            </td>
+                            <td class="align-middle">
+                                {{ documento.docNum }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( documento.ffact ) }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( documento.ffactV ) }}
+                            </td>
+                            <td class="text-left">
+                                <!-- Botón que abre modal -->
+                                <div class="flex justify-content-center">
+                                    <button (click)="itemClick(documento.docNum); details=true" pButton label="Ver" class="p-button-outlined mb-2"></button>
+                                </div>
+
+                                <!-- Modal-->
+                                <p-dialog
+                                    header="{{ documento.series === 'FEUIO' ? 'Factura' : (documento.series === 'NCUIO1' ? 'Nota de Crédito' : '') }}"
+                                    [(visible)]="details"
+                                    [modal]="true"
+                                    showEffect="fade"
+                                    [style]="{ 'max-width': '210mm', 'width': '100%' }"
+                                    [maximizable]="true">
+                                    <br>
+
+                                    <div *ngIf="!detailsLoaded; else detailsIsLoaded">
+                                        <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
+                                            <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tu factura.</h4>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <ng-template #detailsIsLoaded>
+                                        <div class="card-container" #cardContainer style="font-size: 10px;">
+                                            <div class="grid flex m-2">
+                                                <div class="flex-1 pr-5 pl-3 pt-3">
+                                                    <div class="grid">
+                                                        <div class="col-12 py-3 flex justify-content-center">
+                                                            <img
+                                                                src="assets/layout/images/logo-factura.svg"
+                                                                height="80"
+                                                                class="mb-5 w-15rem flex-shrink-0 justify-content-center"
+                                                            >
+                                                        </div>
+                                                        <div class="col-12 py-3 card border-dark">
+                                                            <div class="text-center">
+                                                                <h6>EMPAQPLAST SA</h6>
+                                                                <br><br>
+                                                            </div>
+                                                            <div>
+                                                                <strong>Dirección Matriz:</strong>
+                                                                KM 2.5 VIA AMAGUAA - SANGOLGUI
+                                                                <br><br>
+                                                            </div>
+                                                            <div>
+                                                                <strong>Dirección Sucursal:</strong>
+                                                                KM 24 VIA PERIMETRAL
+                                                                <br><br>
+                                                            </div>
+                                                            <div>
+                                                                <strong>Contribuyente Especial No.</strong>
+                                                                5368
+                                                                <br>
+                                                                <strong>Obligado a llevar Contabilidad:</strong>
+                                                                SI
+                                                                <br><br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-1 pr-5 pl-3 py-3 card border-dark">
+                                                    <div class="grid">
+                                                        <div class="col-12 text-center">
+                                                            <h6>R.U.C.: 1791240111001</h6>
+                                                            <h5>F A C T U R A</h5>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <strong>No.:</strong> {{ docs.unDocsri }}
+                                                            <br>
+                                                            <br>
+                                                            <strong>Número de autorización:</strong> {{ docs.autoSri }}
+                                                            <br>
+                                                            <br>
+                                                            <strong>CLAVE DE ACCESO:</strong>
+                                                            <svg id='barcode'></svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="card border-dark m-2 py-3 px-3">
+                                                <div class="card-container">
+                                                    <div class="flex">
+                                                        <div class="flex-1 flex">
+                                                            <strong>Razón Social / Nombres y Apellidos:</strong> {{ docs.nomCli }}
+                                                        </div>
+                                                        <div class="flex-1 flex">
+                                                            <strong>Identificación:</strong> &nbsp; {{ docs.codClient }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <div class="flex-1 flex">
+                                                            <strong>Fecha Emisión:</strong> &nbsp; {{ formatDate( docs.ffact ) }}
+                                                        </div>
+                                                        <div class="flex-1 flex">
+                                                            <strong>Dirección:</strong> &nbsp; {{ docs.address }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <div class="flex-1 flex">
+                                                            <strong>Guía Remisión:</strong> &nbsp; {{ docs.noGuia }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid flex m-2">
+                                                <div class="flex-1 px-3 py-3 card border-dark">
+                                                    <p-table
+                                                        [value]="itemsF"
+                                                        [tableStyle]="{ 'min-width': '48rem', 'font-size': '10px' }"
+                                                        styleClass="border-dark">
+                                                        <ng-template pTemplate="header">
+                                                            <tr>
+                                                                <th>Cod. Principal</th>
+                                                                <th>Descripción</th>
+                                                                <th>Cantidad</th>
+                                                                <th>Precio Unitario</th>
+                                                                <th>Precio Total</th>
+                                                            </tr>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="body" let-itemF>
+                                                            <tr>
+                                                                <td>{{ itemF.itemCode }}</td>
+                                                                <td>{{ itemF.dscription }}</td>
+                                                                <td class="text-right">{{ itemF.quantity }}</td>
+                                                                <td class="text-right">{{ itemF.pryUnit }}</td>
+                                                                <td class="text-right">{{ itemF.totalLinea }}</td>
+                                                            </tr>
+                                                        </ng-template>
+                                                    </p-table>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid flex m-2">
+                                                <div class="col-7 flex-1">
+                                                    <div class="grid">
+                                                        <div class="col-12">
+                                                            <div class="flex">
+                                                                <div class="col-6 py-0">
+                                                                    <strong>Forma de Pago</strong>
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    <strong>Valor</strong>
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    <strong>Plazo</strong>
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    <strong>Tiempo</strong>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="border-dark">
+                                                            <div class="flex">
+                                                                <div class="col-6 py-0">
+                                                                    {{ docs.uFormaPago }}
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    {{ docTotal }}
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    {{ plazo }}
+                                                                </div>
+                                                                <div class="col-2 py-0">
+                                                                    {{ tiempo }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 px-5">
+                                                            <strong>Información Adicional</strong>
+                                                            <hr class="border-dark">
+                                                            <div class="grid">
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            emailcliente:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.eMail }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            Vendedor:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.vendedor }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            Dirección:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.address }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            Teléfono:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.phone1 }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            Condiciónes de pago:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.pymntGroup }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="grid py-0">
+                                                                        <div class="col-3 py-0">
+                                                                            comentarios:
+                                                                        </div>
+                                                                        <div class="col-9 py-0">
+                                                                            {{ docs.comments }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 flex-1 px-5 py-3">
+                                                    <div class="grid">
+                                                        <div class="col-8 text-right">
+                                                            <strong>Subtotal 12.00%:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Subtotal 0%:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Subtotal no Objeto de IVA:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Subtotal Excento de IVA:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Subtotal sin impuestos:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Total descuento:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>ICE:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>IVA 12.00%</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>IRBPNR:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Propina:</strong>
+                                                            <hr class="opacity-0 py-0">
+                                                            <strong>Valor Total:</strong>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            {{ subtotal }}
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            {{ subtotal }}
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            {{ iva }}
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            0.00
+                                                            <hr class="py-0 border-dark">
+                                                            {{ docTotal }}
+                                                            <hr class="py-0 border-dark">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="footer">
+                                        <p-button
+                                            icon="pi pi-print"
+                                            (click)="imprimirContenido()"
+                                            label="Imprimir"
+                                            styleClass="p-button-text">
+                                        </p-button>
+                                        <p-button
+                                            icon="pi pi-times"
+                                            (click)="details=false"
+                                            label="Cerrar"
+                                            styleClass="p-button-text">
+                                        </p-button>
+                                    </ng-template>
+                                </p-dialog>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Mensaje en caso de que no exista información -->
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">No se encontraron documentos.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
 	</div>
 </div>

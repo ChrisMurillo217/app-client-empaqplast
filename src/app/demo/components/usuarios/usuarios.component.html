@@ -1,364 +1,394 @@
 <div class="grid">
     <div class="col-12">
-        <p-toast></p-toast>
-        <div class="card px-6 py-6">
-            <p-toolbar styleClass="mb-4 gap-2">
-                <ng-template pTemplate="left">
-                    <button
-                        pButton
-                        pRipple
-                        label="Nuevo"
-                        icon="pi pi-plus"
-                        class="p-button-success mr-2"
-                        (click)="openNew()">
-                    </button>
-                </ng-template>
-            </p-toolbar>
+        <div *ngIf="!dataLoaded; else dataIsLoaded">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem; flex-direction: column;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus usuarios.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
+        </div>
 
-            <p-table
-                #dt
-                responsiveLayout="stack"
-                [value]="usuarios"
-                [rowHover]="true"
-                [rows]="5"
-                [showCurrentPageReport]="true"
-                [rowsPerPageOptions]="[5,10,20]"
-                [loading]="loading"
-                [paginator]="true"
-                currentPageReportTemplate="Montrando del {first} al {last} de {totalRecords} usuarios"
-                [globalFilterFields]="['cardCode','cardName','emailUsuarioTr','nombreRol']"
-                selectionMode="multiple">
-                <ng-template pTemplate="caption">
-                    <div class="flex align-items-center justify-content-between">
-                        <h5 class="m-0">Administrar Usuarios</h5>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."/>
-                        </span>
+        <ng-template #dataIsLoaded>
+            <p-toast></p-toast>
+            <div class="card px-6 py-6">
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <ng-template pTemplate="left">
+                        <button
+                            pButton
+                            pRipple
+                            label="Nuevo"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openNew()">
+                        </button>
+                    </ng-template>
+                </p-toolbar>
+
+                <p-table
+                    #dt
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="usuarios"
+                    [loading]="loading"
+                    [rowHover]="true"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Montrando del {first} al {last} de {totalRecords} usuarios"
+                    [globalFilterFields]="['cardCode','cardName','emailUsuarioTr','nombreRol']"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <h5 class="m-0">Administrar Usuarios</h5>
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt, $event)"
+                                    placeholder="Buscar..."
+                                    class="w-full"
+                                />
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="datosLogin.cardCode">
+                                <div class="flex justify-content-between align-items-center">
+                                    Identificación
+                                    <p-sortIcon field="datosLogin.cardCode"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="datosLogin.cardName">
+                                <div class="flex justify-content-between align-items-center">
+                                    Razón Social
+                                    <p-sortIcon field="datosLogin.cardName"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="datosLogin.datos.nombreUsuarioTr">
+                                <div class="flex justify-content-between align-items-center">
+                                    Empleado
+                                    <p-sortIcon field="datosLogin.datos.nombreUsuarioTr"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="datosLogin.datos.emailUsuarioTr">
+                                <div class="flex justify-content-between align-items-center">
+                                    Correo
+                                    <p-sortIcon field="datosLogin.datos.emailUsuarioTr"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="datosLogin.rol.nombreRol">
+                                <div class="flex justify-content-between align-items-center">
+                                    Rol
+                                    <p-sortIcon field="datosLogin.rol.nombreRol"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-user>
+                        <tr>
+                            <td>
+                                {{ user.datosLogin.cardCode }}
+                            </td>
+                            <td>
+                                {{ user.datosLogin.cardName }}
+                            </td>
+                            <td>
+                                {{ user.datosLogin.datos.nombreUsuarioTr }} {{ user.datosLogin.datos.apellidoUsuarioTr }}
+                            </td>
+                            <td>
+                                {{ user.datosLogin.datos.emailUsuarioTr }}
+                            </td>
+                            <td>
+                                {{ user.datosLogin.rol.nombreRol }}
+                            </td>
+                            <td>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-help mr-2"
+                                    (click)="editUser(pedido)">
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+
+            <!-- Modal para agregar un nuevo usuario -->
+            <p-dialog
+                header="Crear"
+                [(visible)]="newUser"
+                [style]="{width: '450px'}"
+                [modal]="true"
+                styleClass="p-fluid">
+                <ng-template pTemplate="content">
+                    <div class="field">
+                        <label>Usuario</label>
+                        <p-autoComplete
+                            [(ngModel)]="cardCode"
+                            [dropdown]="true"
+                            [suggestions]="filteredUsers"
+                            (completeMethod)="filterUser($event)"
+                            (onSelect)="onUserSelect($event)"
+                            field="label"
+                            placeholder="Escoje el usuario">
+                        </p-autoComplete>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardCode">
+                            Usuario es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Razón Social</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="cardName"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardName">
+                            Razón Social es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Sucursal</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="seriesNameSucursal"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !seriesNameSucursal">
+                            Sucursal es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Rol</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="idRol"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !idRol">
+                            Rol es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Correo</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="nombreUsuarioTrL"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !nombreUsuarioTrL">
+                            Correo es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Contraseña</label>
+                        <p-password
+                            required
+                            [(ngModel)]="contrasenaUsuarioTrL">
+                            <ng-template pTemplate="header">
+                                <h6>Ingresa tú contraseña</h6>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <p-divider></p-divider>
+                                <p class="mt-2">Sugerencias</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>Al menos 1 mayuscula</li>
+                                    <li>Al menos 1 minuscula</li>
+                                    <li>Al menos 1 numero</li>
+                                    <li>Al menos 1 carácter especial</li>
+                                    <li>Minimo 8 caracteres</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !contrasenaUsuarioTrL">
+                            Contraseña es requerida.
+                        </small>
                     </div>
                 </ng-template>
 
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="cardCode">
-                            Identificación
-                            <p-sortIcon field="cardCode"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="cardName">
-                            Razón Social
-                            <p-sortIcon field="cardName"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="emailUsuarioTr">
-                            Correo
-                            <p-sortIcon field="emailUsuarioTr"></p-sortIcon>
-                        </th>
-                        <th pSortableColumn="nombreRol">
-                            Rol
-                            <p-sortIcon field="nombreRol"></p-sortIcon>
-                        </th>
-                        <th></th>
-                    </tr>
+                <ng-template pTemplate="footer">
+                    <button
+                        pButton
+                        pRipple
+                        label="Cancelar"
+                        icon="pi pi-times"
+                        class="p-button-text">
+                    </button>
+                    <button
+                        pButton
+                        pRipple
+                        label="Guardar"
+                        icon="pi pi-check"
+                        class="p-button-text"
+                        (click)="saveProduct()">
+                    </button>
+                </ng-template>
+            </p-dialog>
+
+            <!-- Modal para editar un usuario -->
+            <p-dialog
+                header="Editar Usuario"
+                [(visible)]="editarUser"
+                [style]="{width: '450px'}"
+                [modal]="true"
+                styleClass="p-fluid">
+                <ng-template pTemplate="content">
+                    <div class="field">
+                        <label>Usuario</label>
+                        <p-autoComplete
+                            [(ngModel)]="cardCode"
+                            [dropdown]="true"
+                            [suggestions]="filteredUsers"
+                            (completeMethod)="filterUser($event)"
+                            (onSelect)="onUserSelect($event)"
+                            field="label"
+                            placeholder="Escoje el usuario">
+                        </p-autoComplete>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardCode">
+                            Usuario es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Razón Social</label>
+                        <input
+                            pInputText
+                            required
+                            disabled
+                            type="text"
+                            name="cardName"
+                            [(ngModel)]="cardName"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardName">
+                            Razón Social es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Sucursal</label>
+                        <input
+                            pInputText
+                            required
+                            autofocus
+                            type="text"
+                            [(ngModel)]="seriesNameSucursal"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !seriesNameSucursal">
+                            Sucursal es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Rol</label>
+                        <input
+                            pInputText
+                            required
+                            autofocus
+                            type="text"
+                            [(ngModel)]="idRol"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !idRol">
+                            Rol es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Correo</label>
+                        <input
+                            pInputText
+                            required
+                            autofocus
+                            type="text"
+                            [(ngModel)]="nombreUsuarioTrL"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !nombreUsuarioTrL">
+                            Correo es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>Contraseña</label>
+                        <p-password
+                            required
+                            [(ngModel)]="contrasenaUsuarioTrL">
+                            <ng-template pTemplate="header">
+                                <h6>Ingresa tú contraseña</h6>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <p-divider></p-divider>
+                                <p class="mt-2">Sugerencias</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>Al menos 1 mayuscula</li>
+                                    <li>Al menos 1 minuscula</li>
+                                    <li>Al menos 1 numero</li>
+                                    <li>Al menos 1 carácter especial</li>
+                                    <li>Minimo 8 caracteres</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !contrasenaUsuarioTrL">
+                            Contraseña es requerida.
+                        </small>
+                    </div>
                 </ng-template>
 
-                <ng-template pTemplate="body" let-user>
-                    <tr>
-                        <td>
-                            <span class="p-column-title">Identificación</span>
-                            {{ user.datosLogin.cardCode }}
-                        </td>
-                        <td>
-                            <span class="p-column-title">Razón Social</span>
-                            {{ user.datosLogin.cardName }}
-                        </td>
-                        <td>
-                            <span class="p-column-title">Correo</span>
-                            {{ user.datosLogin.datos.emailUsuarioTr }}
-                        </td>
-                        <td>
-                            <span class="p-column-title">Rol</span>
-                            {{ user.datosLogin.rol.nombreRol }}
-                        </td>
-                        <td>
-                            <button
-                                pButton
-                                pRipple
-                                icon="pi pi-pencil"
-                                class="p-button-rounded p-button-help mr-2"
-                                (click)="editUser(pedido)">
-                            </button>
-                        </td>
-                    </tr>
+                <ng-template pTemplate="footer">
+                    <button
+                        pButton
+                        pRipple
+                        label="Cancelar"
+                        icon="pi pi-times"
+                        class="p-button-text">
+                    </button>
+                    <button
+                        pButton
+                        pRipple
+                        label="Guardar"
+                        icon="pi pi-check"
+                        class="p-button-text">
+                    </button>
                 </ng-template>
-            </p-table>
-        </div>
-
-        <!-- Modal para agregar un nuevo usuario -->
-        <p-dialog
-            header="Crear"
-            [(visible)]="newUser"
-            [style]="{width: '450px'}"
-            [modal]="true"
-            styleClass="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label>Usuario</label>
-                    <p-autoComplete
-                        [(ngModel)]="cardCode"
-                        [dropdown]="true"
-                        [suggestions]="filteredUsers"
-                        (completeMethod)="filterUser($event)"
-                        (onSelect)="onUserSelect($event)"
-                        field="label"
-                        placeholder="Escoje el usuario">
-                    </p-autoComplete>
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !cardCode">
-                        Usuario es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Razón Social</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="userNew.cardName"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !userNew.cardName">
-                        Razón Social es requerida.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Sucursal</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="userNew.seriesNameSucursal"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !userNew.seriesNameSucursal">
-                        Sucursal es requerida.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Rol</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="userNew.idRol"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !userNew.idRol">
-                        Rol es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Correo</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="userNew.nombreUsuarioTrL"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !userNew.nombreUsuarioTrL">
-                        Correo es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Contraseña</label>
-                    <p-password
-                        required
-                        [(ngModel)]="userNew.contrasenaUsuarioTrL">
-                        <ng-template pTemplate="header">
-                            <h6>Ingresa tú contraseña</h6>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <p-divider></p-divider>
-                            <p class="mt-2">Sugerencias</p>
-                            <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                                <li>Al menos 1 mayuscula</li>
-                                <li>Al menos 1 minuscula</li>
-                                <li>Al menos 1 numero</li>
-                                <li>Al menos 1 carácter especial</li>
-                                <li>Minimo 8 caracteres</li>
-                            </ul>
-                        </ng-template>
-                    </p-password>
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !userNew.contrasenaUsuarioTrL">
-                        Contraseña es requerida.
-                    </small>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button
-                    pButton
-                    pRipple
-                    label="Cancelar"
-                    icon="pi pi-times"
-                    class="p-button-text">
-                </button>
-                <button
-                    pButton
-                    pRipple
-                    label="Guardar"
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    (click)="saveProduct()">
-                </button>
-            </ng-template>
-        </p-dialog>
-
-        <!-- Modal para editar un usuario >
-        <p-dialog--
-            header="Editar Usuario"
-            [(visible)]="editarUser"
-            [style]="{width: '450px'}"
-            [modal]="true"
-            styleClass="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label>Usuario</label>
-                    <p-autoComplete
-                        [(ngModel)]="cardCode"
-                        [dropdown]="true"
-                        [suggestions]="filteredUsers"
-                        (completeMethod)="filterUser($event)"
-                        (onSelect)="onUserSelect($event)"
-                        field="label"
-                        placeholder="Escoje el usuario">
-                    </p-autoComplete>
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !cardCode">
-                        Usuario es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Razón Social</label>
-                    <input
-                        pInputText
-                        required
-                        disabled
-                        type="text"
-                        name="cardName"
-                        [(ngModel)]="cardName"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !cardName">
-                        Razón Social es requerida.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Sucursal</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="seriesNameSucursal"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !seriesNameSucursal">
-                        Sucursal es requerida.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Rol</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="idRol"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !idRol">
-                        Rol es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Correo</label>
-                    <input
-                        pInputText
-                        required
-                        autofocus
-                        type="text"
-                        [(ngModel)]="nombreUsuarioTrL"
-                    />
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !nombreUsuarioTrL">
-                        Correo es requerido.
-                    </small>
-                </div>
-                <div class="field">
-                    <label>Contraseña</label>
-                    <p-password
-                        required
-                        [(ngModel)]="contrasenaUsuarioTrL">
-                        <ng-template pTemplate="header">
-                            <h6>Ingresa tú contraseña</h6>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <p-divider></p-divider>
-                            <p class="mt-2">Sugerencias</p>
-                            <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                                <li>Al menos 1 mayuscula</li>
-                                <li>Al menos 1 minuscula</li>
-                                <li>Al menos 1 numero</li>
-                                <li>Al menos 1 carácter especial</li>
-                                <li>Minimo 8 caracteres</li>
-                            </ul>
-                        </ng-template>
-                    </p-password>
-                    <small
-                        class="p-error"
-                        *ngIf="submitted && !contrasenaUsuarioTrL">
-                        Contraseña es requerida.
-                    </small>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <button
-                    pButton
-                    pRipple
-                    label="Cancelar"
-                    icon="pi pi-times"
-                    class="p-button-text">
-                </button>
-                <button
-                    pButton
-                    pRipple
-                    label="Guardar"
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    (click)="saveProduct()">
-                </button>
-            </ng-template>
-        </p-dialog-->
+            </p-dialog>
+        </ng-template>
     </div>
 </div>

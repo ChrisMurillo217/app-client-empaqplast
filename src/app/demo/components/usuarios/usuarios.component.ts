@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AuthService } from './../../service/auth.service';
+import { UsuariosService } from '../../service/usuarios.service';
 import { Usuarios } from './../../models/usuarios.model';
 import { InfoUsers } from '../../models/info-users.model';
 import { Dates } from '../../models/dates.model';
@@ -8,28 +9,38 @@ import { Role } from '../../models/role.model';
 
 @Component({
     templateUrl: './usuarios.component.html',
-    providers: [ MessageService ]
+    providers: [ MessageService ],
+    styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-    loading:                boolean = true;
+    filteredUser:           any[] = [];
+    dates:                  Dates[] = [];
     usuarios:               Usuarios[] = [];
     userNew:                InfoUsers;
     usuario:                Usuarios;
+    loading:                boolean = true;
     newUser:                boolean;
     editarUser:             boolean;
     submitted:              boolean;
     idDatosU:               number;
     idRol:                  number;
+    token:                  string;
     nombreUsuarioTrL:       string;
     contrasenaUsuarioTrL:   string;
     cardCode:               string;
     cardName:               string;
     seriesNameSucursal:     string;
+    nombreUsuarioTr:        string;
+    apellidoUsuarioTr:      string;
     datos:                  Dates;
-    rol:                    Role
+    rol:                    Role;
+    dataLoaded:             boolean = false;
+
+    @ViewChild( 'filter' ) filter!: ElementRef;
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private usuariosService: UsuariosService
     ) {}
 
     ngOnInit(): void {
@@ -37,6 +48,7 @@ export class UsuariosComponent implements OnInit {
             ( data ) => {
                 this.usuarios = data;
                 this.loading = false;
+                this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
@@ -45,6 +57,15 @@ export class UsuariosComponent implements OnInit {
     }
 
     openNew() {
+        this.usuariosService.getDatosUsuarios().subscribe(
+            ( data ) => {
+                this.dates = data;
+                console.log(this.dates);
+            },
+            ( error ) => {
+                console.error( error );
+            }
+        );
         this.submitted = false;
         this.newUser = true;
     }
@@ -73,5 +94,16 @@ export class UsuariosComponent implements OnInit {
             datos: this.datos,
             rol: this.rol
         }
+
+        this.usuariosService.newUser( nuevoUsuario ).subscribe(
+            ( response ) => {
+                console.log('Usuario creado con éxito:', response);
+            },
+            ( error ) => {
+                console.error('Error al crear el usuario:', error);
+            }
+        );
+
+        this.newUser = false;
     }
 }

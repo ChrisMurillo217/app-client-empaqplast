@@ -1,254 +1,311 @@
 <div class="grid">
 	<div class="col-12">
-		<div class="card">
-			<h5>Pedidos</h5>
-            <p-table
-                #dt1
-                class="table table-responsive"
-                responsiveLayout="stack"
-                [value]="pedidos"
-                [rowHover]="true"
-                [rows]="5"
-                [showCurrentPageReport]="true"
-                [rowsPerPageOptions]="[5,10,20]"
-                [loading]="loading"
-                [paginator]="true"
-                currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} pedidos"
-                [globalFilterFields]="['docNum']"
-                [tableStyle]="{ 'min-width': '50rem' }">
-
-                <!-- Input de busqueda -->
-                <ng-template pTemplate="caption">
-                    <div class="flex justify-content-between flex-column sm:flex-row">
-                        <span class="p-input-icon-left mb-2">
-                            <i class="pi pi-search"></i>
-                            <input
-                                #filter
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt1, $event)"
-                                placeholder="Buscar"
-                                class="w-full"
-                            />
-                        </span>
-                    </div>
-                </ng-template>
-
-                <!-- Cabecera de la tabla -->
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th pSortableColumn="docNum">
-                            <div class="flex justify-content-between align-items-center">
-                                N° de Pedido
-                                <p-sortIcon field="docNum"></p-sortIcon>
-                            </div>
-                        </th>
-                        <th pSortableColumn="seriesName">
-                            <div class="flex justify-content-between align-items-center">
-                                Sucursal
-                                <p-sortIcon field="seriesName"></p-sortIcon>
-                            </div>
-                        </th>
-                        <th pSortableColumn="docStatus">
-                            <div class="flex justify-content-between align-items-center">
-                                Estado
-                                <p-sortIcon field="docStatus"></p-sortIcon>
-                            </div>
-                        </th>
-                        <th pSortableColumn="docDate">
-                            <div class="flex justify-content-between align-items-center">
-                                Fecha de Ingreso
-                                <p-sortIcon field="docDate"></p-sortIcon>
-                            </div>
-                        </th>
-                        <th pSortableColumn="taxDate">
-                            <div class="flex justify-content-between align-items-center">
-                                Fecha de Entrega
-                                <p-sortIcon field="taxDate"></p-sortIcon>
-                            </div>
-                        </th>
-                        <th>
-                        </th>
-                    </tr>
-                </ng-template>
-
-                <!-- Contenido dinamico que se mostrará en la tabla -->
-                <ng-template pTemplate="body" let-pedido let-columns="columns">
-                    <tr>
-                        <td class="align-middle">{{ pedido.docNum }}</td>
-                        <td class="align-middle">{{ pedido.seriesName }}</td>
-                        <td class="align-middle">{{ pedido.docStatus }}</td>
-                        <td class="align-middle">{{ formatDate( pedido.docDate ) }}</td>
-                        <td class="align-middle">{{ formatDate( pedido.docDueDate ) }}</td>
-                        <td class="align-middle">
-                            <!-- Botones que abren los modal -->
-                            <div class="flex justify-content-center">
-                                <!-- Botón detalles -->
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-list"
-                                    class="p-button-rounded p-button-info mr-2"
-                                    (click)="itemClick(pedido.docNum); details=true">
-                                </button>
-                                <!-- Botón tracking -->
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-truck"
-                                    class="p-button-rounded p-button-success"
-                                    (click)="detailsClick(pedido.docNum); tracking=true">
-                                </button>
-                            </div>
-
-                            <!-- Modal de los detalles del pedido -->
-                            <p-dialog
-                                header="Detalles del pedido"
-                                [(visible)]="details"
-                                [modal]="true"
-                                [style]="{ width: '700px' }"
-                                styleClass="p-fluid">
-                                <h6 class="text-inline text-md-left text-sm-center">
-                                    <strong>N° de pedido:</strong>
-                                    {{ docNum }}
-                                </h6>
-
-                                <ng-template pTemplate>
-                                    <p-table
-                                        class="table table-responsive"
-                                        responsiveLayout="stack"
-                                        [value]="items"
-                                        [paginator]="true"
-                                        [rows]="5"
-                                        [tableStyle]="{ 'min-width': '30rem' }">
-                                        <!-- Cabecera de la tabla -->
-                                        <ng-template pTemplate="header" let-columns>
-                                            <tr>
-                                                <th style="min-width: 10rem" scope="col">
-                                                    <div class="flex justify-content-between align-items-center">
-                                                        Código de Item
-                                                    </div>
-                                                </th>
-                                                <th style="min-width: 10rem" scope="col">
-                                                    <div class="flex justify-content-between align-items-center">
-                                                        Item
-                                                    </div>
-                                                </th>
-                                                <th style="min-width: 10rem" scope="col">
-                                                    <div class="flex justify-content-between align-items-center">
-                                                        Cantidad
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </ng-template>
-
-                                        <!-- Contenido dinamico que se mostrará en la tabla -->
-                                        <ng-template pTemplate="body" let-item let-columns="columns">
-                                            <tr>
-                                                <td class="align-middle">{{ item.itemCode }}</td>
-                                                <td class="align-middle">{{ item.dscription }}</td>
-                                                <td class="align-middle">{{ item.quantity }}</td>
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
-                                </ng-template>
-                            </p-dialog>
-
-                            <!-- Modal del tracking -->
-                            <p-dialog
-                                header="Tracking"
-                                [(visible)]="tracking"
-                                [modal]="true"
-                                [style]="{ width: '700px' }"
-                                styleClass="p-fluid">
-                                <div class=" position-relative">
-                                    <div class="row margin-top-icon text-center">
-                                        <div class="col-md-3 col-sm-3 col-3">
-                                            <i class="pi pi-file icon" style="font-size: 2.5rem"></i>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-6">
-                                            <i
-                                                class="pi pi-cog icon"
-                                                [ngClass]="{'pi-spin': mostrarSpinner}"
-                                                style="font-size: 2.5rem">
-                                            </i>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-3">
-                                            <i class="pi pi-check-circle icon" style="font-size: 2.5rem"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="row margin-top-progress bottom-0">
-                                        <div class="col-1"></div>
-                                        <div class="col-10">
-                                            <p-progressBar
-                                                #myProgressBar
-                                                [value]="progressBarValue"
-                                                [style]="{ height: '16px' }">
-                                            </p-progressBar>
-                                        </div>
-                                        <div class="col-1"></div>
-                                    </div>
-                                </div>
-
-                                <div class="row align-items-center justify-content-md-center text-light margin-top-info">
-                                    <div class="col-md-12 d-flex justify-content-md-center">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <h6 class="text-inline text-md-left text-sm-center">
-                                                        <strong>N° de pedido:</strong>
-                                                        {{ docNum }}
-                                                    </h6>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <h6 class="text-inline text-md-left text-sm-center">
-                                                        <strong>Fecha de ingreso:</strong>
-                                                        {{ docDate }}
-                                                    </h6>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <h6 class="text-inline text-md-left text-sm-center">
-                                                        <strong>Estado:</strong>
-                                                        {{ docStatus }}
-                                                    </h6>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <h6 class="text-inline text-md-left text-sm-center">
-                                                        <strong>Fecha de entrega:</strong>
-                                                        {{ docDueDate }}
-                                                    </h6>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <h6 class="text-inline text-md-left text-sm-center">
-                                                        <strong>Tiempo de entrega:</strong>
-                                                        {{ tiempoEntrega }}
-                                                    </h6>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </p-dialog>
-                        </td>
-                    </tr>
-                </ng-template>
-
-                <!-- Mensaje en caso de que no exista información -->
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="8">No se encontraron pedidos.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
+        <div *ngIf="!dataLoaded; else dataIsLoaded">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus pedidos.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
         </div>
+
+        <ng-template #dataIsLoaded>
+            <div class="card">
+                <h5>Pedidos</h5>
+                <p-table
+                    #dt1
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="pedidos"
+                    [loading]="loading"
+                    [rowHover]="true"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} pedidos"
+                    [globalFilterFields]="['docNum']"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+
+                    <!-- Input de busqueda -->
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt1, $event)"
+                                    placeholder="Buscar"
+                                    class="w-full"
+                                />
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <!-- Cabecera de la tabla -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="numAtCard">
+                                <div class="flex justify-content-between align-items-center">
+                                    N° de Pedido
+                                    <p-sortIcon field="numAtCard"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="seriesName">
+                                <div class="flex justify-content-between align-items-center">
+                                    Sucursal
+                                    <p-sortIcon field="seriesName"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="docStatus">
+                                <div class="flex justify-content-between align-items-center">
+                                    Estado
+                                    <p-sortIcon field="docStatus"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="docDate">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de Ingreso
+                                    <p-sortIcon field="docDate"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="taxDate">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de Entrega
+                                    <p-sortIcon field="taxDate"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Contenido dinamico que se mostrará en la tabla -->
+                    <ng-template pTemplate="body" let-pedido let-columns="columns">
+                        <tr>
+                            <td class="align-middle">
+                                {{ pedido.numAtCard }}
+                            </td>
+                            <td class="align-middle">
+                                {{ pedido.seriesName }}
+                            </td>
+                            <td class="align-middle">
+                                {{ pedido.docStatus }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( pedido.docDate ) }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( pedido.docDueDate ) }}
+                            </td>
+                            <td class="align-middle">
+                                <!-- Botones que abren los modal -->
+                                <div class="flex justify-content-center">
+                                    <!-- Botón detalles -->
+                                    <button
+                                        pButton
+                                        pRipple
+                                        icon="pi pi-list"
+                                        class="p-button-rounded p-button-info mr-2"
+                                        (click)="itemClick(pedido.docNum); details=true">
+                                    </button>
+                                    <!-- Botón tracking -->
+                                    <button
+                                        pButton
+                                        pRipple
+                                        icon="pi pi-truck"
+                                        class="p-button-rounded p-button-success"
+                                        (click)="detailsClick(pedido.docNum); tracking=true">
+                                    </button>
+                                </div>
+
+                                <!-- Modal de los detalles del pedido -->
+                                <p-dialog
+                                    header="Detalles del pedido"
+                                    [(visible)]="details"
+                                    [modal]="true"
+                                    [style]="{ width: '700px' }"
+                                    styleClass="p-fluid">
+                                    <h6 class="text-inline text-md-left text-sm-center">
+                                        <strong>N° de pedido:</strong>
+                                        {{ docNum }}
+                                    </h6>
+
+                                    <div *ngIf="!detailsLoaded; else detailsIsLoaded">
+                                        <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
+                                            <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus pedidos.</h4>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <ng-template #detailsIsLoaded>
+                                        <p-table
+                                            class="table table-responsive"
+                                            responsiveLayout="stack"
+                                            [value]="items"
+                                            [paginator]="true"
+                                            [rows]="5"
+                                            [tableStyle]="{ 'min-width': '30rem' }">
+                                            <!-- Cabecera de la tabla -->
+                                            <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                    <th style="min-width: 10rem" scope="col">
+                                                        <div class="flex justify-content-between align-items-center">
+                                                            Código de Item
+                                                        </div>
+                                                    </th>
+                                                    <th style="min-width: 10rem" scope="col">
+                                                        <div class="flex justify-content-between align-items-center">
+                                                            Item
+                                                        </div>
+                                                    </th>
+                                                    <th style="min-width: 10rem" scope="col">
+                                                        <div class="flex justify-content-between align-items-center">
+                                                            Cantidad
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+
+                                            <!-- Contenido dinamico que se mostrará en la tabla -->
+                                            <ng-template pTemplate="body" let-item let-columns="columns">
+                                                <tr>
+                                                    <td class="align-middle">{{ item.itemCode }}</td>
+                                                    <td class="align-middle">{{ item.dscription }}</td>
+                                                    <td class="align-middle">{{ item.quantity }}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </ng-template>
+                                </p-dialog>
+
+                                <!-- Modal del tracking -->
+                                <p-dialog
+                                    header="Tracking"
+                                    [(visible)]="tracking"
+                                    [modal]="true"
+                                    [style]="{ width: '700px' }"
+                                    styleClass="p-fluid">
+                                    <div *ngIf="!guiaLoaded; else guiaIsLoaded">
+                                        <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
+                                            <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tu tracking.</h4>
+                                            </div>
+                                            <div class="text-animation d-flex justify-content-center align-items-center">
+                                                <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <ng-template #guiaIsLoaded>
+                                        <div class=" position-relative">
+                                            <div class="row margin-top-icon text-center">
+                                                <div class="col-md-3 col-sm-3 col-3">
+                                                    <i class="pi pi-file icon" style="font-size: 2.5rem"></i>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-6">
+                                                    <i
+                                                        class="pi pi-cog icon"
+                                                        [ngClass]="{'pi-spin': mostrarSpinner}"
+                                                        style="font-size: 2.5rem">
+                                                    </i>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-3">
+                                                    <i class="pi pi-check-circle icon" style="font-size: 2.5rem"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="row margin-top-progress bottom-0">
+                                                <div class="col-1"></div>
+                                                <div class="col-10">
+                                                    <p-progressBar
+                                                        #myProgressBar
+                                                        [value]="progressBarValue"
+                                                        [style]="{ height: '16px' }">
+                                                    </p-progressBar>
+                                                </div>
+                                                <div class="col-1"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-center justify-content-md-center text-light margin-top-info">
+                                            <div class="col-md-12 d-flex justify-content-md-center">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h6 class="text-inline text-md-left text-sm-center">
+                                                                <strong>N° de pedido:</strong>
+                                                                {{ docNum }}
+                                                            </h6>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h6 class="text-inline text-md-left text-sm-center">
+                                                                <strong>Fecha de ingreso:</strong>
+                                                                {{ docDate }}
+                                                            </h6>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h6 class="text-inline text-md-left text-sm-center">
+                                                                <strong>Estado:</strong>
+                                                                {{ docStatus }}
+                                                            </h6>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h6 class="text-inline text-md-left text-sm-center">
+                                                                <strong>Fecha de entrega:</strong>
+                                                                {{ docDueDate }}
+                                                            </h6>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h6 class="text-inline text-md-left text-sm-center">
+                                                                <strong>Tiempo de entrega:</strong>
+                                                                {{ tiempoEntrega }}
+                                                            </h6>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                </p-dialog>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Mensaje en caso de que no exista información -->
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">No se encontraron pedidos.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
 	</div>
 </div>

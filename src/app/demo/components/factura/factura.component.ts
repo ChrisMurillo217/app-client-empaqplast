@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as JsBarcode from 'jsbarcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { DocumentService } from '../../service/documents.service';
-import { UserDataService } from '../../service/user-data.service';
+import { TokenService } from '../../service/token.service';
 import { ItemFact } from '../../models/itemFact.model';
 import { Document } from '../../models/document.model';
 import { Usuarios } from '../../models/usuarios.model';
@@ -15,7 +17,8 @@ import { Usuarios } from '../../models/usuarios.model';
     providers: [
         MessageService,
         ConfirmationService
-    ]
+    ],
+    styleUrls: ['./factura.component.css']
 } )
 export class FacturaComponent implements OnInit {
     codClient:          string = '';
@@ -35,18 +38,22 @@ export class FacturaComponent implements OnInit {
     pryTrasDscto:       number = 0;
     totalLinea:         number = 0;
     autoSri:            string = '';
+    dataLoaded:         boolean = false;
+    detailsLoaded:      boolean = false;
+    logoImage:          HTMLImageElement;
 
     @ViewChild( 'filter' ) filter!: ElementRef;
-    @ViewChild( 'barcode' ) barcode!: ElementRef;
     @ViewChild( 'cardContainer', { static: false } ) cardContainer: ElementRef;
 
     constructor(
         private documentService: DocumentService,
-        private userDataService: UserDataService
-    ) {}
+        private tokenService: TokenService,
+        private sanitizer: DomSanitizer
+    ) { }
 
     ngOnInit(): void {
-        this.userDataService.getUserData().subscribe(
+        
+        this.tokenService.getUserData().subscribe(
             ( data ) => {
                 this.userData = data;
                 this.codClient = this.userData[0].datosLogin.cardCode;
@@ -54,8 +61,27 @@ export class FacturaComponent implements OnInit {
         );
         this.documentService.getFacturasList( this.codClient ).subscribe(
             ( data ) => {
-                this.documentos = data;
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                data.forEach(
+                    ( item ) => {
+                        const ffact = new Date( item.ffact )
+                        if ( ffact.getFullYear().toString() === currentYear.toString() ) {
+                            this.documentos.push( item );
+                        }
+                    }
+                );
+
+                this.documentos.sort(
+                    ( a, b ) => {
+                        const dateA = new Date( a.ffact ).getTime();
+                        const dateB = new Date( b.ffact ).getTime();
+                        return dateB - dateA;
+                    }
+                );
+
                 this.loading = false;
+                this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
@@ -91,22 +117,19 @@ export class FacturaComponent implements OnInit {
                 this.docTotal = Number( data[0].docTotal.toFixed( 2 ) );
                 this.autoSri = data[0].autoSri;
                 this.itemsF = data[0].itemsFactura;
+                this.detailsLoaded = true;
 
                 const opts = {
                     format: 'CODE128',
-                    displayValue: false,
-                    width: 1,
-                    height: 50
+                    displayValue: true,
+                    width: 0.85,
+                    height: 50,
+                    fontSize: 10
                 };
 
-                JsBarcode(this.barcode.nativeElement, this.autoSri, opts);
-
-                const svgElement = this.barcode.nativeElement;
-                const textElement = svgElement.querySelector('text');
-
-                if (textElement) {
-                    textElement.setAttribute('font-size', '5px');
-                }
+                setTimeout( () => {
+                    JsBarcode( '#barcode', this.autoSri, opts );
+                }, 0 );
 
                 const match = data[0].pymntGroup.match( /^(\d+)\s+(.*)/ );
 
@@ -114,7 +137,7 @@ export class FacturaComponent implements OnInit {
                     this.plazo = match[1];
                     this.tiempo = match[2];
                 } else {
-                    console.log("No se encontró un número y una palabra en el string.");
+                    console.log( "No se encontró un número y una palabra en el string." );
                 }
             },
             ( error ) => {
@@ -125,15 +148,22 @@ export class FacturaComponent implements OnInit {
 
     imprimirContenido() {
         const cardContainer = this.cardContainer.nativeElement;
+        const pageWidth = 210;
+        const margin = 15;
+        const topMargin = 10;
+        console.log(this.logoImage);
 
-        html2canvas(cardContainer).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const width = pdf.internal.pageSize.getWidth();
-            const height = (canvas.height * width) / canvas.width;
+        html2canvas( cardContainer ).then(
+            ( canvas ) => {
+                const imgData = canvas.toDataURL( 'image/png' );
+                const pdf = new jsPDF( 'p', 'mm', 'a4' );
+                const width = pageWidth - 2 * margin;
+                const height = ( canvas.height * width ) / canvas.width;
 
-            pdf.addImage(imgData, 'PNG', 0, 0, width, height);
-            pdf.save('documento.pdf');
-        });
+                pdf.addImage( this.logoImage, margin, topMargin, 80, 30 )
+                pdf.addImage( imgData, 'PNG', margin + 85, topMargin, width - 85, height );
+                pdf.save( 'documento.pdf' );
+            }
+        );
     }
 }

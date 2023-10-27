@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthService } from '../../../service/auth.service';
-import { UserDataService } from '../../../service/user-data.service';
+import { TokenService } from '../../../service/token.service';
 import { Usuarios } from './../../../models/usuarios.model';
 
 @Component( {
@@ -29,14 +29,14 @@ export class LoginComponent {
         private authService: AuthService,
         private router: Router,
         private messageService: MessageService,
-        private userDataService: UserDataService
+        private tokenService: TokenService
     ) { }
 
     login() {
         this.authService.getLogin( this.mail, this.password ).subscribe(
             ( data ) => {
-                this.usuarios = data;
-                this.userDataService.setUserData( data );
+                this.tokenService.setToken( data[0].datosLogin.token );
+                this.tokenService.setUserData( data );
                 this.router.navigate( [ '/dashboard' ] );
             },
             ( error ) => {

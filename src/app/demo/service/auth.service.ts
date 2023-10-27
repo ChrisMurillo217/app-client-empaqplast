@@ -1,19 +1,31 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, throwError, BehaviorSubject, tap } from 'rxjs';
 import { Usuarios } from '../models/usuarios.model';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
-    urlAPI                      : string = 'http://192.168.20.14:8086/api';
+    urlAPI                      : string = 'http://tracking.empaqplast.com:8086/api';
     private isLoggedInSubject = new BehaviorSubject< boolean >( false );
 
 
-    constructor( private __http: HttpClient ) {}
+    constructor(
+        private __http: HttpClient,
+        private tokenService: TokenService
+    ) {}
+
+    getAuthHeaders() {
+        const token = this.tokenService.getToken();
+        return new HttpHeaders( {
+            Authorization: `Bearer ${ token }`
+        } );
+    }
 
     getUsuariosList(): Observable< Usuarios[] > {
         const url = `${ this.urlAPI }/Permisos`;
-        return this.__http.get< Usuarios[] >( url ).pipe(
+        const headers = this.getAuthHeaders();
+        return this.__http.get< Usuarios[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )
@@ -22,19 +34,23 @@ export class AuthService {
 
     getLogin( usuario: string, contrasena: string ): Observable< Usuarios[] > {
         const url = `${ this.urlAPI }/PermisosLogin?usuario=${ usuario }&contrasena=${ contrasena }`;
-        const isAuthenticated = true;
-        this.isLoggedInSubject.next( isAuthenticated );
-        localStorage.setItem( 'isLoggedIn', isAuthenticated ? 'true' : 'false' );
         return this.__http.get< Usuarios[] >( url ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
+            } ),
+            tap( ( response ) => {
+                if ( response && response.length > 0 ) {
+                    const token = response[0].datosLogin.token
+                    this.tokenService.setUserData( response );
+                    this.tokenService.setToken( token );
+                    localStorage.setItem( 'token', token );
+                }
             } )
         );
     }
 
-    logout() {
-        this.isLoggedInSubject.next( false );
-        localStorage.setItem( 'isLoggedIn', 'false' );
+    getToken(): string | null {
+        return localStorage.getItem('token');
     }
 
     get IsLoggedIn$(): Observable< boolean > {

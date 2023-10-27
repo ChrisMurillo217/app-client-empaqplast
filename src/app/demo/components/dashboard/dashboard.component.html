@@ -7,4 +7,25 @@
             </h2>
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-6 col-md-3 col-lg-3" *ngFor="let pagina of userData[0].seccionPagina; let i = index">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="{{pagina.icon}}" style="font-size: 2rem;"></i>
+                        <h5 class="card-title text-truncate">
+                            {{ pagina.nombrePagina }}
+                        </h5>
+                        <p class="card-text">{{ pagina.descripcionPagina }}</p>
+                        <a
+                            [routerLink]="['/', pagina.nombrePagina.toLowerCase()]"
+                            class="card-link">
+                            Ir
+                            <i class="pi pi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

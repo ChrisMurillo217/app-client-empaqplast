@@ -3,6 +3,7 @@ import { Items } from "./item.model";
 export interface Pedidos {
     docEntry        : number;
     docNum          : number;
+    numAtCard       : string;
     seriesName      : string;
     docStatus       : string;
     docDate         : Date;

@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { TrackingService } from '../../service/tracking.service';
-import { Pedidos } from '../../models/pedido.model';
+import { StockService } from '../../service/stock.service';
+import { TokenService } from '../../service/token.service';
+import { Stock } from '../../models/stock.model';
+import { Usuarios } from '../../models/usuarios.model';
 import { Table } from 'primeng/table';
 
 @Component( {
@@ -9,34 +11,42 @@ import { Table } from 'primeng/table';
     providers: [
         MessageService,
         ConfirmationService
-    ]
+    ],
+    styleUrls: ['./stock.component.css']
 } )
 export class StockComponent implements OnInit {
-    pedidos:      Pedidos[] = [];
-    first         = 0;
+    codClient:          string = '';
+    stocks:             Stock[] = [];
+    userData:           Usuarios[] = [];
+    first               = 0;
+    loading:            boolean = true;
+    dataLoaded:         boolean = false;
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor( private trackingService: TrackingService ) {}
+    constructor(
+        private stockService: StockService,
+        private tokenService: TokenService
+    ) {}
 
     ngOnInit(): void {
-        this.trackingService.getPedidosList('CN1754791810').subscribe(
+        this.tokenService.getUserData().subscribe(
             ( data ) => {
-                this.pedidos = data;
+                this.userData = data;
+                this.codClient = this.userData[0].datosLogin.cardCode;
+            }
+        );
+        this.stockService.getStock( this.codClient ).subscribe(
+            ( data ) => {
+                this.stocks = data;
+                this.stocks.sort( ( a, b ) => a.itemCode.localeCompare( b.itemCode ) );
+                this.loading = false;
+                this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
             }
         );
-    }
-
-    formatDate( dateString: string ): string {
-        const date = new Date( dateString );
-        const day = ( date.getDate() + 1 ).toString().padStart( 2, '0' );
-        const month = ( date.getMonth() + 1 ).toString().padStart( 2, '0' );
-        const year = date.getFullYear().toString();
-
-        return `${ day }/${ month }/${ year }`;
     }
 
     onPageChange( event: any ) {

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { AuthService } from '../demo/service/auth.service';
+import { TokenService } from '../demo/service/token.service';
 
 @Component( {
     selector: 'app-topbar',
@@ -14,15 +15,13 @@ export class AppTopBarComponent implements OnInit {
     items!: MenuItem[];
 
     @ViewChild( 'menubutton' ) menuButton!: ElementRef;
-
     @ViewChild( 'topbarmenubutton' ) topbarMenuButton!: ElementRef;
-
     @ViewChild( 'topbarmenu' ) menu!: ElementRef;
 
     constructor(
         public layoutService: LayoutService,
-        private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private tokenService: TokenService
     ) { }
 
     ngOnInit() {
@@ -35,23 +34,13 @@ export class AppTopBarComponent implements OnInit {
                         label: 'Configuraciónes',
                         icon: 'pi pi-fw pi-cog'
                     },
-                    {
-                        separator: true
-                    },
-                    {
-                        label: 'Cerrar Sesión',
-                        icon: 'pi pi-fw pi-sign-out',
-                        command: () => {
-                            this.logout()
-                        }
-                    }
                 ]
             }
         ];
     }
 
     logout() {
-        this.authService.logout();
+        this.tokenService.clearToken();
         this.router.navigate( [ '/auth/login' ] );
     }
 

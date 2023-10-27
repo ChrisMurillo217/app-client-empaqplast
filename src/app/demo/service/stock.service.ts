@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { InfoUsers } from '../models/info-users.model';
+import { Stock } from '../models/stock.model';
 import { TokenService } from './token.service';
 
-@Injectable()
-export class UsuariosService {
+@Injectable( {
+  providedIn: 'root'
+} )
+export class StockService {
     urlAPI:                     string = 'http://tracking.empaqplast.com:8086/api';
 
     constructor(
@@ -20,20 +22,10 @@ export class UsuariosService {
         } );
     }
 
-    newUser( usuario: InfoUsers ): Observable< any > {
-        const url = `${ this.urlAPI }/Registro`;
+    getStock( cardCode: string ): Observable< any[] > {
+        const url = `${ this.urlAPI }/Stock?CardCode=${ cardCode }`;
         const headers = this.getAuthHeaders();
-        return this.__http.post( url, usuario, { headers } ).pipe(
-            catchError( ( error ) => {
-                return throwError( error );
-            } )
-        );
-    }
-
-    getDatosUsuarios( ): Observable< any[] > {
-        const url = `${ this.urlAPI }/DatosUsuarios`;
-        const headers = this.getAuthHeaders();
-        return this.__http.get< Document[] >( url, { headers } ).pipe(
+        return this.__http.get< Stock[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )

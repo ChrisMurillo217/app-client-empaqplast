@@ -22,7 +22,7 @@ import { DialogModule } from 'primeng/dialog';
 		ProgressBarModule,
 		ToastModule,
         PaginatorModule,
-        DialogModule
+        DialogModule,
 	],
 	declarations: [
         TrackingListComponent

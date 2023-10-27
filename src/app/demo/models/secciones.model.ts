@@ -3,4 +3,5 @@ export interface Secciones {
     nombreSeccion           : string;
     idPagina                : number;
     nombrePagina            : string;
+    descripcionPagina       : string;
 }

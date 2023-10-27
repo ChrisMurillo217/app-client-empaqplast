@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDataService } from '../../service/user-data.service';
+import { TokenService } from '../../service/token.service';
 import { Usuarios } from '../../models/usuarios.model';
+import { Secciones } from '../../models/secciones.model';
 
 @Component( {
     templateUrl: './dashboard.component.html',
@@ -11,11 +12,11 @@ export class DashboardComponent implements OnInit {
     userData        : Usuarios[] = [];
 
     constructor(
-        private userDataService: UserDataService
+        private tokenService: TokenService
     ) { }
 
     ngOnInit(): void {
-        this.userDataService.getUserData().subscribe(
+        this.tokenService.getUserData().subscribe(
             ( data ) => {
                 this.userData = data;
             }

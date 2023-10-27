@@ -39,6 +39,14 @@
             (click)="menu.toggle($event)">
             <i class="pi pi-user"></i>
         </button>
+        <button
+            pButton
+            type="button"
+            label="Cerrar Sesión"
+            class="p-link layout-topbar-button"
+            (click)="logout()">
+            <i class="pi pi-sign-out"></i>
+        </button>
         <p-menu #menu [popup]="true" [model]="tieredItems"></p-menu>
     </div>
 </div>
