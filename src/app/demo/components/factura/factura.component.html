@@ -1,7 +1,7 @@
 <div class="grid">
 	<div class="col-12">
         <div *ngIf="!dataLoaded; else dataIsLoaded">
-            <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; flex-direction: column;">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
                 <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -113,8 +113,8 @@
                                     showEffect="fade"
                                     [style]="{ 'max-width': '210mm', 'width': '100%' }"
                                     [maximizable]="true">
+                                    <p class="text-danger text-center">* Este documento no tiene validez tributaria *</p>
                                     <br>
-
                                     <div *ngIf="!detailsLoaded; else detailsIsLoaded">
                                         <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
                                             <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
@@ -128,9 +128,9 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <ng-template #detailsIsLoaded>
-                                        <div class="card-container" #cardContainer style="font-size: 10px;">
+                                        <div class="card-container" id="cardContainer" #cardContainer style="font-size: 10px;">
                                             <div class="grid flex m-2">
                                                 <div class="flex-1 pr-5 pl-3 pt-3">
                                                     <div class="grid">

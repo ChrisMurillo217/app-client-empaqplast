@@ -37,7 +37,7 @@ export class LoginComponent {
             ( data ) => {
                 this.tokenService.setToken( data[0].datosLogin.token );
                 this.tokenService.setUserData( data );
-                this.router.navigate( [ '/dashboard' ] );
+                this.router.navigate( [ '/panel' ] );
             },
             ( error ) => {
                 console.error( error );

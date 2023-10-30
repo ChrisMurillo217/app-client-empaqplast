@@ -10,12 +10,12 @@ import { AuthGuard } from './demo/guards/auth.guard';
             { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
             { path: '', component: AppLayoutComponent, canActivate: [ AuthGuard ], children: [
                     {
-                        path: 'dashboard',
+                        path: 'panel',
                         loadChildren: () => import( './demo/components/dashboard/dashboard.module' )
                             .then( m => m.DashboardModule )
                     },
                     {
-                        path: 'tracking-list',
+                        path: 'seguimiento',
                         loadChildren: () => import( './demo/components/tracking-list/tracking-list.module' )
                             .then( m => m.TrackingListModule )
                     },
@@ -25,7 +25,7 @@ import { AuthGuard } from './demo/guards/auth.guard';
                             .then( m => m.FacturaModule )
                     },
                     {
-                        path: 'stock',
+                        path: 'inventario',
                         loadChildren: () => import( './demo/components/stock/stock.module' )
                             .then( m => m.StockModule )
                     },

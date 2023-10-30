@@ -22,12 +22,13 @@
                     <span class="text-600 font-medium">Iniciar sesión para continuar</span>
                 </div>
 
-                <div>
+                <form>
                     <label for="id1" class="block text-900 text-xl font-medium mb-2">Correo Electrónico</label>
                     <input
                         id="id1"
                         type="text"
                         [(ngModel)]="mail"
+                        [ngModelOptions]="{ standalone: true }"
                         placeholder="Correo"
                         pInputText
                         class="w-full md:w-30rem mb-5"
@@ -37,6 +38,7 @@
                     <p-password
                         id="password1"
                         [(ngModel)]="password"
+                        [ngModelOptions]="{ standalone: true }"
                         placeholder="Contraseña"
                         [toggleMask]="true"
                         [feedback]="false"
@@ -53,7 +55,7 @@
                         label="Iniciar sesión"
                         class="w-full p-3 text-xl">
                     </button>
-                </div>
+                </form>
 
                 <p-toast></p-toast>
             </div>

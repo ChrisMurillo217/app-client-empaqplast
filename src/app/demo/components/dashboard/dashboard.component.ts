@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../service/token.service';
 import { Usuarios } from '../../models/usuarios.model';
-import { Secciones } from '../../models/secciones.model';
 
 @Component( {
     templateUrl: './dashboard.component.html',

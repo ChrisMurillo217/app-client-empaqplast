@@ -17,12 +17,15 @@
                             {{ pagina.nombrePagina }}
                         </h5>
                         <p class="card-text">{{ pagina.descripcionPagina }}</p>
-                        <a
+                        <button 
+                            pButton 
+                            pRipple 
+                            type="button"
                             [routerLink]="['/', pagina.nombrePagina.toLowerCase()]"
-                            class="card-link">
-                            Ir
+                            class="p-button-raised p-button-text">
+                            Ir &nbsp;
                             <i class="pi pi-arrow-up-right"></i>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

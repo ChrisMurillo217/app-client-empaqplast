@@ -18,6 +18,8 @@ import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { PaginatorModule } from 'primeng/paginator';
 import { DialogModule } from 'primeng/dialog';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
 	imports: [
@@ -36,7 +38,9 @@ import { DialogModule } from 'primeng/dialog';
 		ProgressBarModule,
 		ToastModule,
         PaginatorModule,
-        DialogModule
+        DialogModule,
+        MessageModule,
+        MessagesModule
 	],
 	declarations: [
         StockComponent

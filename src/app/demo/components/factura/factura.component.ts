@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as JsBarcode from 'jsbarcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -40,25 +38,23 @@ export class FacturaComponent implements OnInit {
     autoSri:            string = '';
     dataLoaded:         boolean = false;
     detailsLoaded:      boolean = false;
-    logoImage:          HTMLImageElement;
 
     @ViewChild( 'filter' ) filter!: ElementRef;
     @ViewChild( 'cardContainer', { static: false } ) cardContainer: ElementRef;
 
     constructor(
         private documentService: DocumentService,
-        private tokenService: TokenService,
-        private sanitizer: DomSanitizer
+        private tokenService: TokenService
     ) { }
 
     ngOnInit(): void {
-        
         this.tokenService.getUserData().subscribe(
             ( data ) => {
                 this.userData = data;
                 this.codClient = this.userData[0].datosLogin.cardCode;
             }
         );
+        
         this.documentService.getFacturasList( this.codClient ).subscribe(
             ( data ) => {
                 const today = new Date();
@@ -149,19 +145,40 @@ export class FacturaComponent implements OnInit {
     imprimirContenido() {
         const cardContainer = this.cardContainer.nativeElement;
         const pageWidth = 210;
+        const pageHeight = 297;
         const margin = 15;
         const topMargin = 10;
-        console.log(this.logoImage);
 
         html2canvas( cardContainer ).then(
             ( canvas ) => {
-                const imgData = canvas.toDataURL( 'image/png' );
-                const pdf = new jsPDF( 'p', 'mm', 'a4' );
-                const width = pageWidth - 2 * margin;
-                const height = ( canvas.height * width ) / canvas.width;
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
 
-                pdf.addImage( this.logoImage, margin, topMargin, 80, 30 )
-                pdf.addImage( imgData, 'PNG', margin + 85, topMargin, width - 85, height );
+                // Calcula el ancho y alto de la imagen ajustada
+                const maxWidth = pageWidth - 2 * margin;
+                const maxHeight = pageHeight - topMargin - margin;
+
+                let imgWidth = canvas.width;
+                let imgHeight = canvas.height;
+
+                if (imgWidth > maxWidth) {
+                    imgHeight = (imgHeight * maxWidth) / imgWidth;
+                    imgWidth = maxWidth;
+                }
+
+                if ( imgHeight > maxHeight ) {
+                    imgWidth = ( imgWidth * maxHeight ) / imgHeight;
+                    imgHeight = maxHeight;
+                }
+
+                const imageX = margin + ( maxWidth - imgWidth ) / 2;
+                const imageY = topMargin + ( maxHeight - imgHeight ) / 2;
+
+                pdf.addImage( imgData, 'PNG', imageX, imageY, imgWidth, imgHeight );
+                pdf.setTextColor(255, 0, 0);// Configura el color de relleno en rojo
+                pdf.text('* Este documento no tiene validez tributaria * ', 50, 5);// Agrega el texto al principio de la página
+                pdf.text('* Este documento no tiene validez tributaria *', 50, pageHeight );// Agrega el texto al final de la página
+                pdf.setTextColor( 0, 0, 0 );// Restablece el color de relleno a negro
                 pdf.save( 'documento.pdf' );
             }
         );
