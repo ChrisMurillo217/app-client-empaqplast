@@ -1,0 +1,58 @@
+<h6 class="text-inline text-md-left text-sm-center">
+    <strong>N° de pedido:</strong>
+    {{ docNum }}
+</h6>
+
+<div *ngIf="!detailsLoaded; else detailsIsLoaded">
+    <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
+        <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="text-animation d-flex justify-content-center align-items-center">
+            <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus pedidos.</h4>
+        </div>
+        <div class="text-animation d-flex justify-content-center align-items-center">
+            <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+        </div>
+    </div>
+</div>
+
+<ng-template #detailsIsLoaded>
+    <p-table
+        class="table table-responsive"
+        responsiveLayout="stack"
+        [value]="items"
+        [paginator]="true"
+        [rows]="5"
+        [tableStyle]="{ 'min-width': '30rem' }">
+        <!-- Cabecera de la tabla -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="min-width: 10rem" scope="col">
+                    <div class="flex justify-content-between align-items-center">
+                        Código de Item
+                    </div>
+                </th>
+                <th style="min-width: 10rem" scope="col">
+                    <div class="flex justify-content-between align-items-center">
+                        Item
+                    </div>
+                </th>
+                <th style="min-width: 10rem" scope="col">
+                    <div class="flex justify-content-between align-items-center">
+                        Cantidad
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+
+        <!-- Contenido dinamico que se mostrará en la tabla -->
+        <ng-template pTemplate="body" let-item let-columns="columns">
+            <tr>
+                <td class="align-middle">{{ item.itemCode }}</td>
+                <td class="align-middle">{{ item.dscription }}</td>
+                <td class="align-middle">{{ item.quantity }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</ng-template>
