@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { TokenService } from '../../service/token.service';
-import { Usuarios } from '../../models/usuarios.model';
+import { Component, OnInit }                from '@angular/core';
+
+import { TokenService }                     from '../../service/token.service';
+
+import { Usuarios }                         from '../../models/usuarios.model';
 
 @Component( {
     templateUrl: './dashboard.component.html',
 } )
 export class DashboardComponent implements OnInit {
-    mail            : string;
-    password        : string;
     userData        : Usuarios[] = [];
 
     constructor(
@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.tokenService.getUserData().subscribe(
+        this.tokenService.getUserData().subscribe( // Trae la información del usuario que se logeo desde la funcion getUserData que esta en el servicio tokenService
             ( data ) => {
                 this.userData = data;
             }

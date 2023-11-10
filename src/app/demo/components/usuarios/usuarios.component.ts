@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { AuthService } from './../../service/auth.service';
-import { UsuariosService } from '../../service/usuarios.service';
-import { Usuarios } from './../../models/usuarios.model';
-import { InfoUsers } from '../../models/info-users.model';
-import { Dates } from '../../models/dates.model';
-import { Role } from '../../models/role.model';
+import { Component, OnInit, ViewChild, ElementRef }                 from '@angular/core';
+
+import { MessageService }                                           from 'primeng/api';
+
+import { AuthService }                                              from './../../service/auth.service';
+import { UsuariosService }                                          from '../../service/usuarios.service';
+
+import { Usuarios }                                                 from './../../models/usuarios.model';
+import { InfoUsers }                                                from '../../models/info-users.model';
+import { Dates }                                                    from '../../models/dates.model';
+import { Role }                                                     from '../../models/role.model';
 
 @Component({
     templateUrl: './usuarios.component.html',
@@ -13,10 +16,8 @@ import { Role } from '../../models/role.model';
     styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-    filteredUser:           any[] = [];
     dates:                  Dates[] = [];
     usuarios:               Usuarios[] = [];
-    userNew:                InfoUsers;
     usuario:                Usuarios;
     loading:                boolean = true;
     newUser:                boolean;
@@ -24,17 +25,15 @@ export class UsuariosComponent implements OnInit {
     submitted:              boolean;
     idDatosU:               number;
     idRol:                  number;
-    token:                  string;
     nombreUsuarioTrL:       string;
     contrasenaUsuarioTrL:   string;
     cardCode:               string;
     cardName:               string;
     seriesNameSucursal:     string;
-    nombreUsuarioTr:        string;
-    apellidoUsuarioTr:      string;
     datos:                  Dates;
     rol:                    Role;
     dataLoaded:             boolean = false;
+    clonedUsers:         { [s: string]: Usuarios; } = {};
 
     @ViewChild( 'filter' ) filter!: ElementRef;
 
@@ -57,6 +56,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     openNew() {
+        this.newUser = true;
         this.usuariosService.getDatosUsuarios().subscribe(
             ( data ) => {
                 this.dates = data;
@@ -67,12 +67,12 @@ export class UsuariosComponent implements OnInit {
             }
         );
         this.submitted = false;
-        this.newUser = true;
     }
 
     editUser( user: Usuarios ) {
         this.usuario = {...user};
         this.editarUser = true;
+        this.clonedUsers[user.datosLogin.nombreUsuarioTrL] = {...user};
     }
 
     hideDialog() {

@@ -1,0 +1,102 @@
+<div *ngIf="!guiaLoaded; else guiaIsLoaded">
+    <div class="d-flex align-items-center justify-content-center" style="min-height: 25vh; flex-direction: column;">
+        <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="text-animation d-flex justify-content-center align-items-center">
+            <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tu tracking.</h4>
+        </div>
+        <div class="text-animation d-flex justify-content-center align-items-center">
+            <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+        </div>
+    </div>
+</div>
+
+<ng-template #guiaIsLoaded>
+    <p-table
+        class="table table-responsive"
+        responsiveLayout="stack"
+        [value]="itemsT"
+        [scrollable]="true"
+        scrollHeight="500px"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="46"
+        [tableStyle]="{ 'min-width': '30rem' }">
+        <!-- Cabecera de la tabla -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Código de item
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Item
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Cantidad pedida
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Cantidad despachada
+                    </div>
+                </th>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Estado
+                    </div>
+                </th>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Avance
+                    </div>
+                </th>
+                <th style="min-width:6rem"></th>
+            </tr>
+        </ng-template>
+
+        <!-- Contenido dinamico que se mostrará en la tabla -->
+        <ng-template pTemplate="body" let-item let-columns="columns">
+            <tr>
+                <td class="align-middle">{{ item.itemCode }}</td>
+                <td class="align-middle">{{ item.dscription }}</td>
+                <td class="align-middle">
+                    {{
+                        item.quantityP % 1 === 0 ?
+                        item.quantityP.toLocaleString( undefined, { maximumFractionDigits: 0 } ) :
+                        item.quantityP.toLocaleString( undefined )
+                    }}
+                </td>
+                <td class="align-middle">
+                    {{
+                        item.quantityD % 1 === 0 ?
+                        item.quantityD.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                        item.quantityD.toLocaleString( undefined )
+                    }}
+                </td>
+                <td class="align-middle">{{ item.status }}</td>
+                <td class="justify-content-center align-middle">
+                    <p-progressBar
+                        [showValue]="false"
+                        [value]="item.progressBarValue"
+                        [style]="{ height: '12px' }">
+                    </p-progressBar>
+                </td>
+                <td class="text-centeralign-middle">
+                    <i
+                        class="pi"
+                        [ngClass]="{
+                            'pi-check-circle text-success': item.verified,
+                            'pi-times-circle text-danger': !item.verified
+                        }"
+                        style="font-size: 1.5rem">
+                    </i>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</ng-template>

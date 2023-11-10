@@ -1,0 +1,335 @@
+<div class="theme-lara-light-blue">
+    <p class="text-danger text-center">* Este documento no tiene validez tributaria *</p>
+    <br>
+    <div *ngIf="!detailsLoaded; else detailsIsLoaded">
+        <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
+            <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                <span class="sr-only theme-lara-light-blue">Loading...</span>
+            </div>
+            <div class="text-animation d-flex justify-content-center align-items-center">
+                <h4 class="text-center theme-lara-light-blue" style="margin-bottom: 5px;">Estamos procesando tu factura.</h4>
+            </div>
+            <div class="text-animation d-flex justify-content-center align-items-center">
+                <h4 class="text-center theme-lara-light-blue" style="margin-top: 5px;">Espera por favor.</h4>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #detailsIsLoaded>
+        <div class="card-container" id="cardContainer" #cardContainer style="font-size: 10px;">
+            <div class="grid flex m-2">
+                <div class="flex-1 pr-5 pl-3 pt-3">
+                    <div class="grid">
+                        <div class="col-12 py-3 flex justify-content-center">
+                            <img
+                                src="assets/layout/images/logo-factura.svg"
+                                height="80"
+                                class="mb-5 w-15rem flex-shrink-0 justify-content-center"
+                            >
+                        </div>
+                        <div class="col-12 py-3 card border-dark backgroung-card">
+                            <div class="text-center">
+                                <h6 class="theme-lara-light-blue">EMPAQPLAST SA</h6>
+                                <br><br>
+                            </div>
+                            <div>
+                                <strong>Dirección Matriz:</strong>
+                                KM 2.5 VIA AMAGUAA - SANGOLGUI
+                                <br><br>
+                            </div>
+                            <div>
+                                <strong>Dirección Sucursal:</strong>
+                                KM 24 VIA PERIMETRAL
+                                <br><br>
+                            </div>
+                            <div>
+                                <strong>Contribuyente Especial No.</strong>
+                                5368
+                                <br>
+                                <strong>Obligado a llevar Contabilidad:</strong>
+                                SI
+                                <br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 pr-5 pl-3 py-3 card border-dark backgroung-card">
+                    <div class="grid">
+                        <div class="col-12 text-center">
+                            <h6 class="theme-lara-light-blue">R.U.C.: 1791240111001</h6>
+                            <h5 class="theme-lara-light-blue">F A C T U R A</h5>
+                        </div>
+                        <div class="col-12">
+                            <strong>No.:</strong> {{ formatNumber( docs.unDocsri ) }} <!-- Carga el número de factura -->
+                            <br>
+                            <br>
+                            <strong>Número de autorización:</strong> {{ docs.autoSri }} <!-- Carga el número de autorización -->
+                            <br>
+                            <br>
+                            <strong>Ambiente:</strong> Producción
+                            <strong>Emisión:</strong> Normal
+                            <strong>CLAVE DE ACCESO:</strong>
+                            <svg id='barcode'></svg> <!-- Genera un código de barras basado en el número de autorización-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-dark m-2 py-3 px-3 backgroung-card">
+                <div class="card-container">
+                    <div class="flex">
+                        <div class="flex-1 flex">
+                            <strong>Razón Social / Nombres y Apellidos:</strong> {{ docs.nomCli }} <!-- Presenta el nombre del cliente -->
+                        </div>
+                        <div class="flex-1 flex">
+                            <strong>Identificación:</strong> &nbsp; {{ docs.codClient }} <!-- Presenta el número de identificación del usuario -->
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-1 flex">
+                            <strong>Fecha Emisión:</strong> &nbsp; {{ formatDate( docs.ffact ) }} <!-- Fecha en la que se emitió la factura -->
+                        </div>
+                        <div class="flex-1 flex">
+                            <strong>Dirección:</strong> &nbsp; {{ docs.address }} <!-- Dirección del cliente -->
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-1 flex">
+                            <strong>Guía Remisión:</strong> &nbsp; {{ docs.noGuia }} <!-- Muestra el número de la guía de remisión -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid flex m-2">
+                <div class="flex-1 px-3 py-3 card border-dark backgroung-card">
+                    <p-table
+                        [value]="itemsF"
+                        [tableStyle]="{ 'min-width': '48rem', 'font-size': '10px' }"
+                        styleClass="border-dark"> <!-- Aqui se van a presentar los items de la factura en base a la información que posee itemsF -->
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="text-dark">Cod. Principal</th>
+                                <th class="text-dark">Descripción</th>
+                                <th class="text-dark">Cantidad</th>
+                                <th class="text-dark">Precio Unitario</th>
+                                <th class="text-dark">Precio Total</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-itemF>
+                            <tr>
+                                <td class="text-dark">{{ itemF.itemCode }}</td> <!-- Código del item -->
+                                <td class="text-dark">{{ itemF.dscription }}</td><!-- Descripción del item -->
+                                <td class="text-right text-dark"> <!-- Cantidad pedida -->
+                                    {{
+                                        itemF.quantity % 1 === 0 ?
+                                        itemF.quantity.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                        itemF.quantity.toLocaleString( undefined )
+                                    }}
+                                </td>
+                                <td class="text-right text-dark"><!-- Precio unitario del item -->
+                                    {{
+                                        itemF.pryUnit % 1 === 0 ?
+                                        itemF.pryUnit.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                        itemF.pryUnit.toLocaleString( undefined )
+                                    }}
+                                </td>
+                                <td class="text-right text-dark"> <!-- Precio total del item -->
+                                    {{
+                                        itemF.totalLinea % 1 === 0 ?
+                                        itemF.totalLinea.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                        itemF.totalLinea.toLocaleString( undefined )
+                                    }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+
+            <div class="grid flex m-2">
+                <div class="col-7 flex-1">
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="flex">
+                                <div class="col-6 py-0">
+                                    <strong>Forma de Pago</strong>
+                                </div>
+                                <div class="col-2 py-0">
+                                    <strong>Valor</strong>
+                                </div>
+                                <div class="col-2 py-0">
+                                    <strong>Plazo</strong>
+                                </div>
+                                <div class="col-2 py-0">
+                                    <strong>Tiempo</strong>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                            <div class="flex">
+                                <div class="col-6 py-0"> <!-- Forma de pago-->
+                                    {{ docs.uFormaPago }}
+                                </div>
+                                <div class="col-2 py-0"> <!-- Valor total a pagar -->
+                                    {{
+                                        docTotal % 1 === 0 ?
+                                        docTotal.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                        docTotal.toLocaleString( undefined )
+                                    }}
+                                </div>
+                                <div class="col-2 py-0"> <!-- Número de días para realizar el pago -->
+                                    {{ plazo }}
+                                </div>
+                                <div class="col-2 py-0"> <!-- Unidad de tiempo que esta determinado el pago -->
+                                    {{ tiempo }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5">
+                            <strong>Información Adicional</strong>
+                            <hr class="border-dark">
+                            <div class="grid">
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            emailcliente:
+                                        </div>
+                                        <div class="col-9 py-0" style="word-wrap: break-word;"> <!-- Presenta el correo electronico del cliente -->
+                                            {{ docs.eMail }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            Vendedor:
+                                        </div>
+                                        <div class="col-9 py-0"> <!-- El nombre del vendedor -->
+                                            {{ docs.vendedor }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            Dirección:
+                                        </div>
+                                        <div class="col-9 py-0"> <!-- Dirección del cliente -->
+                                            {{ docs.address }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            Teléfono:
+                                        </div>
+                                        <div class="col-9 py-0"><!-- Numero de teléfono del cliente-->
+                                            {{ docs.phone1 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            Condiciónes de pago:
+                                        </div>
+                                        <div class="col-9 py-0"> <!-- Condiciones de pago -->
+                                            {{ docs.pymntGroup }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="grid py-0">
+                                        <div class="col-3 py-0">
+                                            comentarios:
+                                        </div>
+                                        <div class="col-9 py-0"> <!-- Comentarios si esque llegasen a existir -->
+                                            {{ docs.comments }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 flex-1 px-5 py-3">
+                    <div class="grid">
+                        <div class="col-8 text-right">
+                            <strong>Subtotal 12.00%:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Subtotal 0%:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Subtotal no Objeto de IVA:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Subtotal Excento de IVA:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Subtotal sin impuestos:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Total descuento:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>ICE:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>IVA 12.00%</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>IRBPNR:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Propina:</strong>
+                            <hr class="opacity-0 py-0">
+                            <strong>Valor Total:</strong>
+                        </div>
+                        <div class="col-4 text-right"> <!-- Presenta el subtotal del valor a pagar -->
+                            {{
+                                subtotal % 1 === 0 ?
+                                subtotal.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                subtotal.toLocaleString( undefined )
+                            }}
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark"> <!-- Presenta el subtotal del valor a pagar -->
+                            {{
+                                subtotal % 1 === 0 ?
+                                subtotal.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                subtotal.toLocaleString( undefined )
+                            }}
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark"> <!-- Presenta el iva del valor a pagar -->
+                            {{
+                                iva % 1 === 0 ?
+                                iva.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                iva.toLocaleString( undefined )
+                            }}
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark">
+                            0.00
+                            <hr class="py-0 border-dark">  <!-- Presenta el subtotal del valor a pagar -->
+                            {{
+                                docTotal % 1 === 0 ?
+                                docTotal.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                                docTotal.toLocaleString( undefined )
+                            }}
+                            <hr class="py-0 border-dark">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="modal-footer"> <!-- Boton que permite imprimir el contenido del modal-->
+        <p-button
+            icon="pi pi-print"
+            (click)="imprimirContenido()"
+            label="Imprimir"
+            styleClass="p-button-text">
+        </p-button>
+    </div>
+</div>

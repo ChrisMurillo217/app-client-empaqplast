@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { PersonComponent } from './person.component';
+import { NgModule }                 from '@angular/core';
+import { RouterModule }             from '@angular/router';
+
+import { PersonComponent }          from './person.component';
 
 @NgModule( {
 	imports: [

@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { StockComponent } from './stock.component';
+import { NgModule }                     from '@angular/core';
+import { RouterModule }                 from '@angular/router';
+
+import { StockComponent }               from './stock.component';
 
 @NgModule( {
 	imports: [
