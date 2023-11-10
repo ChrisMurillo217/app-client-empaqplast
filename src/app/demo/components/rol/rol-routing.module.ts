@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { RolComponent } from './rol.component';
+import { NgModule }                 from '@angular/core';
+import { RouterModule }             from '@angular/router';
+
+import { RolComponent }             from './rol.component';
 
 @NgModule( {
 	imports: [

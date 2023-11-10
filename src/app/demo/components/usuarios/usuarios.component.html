@@ -15,10 +15,9 @@
         </div>
 
         <ng-template #dataIsLoaded>
-            <p-toast></p-toast>
             <div class="card px-6 py-6">
                 <p-toolbar styleClass="mb-4 gap-2">
-                    <ng-template pTemplate="left">
+                    <div class="px-3 py-3">
                         <button
                             pButton
                             pRipple
@@ -27,7 +26,7 @@
                             class="p-button-success mr-2"
                             (click)="openNew()">
                         </button>
-                    </ng-template>
+                    </div>
                 </p-toolbar>
 
                 <p-table
@@ -99,7 +98,7 @@
                     </ng-template>
 
                     <ng-template pTemplate="body" let-user>
-                        <tr>
+                        <tr [pEditableRow]="user.datosLogin">
                             <td>
                                 {{ user.datosLogin.cardCode }}
                             </td>
@@ -123,6 +122,11 @@
                                     class="p-button-rounded p-button-help mr-2"
                                     (click)="editUser(pedido)">
                                 </button>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                </div>
                             </td>
                         </tr>
                     </ng-template>
@@ -254,138 +258,6 @@
                         icon="pi pi-check"
                         class="p-button-text"
                         (click)="saveProduct()">
-                    </button>
-                </ng-template>
-            </p-dialog>
-
-            <!-- Modal para editar un usuario -->
-            <p-dialog
-                header="Editar Usuario"
-                [(visible)]="editarUser"
-                [style]="{width: '450px'}"
-                [modal]="true"
-                styleClass="p-fluid">
-                <ng-template pTemplate="content">
-                    <div class="field">
-                        <label>Usuario</label>
-                        <p-autoComplete
-                            [(ngModel)]="cardCode"
-                            [dropdown]="true"
-                            [suggestions]="filteredUsers"
-                            (completeMethod)="filterUser($event)"
-                            (onSelect)="onUserSelect($event)"
-                            field="label"
-                            placeholder="Escoje el usuario">
-                        </p-autoComplete>
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !cardCode">
-                            Usuario es requerido.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Razón Social</label>
-                        <input
-                            pInputText
-                            required
-                            disabled
-                            type="text"
-                            name="cardName"
-                            [(ngModel)]="cardName"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !cardName">
-                            Razón Social es requerida.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Sucursal</label>
-                        <input
-                            pInputText
-                            required
-                            autofocus
-                            type="text"
-                            [(ngModel)]="seriesNameSucursal"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !seriesNameSucursal">
-                            Sucursal es requerida.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Rol</label>
-                        <input
-                            pInputText
-                            required
-                            autofocus
-                            type="text"
-                            [(ngModel)]="idRol"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !idRol">
-                            Rol es requerido.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Correo</label>
-                        <input
-                            pInputText
-                            required
-                            autofocus
-                            type="text"
-                            [(ngModel)]="nombreUsuarioTrL"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !nombreUsuarioTrL">
-                            Correo es requerido.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Contraseña</label>
-                        <p-password
-                            required
-                            [(ngModel)]="contrasenaUsuarioTrL">
-                            <ng-template pTemplate="header">
-                                <h6>Ingresa tú contraseña</h6>
-                            </ng-template>
-                            <ng-template pTemplate="footer">
-                                <p-divider></p-divider>
-                                <p class="mt-2">Sugerencias</p>
-                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                                    <li>Al menos 1 mayuscula</li>
-                                    <li>Al menos 1 minuscula</li>
-                                    <li>Al menos 1 numero</li>
-                                    <li>Al menos 1 carácter especial</li>
-                                    <li>Minimo 8 caracteres</li>
-                                </ul>
-                            </ng-template>
-                        </p-password>
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !contrasenaUsuarioTrL">
-                            Contraseña es requerida.
-                        </small>
-                    </div>
-                </ng-template>
-
-                <ng-template pTemplate="footer">
-                    <button
-                        pButton
-                        pRipple
-                        label="Cancelar"
-                        icon="pi pi-times"
-                        class="p-button-text">
-                    </button>
-                    <button
-                        pButton
-                        pRipple
-                        label="Guardar"
-                        icon="pi pi-check"
-                        class="p-button-text">
                     </button>
                 </ng-template>
             </p-dialog>

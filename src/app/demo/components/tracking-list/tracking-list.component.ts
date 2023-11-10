@@ -78,7 +78,7 @@ export class TrackingListComponent implements OnInit {
             header: 'Detalles del pedido',
             width: '700px',
             contentStyle: {
-                'max-height': '500px',
+                'max-height': '700px',
                 'overflow': 'auto'
             },
             baseZIndex: 10000,
@@ -87,13 +87,13 @@ export class TrackingListComponent implements OnInit {
             }
         } );
     }
-    
+
     showTracking( docNum ) {
         this.ref = this.dialogService.open( TrackingComponent, {
             header: 'Seguimiento',
-            width: '1000px',
+            width: '1200px',
             contentStyle: {
-                'max-height': '500px',
+                'max-height': '700px',
                 'overflow': 'auto'
             },
             baseZIndex: 10000,

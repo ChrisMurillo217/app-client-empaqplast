@@ -13,73 +13,90 @@
 </div>
 
 <ng-template #guiaIsLoaded>
-    <div class="card">
-        <h5>Seguimiento</h5>
-        <p-table 
-            #dt1 
-            [value]="items"
-            class="table table-responsive"
-            responsiveLayout="stack"
-            [rows]="5" 
-            [showCurrentPageReport]="true" 
-            [rowsPerPageOptions]="[10,25,50]" 
-            [loading]="loading"
-            [paginator]="true">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th>
-                        <div class="flex justify-content-center align-items-center">
-                            Código de item
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex justify-content-center align-items-center">
-                            Item
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex justify-content-center align-items-center">
-                            Cantidad pedida
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex justify-content-center align-items-center">
-                            Cantidad despachada
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex justify-content-center align-items-center">
-                            Avance
-                        </div>
-                    </th>
-                    <th></th>
-                </tr>
-            </ng-template>
+    <p-table
+        class="table table-responsive"
+        responsiveLayout="stack"
+        [value]="itemsT"
+        [scrollable]="true"
+        scrollHeight="500px"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="46"
+        [tableStyle]="{ 'min-width': '30rem' }">
+        <!-- Cabecera de la tabla -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Código de item
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Item
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Cantidad pedida
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Cantidad despachada
+                    </div>
+                </th>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Estado
+                    </div>
+                </th>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Avance
+                    </div>
+                </th>
+                <th style="min-width:6rem"></th>
+            </tr>
+        </ng-template>
 
-            <ng-template pTemplate="body" let-item let-columns="columns">
-                <tr>
-                    <td class="align-middle">{{ item.itemCode }}</td>
-                    <td class="align-middle">{{ item.dscription }}</td>
-                    <td class="align-middle">{{ item.quantity }}</td>
-                    <td class="align-middle">{{ item.quantity }}</td>
-                    <td>
-                        <p-progressBar 
-                            [showValue]="false">
-                        </p-progressBar>
-                    </td>
-                    <td class="text-center">
-                        <i 
-                            class="pi"
-                        >
-                        </i>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="7">No customers found.</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+        <!-- Contenido dinamico que se mostrará en la tabla -->
+        <ng-template pTemplate="body" let-item let-columns="columns">
+            <tr>
+                <td class="align-middle">{{ item.itemCode }}</td>
+                <td class="align-middle">{{ item.dscription }}</td>
+                <td class="align-middle">
+                    {{
+                        item.quantityP % 1 === 0 ?
+                        item.quantityP.toLocaleString( undefined, { maximumFractionDigits: 0 } ) :
+                        item.quantityP.toLocaleString( undefined )
+                    }}
+                </td>
+                <td class="align-middle">
+                    {{
+                        item.quantityD % 1 === 0 ?
+                        item.quantityD.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
+                        item.quantityD.toLocaleString( undefined )
+                    }}
+                </td>
+                <td class="align-middle">{{ item.status }}</td>
+                <td class="justify-content-center align-middle">
+                    <p-progressBar
+                        [showValue]="false"
+                        [value]="item.progressBarValue"
+                        [style]="{ height: '12px' }">
+                    </p-progressBar>
+                </td>
+                <td class="text-centeralign-middle">
+                    <i
+                        class="pi"
+                        [ngClass]="{
+                            'pi-check-circle text-success': item.verified,
+                            'pi-times-circle text-danger': !item.verified
+                        }"
+                        style="font-size: 1.5rem">
+                    </i>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </ng-template>

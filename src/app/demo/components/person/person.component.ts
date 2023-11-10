@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { AuthService } from './../../service/auth.service';
-import { Usuarios } from './../../models/usuarios.model';
+import { Component, OnInit }                from '@angular/core';
+
+import { MessageService }                   from 'primeng/api';
+
+import { AuthService }                      from './../../service/auth.service';
+import { Usuarios }                         from './../../models/usuarios.model';
 
 @Component({
   templateUrl: './person.component.html',

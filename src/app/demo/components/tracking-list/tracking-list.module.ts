@@ -9,14 +9,11 @@ import { TrackingListRoutingModule }            from './tracking-list-routing.mo
 
 import { TableModule }                          from 'primeng/table';
 import { ButtonModule }                         from 'primeng/button';
-import { RippleModule }                         from 'primeng/ripple';
-import { InputTextModule }                      from 'primeng/inputtext';
 import { ProgressBarModule }                    from 'primeng/progressbar';
-import { ToastModule }                          from 'primeng/toast';
 import { PaginatorModule }                      from 'primeng/paginator';
-import { DialogModule }                         from 'primeng/dialog';
 import { DynamicDialogModule }                  from 'primeng/dynamicdialog';
 import { DialogService }                        from 'primeng/dynamicdialog';
+import { InputTextModule }                      from 'primeng/inputtext';
 
 @NgModule({
 	imports: [
@@ -24,13 +21,10 @@ import { DialogService }                        from 'primeng/dynamicdialog';
 		TrackingListRoutingModule,
 		TableModule,
 		ButtonModule,
-        RippleModule,
-        InputTextModule,
 		ProgressBarModule,
-		ToastModule,
         PaginatorModule,
-        DialogModule,
         DynamicDialogModule,
+        InputTextModule,
 	],
     providers: [
         DialogService

@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { TrackingListComponent } from './tracking-list.component';
+import { NgModule }                         from '@angular/core';
+import { RouterModule }                     from '@angular/router';
+
+import { TrackingListComponent }            from './tracking-list.component';
 
 @NgModule( {
 	imports: [

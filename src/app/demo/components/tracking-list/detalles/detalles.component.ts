@@ -1,7 +1,6 @@
 import { Component, OnInit }                        from '@angular/core';
 
-import { DynamicDialogRef }                         from 'primeng/dynamicdialog';
-import { DynamicDialogConfig }                        from 'primeng/dynamicdialog';
+import { DynamicDialogConfig }                      from 'primeng/dynamicdialog';
 
 import { TrackingService }                          from './../../../service/tracking.service';
 import { TokenService }                             from './../../../service/token.service';
@@ -22,16 +21,15 @@ export class DetallesComponent implements OnInit {
     detailsLoaded:      boolean = false;
 
     constructor(
-        public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         private trackingService: TrackingService,
         private tokenService: TokenService
     ) {}
 
     ngOnInit(): void {
-        this.docNum = this.config.data.docNum;
+        this.docNum = this.config.data.docNum; // Almacena en la variable docNum el valor que viene por config del DynamicDialog
 
-        this.tokenService.getUserData().subscribe(
+        this.tokenService.getUserData().subscribe( // Trae la información del usuario que esta loggeado
             ( data ) => {
                 this.userData = data;
                 this.cardCode = this.userData[0].datosLogin.cardCode;

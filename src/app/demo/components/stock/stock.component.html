@@ -1,6 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <div *ngIf="!dataLoaded; else dataIsLoaded">
+        <div *ngIf="!dataLoaded; else dataIsLoaded"> <!-- ngIf que permite el dinamismo de mostrar ya sea este div que contiene una animación de cargando si esque dataLoaded es falso o si es verdadero se ejecuta el dataIsLoaded -->
             <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
                 <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
                     <span class="sr-only">Loading...</span>
@@ -30,7 +30,7 @@
                     [paginator]="true"
                     currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} items"
                     [globalFilterFields]="['itemCode','itemName','stock1']"
-                    [tableStyle]="{ 'min-width': '50rem' }">
+                    [tableStyle]="{ 'min-width': '50rem' }"> <!-- Carga la ingomación mediante el vector stocks -->
 
                     <!-- Input de busqueda -->
                     <ng-template pTemplate="caption">
@@ -44,7 +44,7 @@
                                     (input)="onGlobalFilter(dt1, $event)"
                                     placeholder="Buscar"
                                     class="w-full"
-                                />
+                                /> <!-- Input de busqueda con los parametros seleccionados -->
                             </span>
                         </div>
                     </ng-template>
@@ -78,7 +78,13 @@
                         <tr>
                             <td class="align-middle"><span class="p-column-title">Código de Item</span>{{ stock.itemCode }}</td>
                             <td class="align-middle"><span class="p-column-title">Item</span>{{ stock.itemName }}</td>
-                            <td class="align-middle"><span class="p-column-title">Cantidad</span>{{ stock.stock1 }}</td>
+                            <td class="align-middle"><span class="p-column-title">Cantidad</span>
+                                {{
+                                    stock.stock1 % 1 === 0 ?
+                                    stock.stock1.toLocaleString( undefined, { maximumFractionDigits: 0 } ) :
+                                    stock.stock1.toLocaleString( undefined )
+                                }}
+                            </td> <!-- Aqui realizamos un condicional para definir si esque el número tiene o no decimales de tenerlos se le daria un formato y de no tener decimales se le daria otro formato -->
                         </tr>
                     </ng-template>
 

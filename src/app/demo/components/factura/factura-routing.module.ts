@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { FacturaComponent } from './factura.component';
+import { NgModule }                 from '@angular/core';
+import { RouterModule }             from '@angular/router';
+
+import { FacturaComponent }         from './factura.component';
 
 @NgModule( {
 	imports: [

@@ -3,23 +3,23 @@
         <div class="card">
             <h2 class="text-center">
                 Bienvenido,
-                {{ userData[0].datosLogin.cardName }}
+                {{ userData[0].datosLogin.cardName }} <!-- Carga el nombre del usuario para presentarlo en pantalla -->
             </h2>
         </div>
     </div>
     <div class="col-md-12">
         <div class="row">
-            <div class="col-6 col-md-3 col-lg-3" *ngFor="let pagina of userData[0].seccionPagina; let i = index">
+            <div class="col-6 col-md-3 col-lg-3" *ngFor="let pagina of userData[0].seccionPagina; let i = index"> <!-- ngFor que recorre la información del usuario y los accesos que tiene el mismo -->
                 <div class="card">
                     <div class="card-body text-center">
                         <i class="{{pagina.icon}}" style="font-size: 2rem;"></i>
                         <h5 class="card-title text-truncate">
-                            {{ pagina.nombrePagina }}
+                            {{ pagina.nombrePagina }} <!-- Nos presenta el nombre de la página -->
                         </h5>
-                        <p class="card-text">{{ pagina.descripcionPagina }}</p>
-                        <button 
-                            pButton 
-                            pRipple 
+                        <p class="card-text">{{ pagina.descripcionPagina }}</p> <!-- Nos presenta la sección de la página -->
+                        <button
+                            pButton
+                            pRipple
                             type="button"
                             [routerLink]="['/', pagina.nombrePagina.toLowerCase()]"
                             class="p-button-raised p-button-text">
