@@ -2,11 +2,12 @@
 .backgroung-card {
     background-color: #fff;
     color: #000;
+    border-radius: 10px;
 }
 .lara-light {
     /* Estilos para el tema Lara Light */
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #ffffff !important;
+    color: #000000 !important;
     /* Agrega otros estilos específicos de Lara Light aquí */
 }
 .p-datatable-white {
