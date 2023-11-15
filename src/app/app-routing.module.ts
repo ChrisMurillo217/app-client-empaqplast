@@ -35,7 +35,7 @@ import { AuthGuard } from './demo/guards/auth.guard';
                             .then( m => m.UsuariosModule )
                     },
                     {
-                        path: 'persona',
+                        path: 'personas',
                         loadChildren: () => import( './demo/components/person/person.module' )
                             .then( m => m.PersonModule )
                     },

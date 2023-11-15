@@ -1,7 +1,9 @@
 {
     "name": "app-cliente-empaqplast",
-    "version": "16.0.0",
-    "license": "PrimeNG Commercial",
+    "version": "0.0.1",
+    "description": "Aplicación donde se puede visualizar los pedidos que se realizaron, ademas de poder visualizar documentos como facturas, notas de credito y guias de remisión del mismo.",
+    "author": "Christian Murillo",
+    "license": "Empaqplast S.A",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -17,6 +19,7 @@
         "@angular/common": "^16.1.0",
         "@angular/compiler": "^16.1.0",
         "@angular/core": "^16.1.0",
+        "@angular/flex-layout": "^15.0.0-beta.42",
         "@angular/forms": "^16.1.0",
         "@angular/platform-browser": "^16.1.0",
         "@angular/platform-browser-dynamic": "^16.1.0",

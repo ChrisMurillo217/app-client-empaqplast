@@ -8,21 +8,19 @@ import { UsuariosService }                                          from '../../
 import { Usuarios }                                                 from './../../models/usuarios.model';
 import { InfoUsers }                                                from '../../models/info-users.model';
 import { Dates }                                                    from '../../models/dates.model';
-import { Role }                                                     from '../../models/role.model';
 
 @Component({
     templateUrl: './usuarios.component.html',
+    styleUrls: ['./usuarios.component.css'],
     providers: [ MessageService ],
-    styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
     dates:                  Dates[] = [];
     usuarios:               Usuarios[] = [];
-    usuario:                Usuarios;
-    loading:                boolean = true;
     newUser:                boolean;
     editarUser:             boolean;
     submitted:              boolean;
+    selectedPerson:         any = {};
     idDatosU:               number;
     idRol:                  number;
     nombreUsuarioTrL:       string;
@@ -30,10 +28,18 @@ export class UsuariosComponent implements OnInit {
     cardCode:               string;
     cardName:               string;
     seriesNameSucursal:     string;
-    datos:                  Dates;
-    rol:                    Role;
     dataLoaded:             boolean = false;
-    clonedUsers:         { [s: string]: Usuarios; } = {};
+    filteredPerson:         any[] = [];
+    sucursales:             any[] = [
+        {
+            key: 'UIO',
+            name: 'Quito'
+        },
+        {
+            key: 'GYE',
+            name: 'Guayaquil'
+        }
+    ]
 
     @ViewChild( 'filter' ) filter!: ElementRef;
 
@@ -46,7 +52,6 @@ export class UsuariosComponent implements OnInit {
         this.authService.getUsuariosList().subscribe(
             ( data ) => {
                 this.usuarios = data;
-                this.loading = false;
                 this.dataLoaded = true;
             },
             ( error ) => {
@@ -60,7 +65,6 @@ export class UsuariosComponent implements OnInit {
         this.usuariosService.getDatosUsuarios().subscribe(
             ( data ) => {
                 this.dates = data;
-                console.log(this.dates);
             },
             ( error ) => {
                 console.error( error );
@@ -69,10 +73,28 @@ export class UsuariosComponent implements OnInit {
         this.submitted = false;
     }
 
+    filterPerson( event: any ) {
+        const query = event.query.toLowerCase();
+
+        this.filteredPerson = this.dates.filter(
+            ( user: any ) => {
+                return user.label.toLowerCase().includes( query )
+            }
+        );
+        console.log(this.filteredPerson);
+
+    }
+
+    onPersonSelect( event: any ) {
+        if ( event.value ) {
+            const personaSeleccionada: Dates = event.value;
+            console.log(personaSeleccionada);
+
+        }
+    }
+
     editUser( user: Usuarios ) {
-        this.usuario = {...user};
         this.editarUser = true;
-        this.clonedUsers[user.datosLogin.nombreUsuarioTrL] = {...user};
     }
 
     hideDialog() {
@@ -91,18 +113,16 @@ export class UsuariosComponent implements OnInit {
             cardCode: this.cardCode,
             cardName: this.cardName,
             seriesNameSucursal: this.seriesNameSucursal,
-            datos: this.datos,
-            rol: this.rol
         }
 
-        this.usuariosService.newUser( nuevoUsuario ).subscribe(
-            ( response ) => {
-                console.log('Usuario creado con éxito:', response);
-            },
-            ( error ) => {
-                console.error('Error al crear el usuario:', error);
-            }
-        );
+        // this.usuariosService.newUser( nuevoUsuario ).subscribe(
+        //     ( response ) => {
+        //         console.log('Usuario creado con éxito:', response);
+        //     },
+        //     ( error ) => {
+        //         console.error('Error al crear el usuario:', error);
+        //     }
+        // );
 
         this.newUser = false;
     }

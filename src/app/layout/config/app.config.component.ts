@@ -10,8 +10,6 @@ export class AppConfigComponent {
 
     @Input() minimal: boolean = false;
 
-    scales: number[] = [ 12, 13, 14, 15, 16 ];
-
     constructor( public layoutService: LayoutService, public menuService: MenuService ) { }
 
     get visible(): boolean {

@@ -1,7 +1,5 @@
-import { Dates } from "./dates.model";
-import { Role } from "./role.model";
-
 export interface InfoUsers {
+    idUsuarioTr?            : number;
     token?                  : string;
     nombreUsuarioTrL        : string;
     contrasenaUsuarioTrL    : string;
@@ -10,8 +8,6 @@ export interface InfoUsers {
     seriesNameSucursal      : string;
     idDatosU                : number;
     idRol                   : number;
-    datos                   : Dates;
-    rol                     : Role;
 }
 
 

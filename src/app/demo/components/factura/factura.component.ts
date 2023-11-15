@@ -22,7 +22,6 @@ export class FacturaComponent implements OnInit {
     first:              number = 0;
     documentos:         Document[] = [];
     userData:           Usuarios[] = [];
-    loading:            boolean = true;
     dataLoaded:         boolean = false;
 
     constructor(
@@ -62,11 +61,11 @@ export class FacturaComponent implements OnInit {
                     }
                 );
 
-                this.loading = false;
                 this.dataLoaded = true; // Variable que envia verdadero para poder mostrar la información en pantalla
             },
             ( error ) => {
                 console.error( error );
+                this.dataLoaded = true; // Variable que envia verdadero para poder mostrar la información en pantalla
             }
         );
     }

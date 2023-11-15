@@ -1,24 +1,29 @@
+@media only screen and (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+}
 
 .backgroung-card {
-    background-color: #fff;
-    color: #000;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
 }
 .lara-light {
     /* Estilos para el tema Lara Light */
-    background-color: #ffffff;
-    color: #000000;
-    /* Agrega otros estilos específicos de Lara Light aquí */
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }
 .p-datatable-white {
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 .p-datatable-white .p-datatable-caption {
-    color: #000; /* Cambia el color del título de la tabla a negro */
+    color: #000000; /* Cambia el color del título de la tabla a negro */
 }
 
 .p-datatable-white .p-sortable-column-header,
 .p-datatable-white .p-column-title,
 .p-datatable-white .p-cell {
-    color: #000; /* Cambia el color del texto de las celdas a negro */
+    color: #000000; /* Cambia el color del texto de las celdas a negro */
 }

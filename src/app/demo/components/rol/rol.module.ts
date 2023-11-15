@@ -1,5 +1,6 @@
 import { NgModule }                         from '@angular/core';
 import { CommonModule }                     from '@angular/common';
+import { FormsModule }                      from '@angular/forms';
 
 import { RolComponent }                     from './rol.component';
 import { RolRoutingModule }                 from './rol-routing.module';
@@ -36,7 +37,8 @@ import { PasswordModule }                   from 'primeng/password';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        PasswordModule
+        PasswordModule,
+        FormsModule,
 	],
 	declarations: [
         RolComponent

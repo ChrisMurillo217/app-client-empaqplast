@@ -1,8 +1,8 @@
 <div class="grid">
     <div class="col-12">
         <div *ngIf="!dataLoaded; else dataIsLoaded">
-            <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem; flex-direction: column;">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
                     <span class="sr-only">Loading...</span>
                 </div>
                 <div class="text-animation d-flex justify-content-center align-items-center">
@@ -63,69 +63,86 @@
 
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th pSortableColumn="datosLogin.cardCode">
+                            <th pSortableColumn="datosLogin.nombreUsuarioTrL" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
-                                    Identificación
-                                    <p-sortIcon field="datosLogin.cardCode"></p-sortIcon>
+                                    Nombre de Usuario
+                                    <p-sortIcon field="datosLogin.nombreUsuarioTrL"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="datosLogin.cardName">
+                            <th pSortableColumn="datosLogin.cardName" style="width: 25%">
                                 <div class="flex justify-content-between align-items-center">
                                     Razón Social
                                     <p-sortIcon field="datosLogin.cardName"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="datosLogin.datos.nombreUsuarioTr">
+                            <th pSortableColumn="datosLogin.cardCode" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
-                                    Empleado
-                                    <p-sortIcon field="datosLogin.datos.nombreUsuarioTr"></p-sortIcon>
+                                    Identificación
+                                    <p-sortIcon field="datosLogin.cardCode"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="datosLogin.datos.emailUsuarioTr">
-                                <div class="flex justify-content-between align-items-center">
-                                    Correo
-                                    <p-sortIcon field="datosLogin.datos.emailUsuarioTr"></p-sortIcon>
-                                </div>
-                            </th>
-                            <th pSortableColumn="datosLogin.rol.nombreRol">
+                            <th pSortableColumn="datosLogin.rol.nombreRol" style="width: 10%">
                                 <div class="flex justify-content-between align-items-center">
                                     Rol
                                     <p-sortIcon field="datosLogin.rol.nombreRol"></p-sortIcon>
                                 </div>
                             </th>
-                            <th></th>
+                            <th pSortableColumn="datosLogin.datos.nombreUsuarioTr" style="width: 30%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Empleado
+                                    <p-sortIcon field="datosLogin.datos.nombreUsuarioTr"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th style="width: 5%"></th>
                         </tr>
                     </ng-template>
 
                     <ng-template pTemplate="body" let-user>
                         <tr [pEditableRow]="user.datosLogin">
                             <td>
-                                {{ user.datosLogin.cardCode }}
+                                {{ user.datosLogin.nombreUsuarioTrL }}
                             </td>
                             <td>
                                 {{ user.datosLogin.cardName }}
                             </td>
                             <td>
-                                {{ user.datosLogin.datos.nombreUsuarioTr }} {{ user.datosLogin.datos.apellidoUsuarioTr }}
-                            </td>
-                            <td>
-                                {{ user.datosLogin.datos.emailUsuarioTr }}
+                                {{ user.datosLogin.cardCode }}
                             </td>
                             <td>
                                 {{ user.datosLogin.rol.nombreRol }}
                             </td>
                             <td>
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-help mr-2"
-                                    (click)="editUser(pedido)">
-                                </button>
+                                {{ user.datosLogin.datos.nombreUsuarioTr }} {{ user.datosLogin.datos.apellidoUsuarioTr }}
+                            </td>
+                            <td>
                                 <div class="flex align-items-center justify-content-center gap-2">
-                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    <button
+                                        *ngIf="!editing"
+                                        pButton
+                                        pInitEditableRow
+                                        type="button"
+                                        icon="pi pi-pencil"
+                                        (click)="onRowEditInit(product)"
+                                        class="p-button-rounded">
+                                    </button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        type="button"
+                                        pSaveEditableRow
+                                        icon="pi pi-check"
+                                        (click)="onRowEditSave(product)"
+                                        class="p-button-rounded p-button-success mr-2">
+                                    </button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        pCancelEditableRow
+                                        type="button"
+                                        icon="pi pi-times"
+                                        (click)="onRowEditCancel(product, ri)"
+                                        class="p-button-rounded p-button-danger">
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -136,73 +153,14 @@
 
             <!-- Modal para agregar un nuevo usuario -->
             <p-dialog
-                header="Crear"
+                header="Registrar nuevo usuario"
                 [(visible)]="newUser"
                 [style]="{width: '450px'}"
                 [modal]="true"
                 styleClass="p-fluid">
                 <ng-template pTemplate="content">
                     <div class="field">
-                        <label>Usuario</label>
-                        <p-autoComplete
-                            [(ngModel)]="cardCode"
-                            [dropdown]="true"
-                            [suggestions]="filteredUsers"
-                            (completeMethod)="filterUser($event)"
-                            (onSelect)="onUserSelect($event)"
-                            field="label"
-                            placeholder="Escoje el usuario">
-                        </p-autoComplete>
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !cardCode">
-                            Usuario es requerido.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Razón Social</label>
-                        <input
-                            pInputText
-                            required
-                            type="text"
-                            [(ngModel)]="cardName"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !cardName">
-                            Razón Social es requerida.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Sucursal</label>
-                        <input
-                            pInputText
-                            required
-                            type="text"
-                            [(ngModel)]="seriesNameSucursal"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !seriesNameSucursal">
-                            Sucursal es requerida.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Rol</label>
-                        <input
-                            pInputText
-                            required
-                            type="text"
-                            [(ngModel)]="idRol"
-                        />
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !idRol">
-                            Rol es requerido.
-                        </small>
-                    </div>
-                    <div class="field">
-                        <label>Correo</label>
+                        <label>Nombre de usuario</label>
                         <input
                             pInputText
                             required
@@ -212,7 +170,7 @@
                         <small
                             class="p-error"
                             *ngIf="submitted && !nombreUsuarioTrL">
-                            Correo es requerido.
+                            Nombre de usuario es requerido.
                         </small>
                     </div>
                     <div class="field">
@@ -239,6 +197,38 @@
                             class="p-error"
                             *ngIf="submitted && !contrasenaUsuarioTrL">
                             Contraseña es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label class="mb-3">Sucursal</label>
+                        <div class="formgrid grid">
+                            <div *ngFor="let sucursal of sucursales" class="field-radiobutton col-6">
+                                <p-radioButton
+                                    [inputId]="sucursal.key"
+                                    name="sucursal"
+                                    [(ngModel)]="seriesNameSucursal"
+                                    [value]="sucursal">
+                                </p-radioButton>
+                                <label [for]="sucursal.key">{{ sucursal.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Persona</label>
+                        <p-autoComplete
+                            [(ngModel)]="selectedPerson"
+                            [ngModelOptions]="{ standalone: true }"
+                            [dropdown]="true"
+                            [suggestions]="filteredPerson"
+                            (completeMethod)="filterPerson($event)"
+                            (onSelect)="onPersonSelect($event)"
+                            field="label"
+                            placeholder="Escoje la persona">
+                        </p-autoComplete>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardCode">
+                            Persona es requerida.
                         </small>
                     </div>
                 </ng-template>

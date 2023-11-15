@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { InfoUsers } from '../models/info-users.model';
-import { TokenService } from './token.service';
+import { Injectable }                                   from '@angular/core';
+import { HttpClient, HttpHeaders }                      from '@angular/common/http';
+
+import { Observable, catchError, throwError }           from 'rxjs';
+
+import { TokenService }                                 from './token.service';
+
+import { Dates }                                        from '../models/dates.model';
 
 @Injectable()
 export class UsuariosService {
@@ -20,10 +23,10 @@ export class UsuariosService {
         } );
     }
 
-    newUser( usuario: InfoUsers ): Observable< any > {
-        const url = `${ this.urlAPI }/Registro`;
+    newUser( dates: Dates ): Observable< any > {
+        const url = `${ this.urlAPI }/RegistroDatos`;
         const headers = this.getAuthHeaders();
-        return this.__http.post( url, usuario, { headers } ).pipe(
+        return this.__http.post( url, dates, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )
@@ -32,6 +35,16 @@ export class UsuariosService {
 
     getDatosUsuarios( ): Observable< any[] > {
         const url = `${ this.urlAPI }/DatosUsuarios`;
+        const headers = this.getAuthHeaders();
+        return this.__http.get< Document[] >( url, { headers } ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        );
+    }
+
+    getRoles( ): Observable< any[] > {
+        const url = `${ this.urlAPI }/ListaRoles`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
             catchError( ( error ) => {

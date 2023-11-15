@@ -17,45 +17,43 @@
         class="table table-responsive"
         responsiveLayout="stack"
         [value]="itemsT"
-        [scrollable]="true"
-        scrollHeight="500px"
-        [virtualScroll]="true"
-        [virtualScrollItemSize]="46"
+        [rows]="5"
+        [paginator]="true"
         [tableStyle]="{ 'min-width': '30rem' }">
         <!-- Cabecera de la tabla -->
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th>
+                <th style="width: 8%">
                     <div class="flex justify-content-between align-items-center">
-                        Código de item
+                        Código
                     </div>
                 </th>
-                <th>
+                <th style="width: 27%">
                     <div class="flex justify-content-between align-items-center">
                         Item
                     </div>
                 </th>
-                <th>
+                <th style="width: 10%">
                     <div class="flex justify-content-between align-items-center">
-                        Cantidad pedida
+                        Cant. pedida
                     </div>
                 </th>
-                <th>
+                <th style="width: 14%">
                     <div class="flex justify-content-between align-items-center">
-                        Cantidad despachada
+                        Cant. despachada
                     </div>
                 </th>
-                <th style="min-width:12rem">
+                <th style="width: 20%">
                     <div class="flex justify-content-between align-items-center">
                         Estado
                     </div>
                 </th>
-                <th style="min-width:12rem">
+                <th style="width: 16%">
                     <div class="flex justify-content-between align-items-center">
                         Avance
                     </div>
                 </th>
-                <th style="min-width:6rem"></th>
+                <th style="width: 5%"></th>
             </tr>
         </ng-template>
 

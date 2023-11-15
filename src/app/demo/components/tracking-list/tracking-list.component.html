@@ -22,7 +22,6 @@
                     class="table table-responsive"
                     responsiveLayout="stack"
                     [value]="pedidos"
-                    [loading]="loading"
                     [rowHover]="true"
                     [rows]="5"
                     [showCurrentPageReport]="true"
@@ -52,37 +51,37 @@
                     <!-- Cabecera de la tabla -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th pSortableColumn="numAtCard">
+                            <th pSortableColumn="numAtCard" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     N° de Pedido
                                     <p-sortIcon field="numAtCard"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="seriesName">
+                            <th pSortableColumn="seriesName" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Sucursal
                                     <p-sortIcon field="seriesName"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="docStatus">
+                            <th pSortableColumn="docStatus" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Estado
                                     <p-sortIcon field="docStatus"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="docDate">
+                            <th pSortableColumn="docDate" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Fecha de Ingreso
                                     <p-sortIcon field="docDate"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="taxDate">
+                            <th pSortableColumn="taxDate" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Fecha de Entrega
                                     <p-sortIcon field="taxDate"></p-sortIcon>
                                 </div>
                             </th>
-                            <th>
+                            <th style="width: 10%">
                             </th>
                         </tr>
                     </ng-template>
@@ -91,7 +90,7 @@
                     <ng-template pTemplate="body" let-pedido let-columns="columns">
                         <tr>
                             <td class="align-middle">
-                                {{ pedido.numAtCard }} - {{ pedido.docNum }}
+                                {{ pedido.numAtCard }} {{ pedido.docNum }}
                             </td>
                             <td class="align-middle">
                                 {{ pedido.seriesName }}

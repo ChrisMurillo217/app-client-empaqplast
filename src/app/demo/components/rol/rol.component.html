@@ -1,1 +1,240 @@
-<p>rol works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div *ngIf="!dataLoaded; else dataIsLoaded">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando la información.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #dataIsLoaded>
+            <div class="card px-6 py-6">
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <div class="px-3 py-3">
+                        <button
+                            pButton
+                            pRipple
+                            label="Nuevo"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openNewRole()">
+                        </button>
+                    </div>
+                </p-toolbar>
+
+                <p-table
+                    #dt
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="roles"
+                    [loading]="loading"
+                    [rowHover]="true"
+                    editMode="row"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Montrando del {first} al {last} de {totalRecords} roles"
+                    [globalFilterFields]="['nombreRol']"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <h5 class="m-0">Administrar roles</h5>
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt, $event)"
+                                    placeholder="Buscar..."
+                                    class="w-full"
+                                />
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="nombreRol" style="width: 25%">
+                                <div class="flex justify-content-left align-items-center">
+                                    Rol
+                                    <p-sortIcon field="nombreRol"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="descripcionRol" style="width: 60%">
+                                <div class="flex justify-content-left align-items-center">
+                                    Descripción
+                                    <p-sortIcon field="descripcionRol"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th style="width: 15%"></th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-role let-editing="editing">
+                        <tr [pEditableRow]="role">
+                            <td>
+                                {{ role.nombreRol }}
+                            </td>
+                            <td>
+                                {{ role.descripcionRol }}
+                            </td>
+                            <td>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button
+                                        *ngIf="!editing"
+                                        pButton
+                                        pInitEditableRow
+                                        type="button"
+                                        icon="pi pi-pencil"
+                                        (click)="onRowEditInit(product)"
+                                        class="p-button-rounded">
+                                    </button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        pSaveEditableRow
+                                        type="button"
+                                        icon="pi pi-check"
+                                        (click)="onRowEditSave(product)"
+                                        class="p-button-rounded p-button-success mr-2">
+                                    </button>
+                                    <button
+                                        *ngIf="editing"
+                                        pButton
+                                        pCancelEditableRow
+                                        type="button"
+                                        icon="pi pi-times"
+                                        (click)="onRowEditCancel(product, ri)"
+                                        class="p-button-rounded p-button-danger">
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <!-- Modal para agregar un nuevo usuario -->
+            <!--
+                <p-dialog
+                    header="Crear"
+                    [(visible)]="newPerson"
+                    [style]="{width: '450px'}"
+                    [modal]="true"
+                    styleClass="p-fluid">
+                    <ng-template pTemplate="content">
+                        <form>
+                            <div class="field">
+                                <label for="nombreUsuarioTr">Nombre</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="nombreUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="nombreUsuarioTr"
+                                    name="nombreUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !nombreUsuarioTr">
+                                    Nombre es requerido.
+                                </small>
+                            </div>
+                            <div class="field">
+                                <label for="apellidoUsuarioTr">Apellido</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="apellidoUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="apellidoUsuarioTr"
+                                    name="apellidoUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !apellidoUsuarioTr">
+                                    Apellido es requerido.
+                                </small>
+                            </div>
+                            <div class="field">
+                                <label for="direccionUsuarioTr">Dirección</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="direccionUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="direccionUsuarioTr"
+                                    name="direccionUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !direccionUsuarioTr">
+                                    Dirección es requerida.
+                                </small>
+                            </div>
+                            <div class="field">
+                                <label for="emailUsuarioTr">Correo</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="emailUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="emailUsuarioTr"
+                                    name="emailUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !emailUsuarioTr">
+                                    Correo es requerido.
+                                </small>
+                            </div>
+                            <div class="field">
+                                <label for="telefonoUsuarioTr">N° de Teléfono</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="telefonoUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="telefonoUsuarioTr"
+                                    name="telefonoUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !telefonoUsuarioTr">
+                                    N° de Teléfono es requerido.
+                                </small>
+                            </div>
+                        </form>
+                    </ng-template>
+
+                    <ng-template pTemplate="footer">
+                        <button
+                            pButton
+                            label="Cancelar"
+                            icon="pi pi-times"
+                            class="p-button-text"
+                            (click)="hideDialog()">
+                        </button>
+                        <button
+                            pButton
+                            label="Guardar"
+                            icon="pi pi-check"
+                            class="p-button-text"
+                            (click)="savePerson()">
+                        </button>
+                    </ng-template>
+                </p-dialog>
+            -->
+        </ng-template>
+    </div>
+</div>

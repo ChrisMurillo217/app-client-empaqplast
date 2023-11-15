@@ -24,7 +24,6 @@ export class TrackingListComponent implements OnInit {
     first:              number = 0;
     pedidos:            Pedidos[] = [];
     userData:           Usuarios[] = [];
-    loading:            boolean = true;
     dataLoaded:         boolean = false;
 
     @ViewChild( 'filter' ) filter!: ElementRef;
@@ -64,7 +63,6 @@ export class TrackingListComponent implements OnInit {
                     }
                 );
 
-                this.loading = false;
                 this.dataLoaded = true;
             },
             ( error ) => {
@@ -76,7 +74,7 @@ export class TrackingListComponent implements OnInit {
     showDetails( docNum ) {
         this.ref = this.dialogService.open( DetallesComponent, {
             header: 'Detalles del pedido',
-            width: '700px',
+            width: '900px',
             contentStyle: {
                 'max-height': '700px',
                 'overflow': 'auto'

@@ -1,16 +1,16 @@
-<div class="theme-lara-light-blue">
+<div class="backgroung-card">
     <p class="text-danger text-center">* Este documento no tiene validez tributaria *</p>
     <br>
     <div *ngIf="!detailsLoaded; else detailsIsLoaded">
         <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh; flex-direction: column;">
             <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
-                <span class="sr-only theme-lara-light-blue">Loading...</span>
+                <span class="sr-only lara-light">Loading...</span>
             </div>
             <div class="text-animation d-flex justify-content-center align-items-center">
-                <h4 class="text-center theme-lara-light-blue" style="margin-bottom: 5px;">Estamos procesando tu factura.</h4>
+                <h4 class="text-center lara-light" style="margin-bottom: 5px;">Estamos procesando tu factura.</h4>
             </div>
             <div class="text-animation d-flex justify-content-center align-items-center">
-                <h4 class="text-center theme-lara-light-blue" style="margin-top: 5px;">Espera por favor.</h4>
+                <h4 class="text-center lara-light" style="margin-top: 5px;">Espera por favor.</h4>
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <div class="grid flex m-2">
                 <div class="flex-1 pr-5 pl-3 pt-3">
                     <div class="grid">
-                        <div class="col-12 py-3 flex justify-content-center">
+                        <div class="col-12 py-3 flex justify-content-center backgroung-card ">
                             <img
                                 src="assets/layout/images/logo-factura.svg"
                                 height="80"
@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-12 py-3 card border-dark backgroung-card">
                             <div class="text-center">
-                                <h6 class="theme-lara-light-blue">EMPAQPLAST SA</h6>
+                                <h6 class="lara-light">EMPAQPLAST SA</h6>
                                 <br><br>
                             </div>
                             <div>
@@ -56,8 +56,8 @@
                 <div class="flex-1 pr-5 pl-3 py-3 card border-dark backgroung-card">
                     <div class="grid">
                         <div class="col-12 text-center">
-                            <h6 class="theme-lara-light-blue">R.U.C.: 1791240111001</h6>
-                            <h5 class="theme-lara-light-blue">F A C T U R A</h5>
+                            <h6 class="lara-light">R.U.C.: 1791240111001</h6>
+                            <h5 class="lara-light">F A C T U R A</h5>
                         </div>
                         <div class="col-12">
                             <strong>No.:</strong> {{ formatNumber( docs.unDocsri ) }} <!-- Carga el número de factura -->
@@ -102,39 +102,39 @@
             </div>
 
             <div class="grid flex m-2">
-                <div class="flex-1 px-3 py-3 card border-dark backgroung-card">
+                <div class="flex-1 px-3 py-3 card backgroung-card">
                     <p-table
                         [value]="itemsF"
-                        [tableStyle]="{ 'min-width': '48rem', 'font-size': '10px' }"
-                        styleClass="border-dark"> <!-- Aqui se van a presentar los items de la factura en base a la información que posee itemsF -->
+                        [tableStyle]="{ 'min-width': '48rem', 'font-size': '10px', 'background-color': '#fff', 'color': '#000'}"
+                        styleClass="backgroung-card"> <!-- Aqui se van a presentar los items de la factura en base a la información que posee itemsF -->
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="text-dark">Cod. Principal</th>
-                                <th class="text-dark">Descripción</th>
-                                <th class="text-dark">Cantidad</th>
-                                <th class="text-dark">Precio Unitario</th>
-                                <th class="text-dark">Precio Total</th>
+                                <th class="lara-light">Cod. Principal</th>
+                                <th class="lara-light">Descripción</th>
+                                <th class="lara-light">Cantidad</th>
+                                <th class="lara-light">Precio Unitario</th>
+                                <th class="lara-light">Precio Total</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-itemF>
                             <tr>
-                                <td class="text-dark">{{ itemF.itemCode }}</td> <!-- Código del item -->
-                                <td class="text-dark">{{ itemF.dscription }}</td><!-- Descripción del item -->
-                                <td class="text-right text-dark"> <!-- Cantidad pedida -->
+                                <td class="lara-light">{{ itemF.itemCode }}</td> <!-- Código del item -->
+                                <td class="lara-light">{{ itemF.dscription }}</td><!-- Descripción del item -->
+                                <td class="text-right lara-light"> <!-- Cantidad pedida -->
                                     {{
                                         itemF.quantity % 1 === 0 ?
                                         itemF.quantity.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
                                         itemF.quantity.toLocaleString( undefined )
                                     }}
                                 </td>
-                                <td class="text-right text-dark"><!-- Precio unitario del item -->
+                                <td class="text-right lara-light"><!-- Precio unitario del item -->
                                     {{
                                         itemF.pryUnit % 1 === 0 ?
                                         itemF.pryUnit.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
                                         itemF.pryUnit.toLocaleString( undefined )
                                     }}
                                 </td>
-                                <td class="text-right text-dark"> <!-- Precio total del item -->
+                                <td class="text-right lara-light"> <!-- Precio total del item -->
                                     {{
                                         itemF.totalLinea % 1 === 0 ?
                                         itemF.totalLinea.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
@@ -147,7 +147,7 @@
                 </div>
             </div>
 
-            <div class="grid flex m-2">
+            <div class="grid flex m-2 backgroung-card">
                 <div class="col-7 flex-1">
                     <div class="grid">
                         <div class="col-12">

@@ -1,29 +1,39 @@
-import { Component, OnInit }                from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef }                 from '@angular/core';
 
-import { MessageService }                   from 'primeng/api';
+import { MessageService }                                           from 'primeng/api';
 
-import { AuthService }                      from './../../service/auth.service';
-import { Usuarios }                         from './../../models/usuarios.model';
+import { UsuariosService }                                          from '../../service/usuarios.service';
+
+import { Usuarios }                                                 from './../../models/usuarios.model';
+import { Dates }                                                    from '../../models/dates.model';
 
 @Component({
   templateUrl: './person.component.html',
-  providers: [ MessageService ]
+  styleUrls: ['./person.component.css'],
+  providers: [ MessageService ],
 })
 export class PersonComponent implements OnInit {
-    loading:            boolean = true;
-    usuarios:           Usuarios[] = [];
-    usuario:            Usuarios;
-    pedidoDialog:       boolean;
-    submitted:          boolean;
+    datos:                  Dates[] = [];
+    newPerson:              boolean;
+    submitted:              boolean;
+    dataLoaded:             boolean = false;
+    nombreUsuarioTr:        string = '';
+    apellidoUsuarioTr:      string = '';
+    direccionUsuarioTr:     string = '';
+    emailUsuarioTr:         string = '';
+    telefonoUsuarioTr:      string = '';
 
-    constructor( private authService: AuthService ) {}
+    @ViewChild( 'filter' ) filter!: ElementRef;
+
+    constructor(
+        private usuariosService: UsuariosService
+    ) {}
 
     ngOnInit(): void {
-        this.authService.getUsuariosList().subscribe(
+        this.usuariosService.getDatosUsuarios().subscribe(
             ( data ) => {
-                this.usuarios = data;
-
-                this.loading = false;
+                this.datos = data;
+                this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
@@ -31,22 +41,40 @@ export class PersonComponent implements OnInit {
         );
     }
 
-    openNew() {
+    openNewDate() {
+        this.newPerson = true;
         this.submitted = false;
-        this.pedidoDialog = true;
     }
 
     editUser( user: Usuarios ) {
-        this.usuario = {...user};
-        this.pedidoDialog = true;
+        this.newPerson = true;
     }
 
     hideDialog() {
-        this.pedidoDialog = false;
+        this.newPerson = false;
         this.submitted = false;
     }
 
-    saveProduct() {
-        this.submitted = true;
+    savePerson() {
+        this.submitted = true
+
+        const newPerson: Dates = {
+            nombreUsuarioTr:        this.nombreUsuarioTr,
+            apellidoUsuarioTr:      this.apellidoUsuarioTr,
+            direccionUsuarioTr:     this.direccionUsuarioTr,
+            emailUsuarioTr:         this.emailUsuarioTr,
+            telefonoUsuarioTr:      this.telefonoUsuarioTr
+        }
+
+        this.usuariosService.newUser( newPerson ).subscribe(
+            ( response: any ) => {
+                console.log( response );
+            },
+            ( error: any ) => {
+                console.error( 'Error al registrar la persona', error );
+            }
+        )
+
+        this.newPerson = false;
     }
 }

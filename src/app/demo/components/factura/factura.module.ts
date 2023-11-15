@@ -1,6 +1,5 @@
 import { NgModule }                     from '@angular/core';
 import { CommonModule }                 from '@angular/common';
-import { FormsModule }                  from '@angular/forms';
 
 import { FacturaComponent }             from './factura.component';
 import { DocumentoComponent }           from './documento/documento.component';
@@ -18,7 +17,6 @@ import { InputTextModule }              from 'primeng/inputtext';
 	imports: [
 		CommonModule,
 		FacturaRoutingModule,
-		FormsModule,
 		TableModule,
 		ButtonModule,
         PaginatorModule,

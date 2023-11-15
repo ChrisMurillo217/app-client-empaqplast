@@ -17,7 +17,6 @@ export class StockComponent implements OnInit {
     stocks:             Stock[] = [];
     userData:           Usuarios[] = [];
     first               = 0;
-    loading:            boolean = true;
     dataLoaded:         boolean = false;
 
     @ViewChild('filter') filter!: ElementRef;
@@ -38,11 +37,11 @@ export class StockComponent implements OnInit {
             ( data ) => {
                 this.stocks = data;
                 this.stocks.sort( ( a, b ) => a.itemCode.localeCompare( b.itemCode ) ); // Ordena por orden alfabetico los códigos de item
-                this.loading = false;
                 this.dataLoaded = true;
             },
             ( error ) => {
                 console.error( error );
+                this.dataLoaded = true;
             }
         );
     }

@@ -22,7 +22,6 @@
                     class="table table-responsive"
                     responsiveLayout="stack"
                     [value]="documentos"
-                    [loading]="loading"
                     [rowHover]="true"
                     [rows]="5"
                     [showCurrentPageReport]="true"
@@ -52,33 +51,31 @@
                     <!-- Cabecera de la tabla -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th pSortableColumn="series">
+                            <th pSortableColumn="series" style="width: 20%">
                                 <div class="flex justify-content-between align-items-center">
                                     Tipo de documento
                                     <p-sortIcon field="series"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="docNum">
+                            <th pSortableColumn="docNum" style="width: 20%">
                                 <div class="flex justify-content-between align-items-center">
                                     N° de documento
                                     <p-sortIcon field="docNum"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="ffact">
+                            <th pSortableColumn="ffact" style="width: 20%">
                                 <div class="flex justify-content-between align-items-center">
                                     Fecha de creación
                                     <p-sortIcon field="ffact"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="ffactV">
+                            <th pSortableColumn="ffactV" style="width: 20%">
                                 <div class="flex justify-content-between align-items-center">
                                     Fecha de vencimiento
                                     <p-sortIcon field="ffactV"></p-sortIcon>
                                 </div>
                             </th>
-                            <th>
-                                <div class="flex justify-content-between align-items-center">
-                                </div>
+                            <th style="width: 20%">
                             </th>
                         </tr>
                     </ng-template>

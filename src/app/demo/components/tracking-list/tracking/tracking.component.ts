@@ -54,13 +54,6 @@ export class TrackingComponent implements OnInit {
 
         this.trackingService.getPedidosByDocNum( this.cardCode, this.docNum ).subscribe(
             ( data ) => {
-                this.docDate = this.formatDate( data[0].docDate );
-                this.docStatus = data[0].docStatus;
-                this.docDueDate = this.formatDate( data[0].docDueDate );
-                this.tiempoEntrega = this.calcularTiempoEntrega(
-                    data[0].docDate,
-                    data[0].docDueDate
-                );
                 this.items = data[0].items;
 
                 const itemCodeMap = {};
@@ -80,6 +73,8 @@ export class TrackingComponent implements OnInit {
                 this.items = Object.keys( itemCodeMap ).map(
                     ( itemCode ) => {
                         const originalItem = this.items.find( ( item ) => item.itemCode === itemCode );
+                        console.log(originalItem);
+
                         return {
                             docEntry: originalItem.docEntry, // Agrega el valor correcto para docEntry
                             dscription: originalItem.dscription, // Agrega el valor correcto para dscription
@@ -344,7 +339,7 @@ export class TrackingComponent implements OnInit {
                                                                 dscription: item.dscription,
                                                                 quantityP: item.quantity,
                                                                 quantityD: 0,
-                                                                status: 'Aun no empezamos.',
+                                                                status: `Pedido ingresado el ${ this.formatDate( data[0].docDate ) }.`,
                                                                 progressBarValue: 0,
                                                                 verified: false,
                                                             } );
@@ -366,7 +361,7 @@ export class TrackingComponent implements OnInit {
                                                 dscription: item.dscription,
                                                 quantityP: item.quantity,
                                                 quantityD: 0,
-                                                status: 'Aun no empezamos.',
+                                                status: `Pedido ingresado el ${ this.formatDate( data[0].docDate ) }.`,
                                                 progressBarValue: 0,
                                                 verified: false,
                                             } );
@@ -409,7 +404,7 @@ export class TrackingComponent implements OnInit {
                                                                 dscription: item.dscription,
                                                                 quantityP: item.quantity,
                                                                 quantityD: 0,
-                                                                status: 'Aun no empezamos.',
+                                                                status: `Pedido ingresado el ${ this.formatDate( data[0].docDate ) }.`,
                                                                 progressBarValue: 0,
                                                                 verified: false,
                                                             } );
@@ -423,7 +418,7 @@ export class TrackingComponent implements OnInit {
                                                     dscription: item.dscription,
                                                     quantityP: item.quantity,
                                                     quantityD: 0,
-                                                    status: 'Aun no empezamos.',
+                                                    status: `Pedido ingresado el ${ this.formatDate( data[0].docDate ) }.`,
                                                     progressBarValue: 0,
                                                     verified: false,
                                                 } );
@@ -443,11 +438,6 @@ export class TrackingComponent implements OnInit {
                 console.error( error );
             }
         );
-
-        if ( this.progressBarValue === 100 ) {
-            this.mostrarSpinner = false;
-        }
-
     }
 
     formatDate( dateString: string ): string {
@@ -457,13 +447,5 @@ export class TrackingComponent implements OnInit {
         const year = date.getFullYear().toString();
 
         return `${ day }/${ month }/${ year }`;
-    }
-
-    calcularTiempoEntrega( docDate: Date, docDueDate: Date ): string {
-        const fechaIngreso = new Date( docDate );
-        const fechaEntrega = new Date( docDueDate );
-        const tiempoMilisegundos = fechaEntrega.getTime() - fechaIngreso.getTime();
-        const diasEntrega = tiempoMilisegundos / ( 1000 * 60 * 60 * 24 );
-        return `${ Math.floor( diasEntrega ) } días`;
     }
 }

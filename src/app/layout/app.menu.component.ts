@@ -11,7 +11,6 @@ import { Usuarios } from '../demo/models/usuarios.model';
 export class AppMenuComponent implements OnInit {
     userData:           Usuarios[] = [];
     model:              any[] = [];
-    model1:              any[] = [];
 
     constructor(
         public layoutService: LayoutService,
