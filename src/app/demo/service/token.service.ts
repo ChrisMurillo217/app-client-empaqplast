@@ -15,8 +15,8 @@ export class TokenService {
         return this.userDataSubject.asObservable();
     }
 
-    setToken(token: string) {
-        this.tokenSubject.next(token);
+    setToken( token: string ) {
+        this.tokenSubject.next( token );
     }
 
     getToken() {
@@ -25,7 +25,7 @@ export class TokenService {
     }
 
     clearToken() {
-        this.tokenSubject.next(null);
-        localStorage.removeItem('token');
+        this.tokenSubject.next( null );
+        localStorage.removeItem( 'token' );
     }
 }

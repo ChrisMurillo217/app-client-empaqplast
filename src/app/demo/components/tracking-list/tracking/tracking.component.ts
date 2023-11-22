@@ -284,7 +284,7 @@ export class TrackingComponent implements OnInit {
                                                                             dscription: item.dscription,
                                                                             quantityP: item.quantity,
                                                                             quantityD: 0,
-                                                                            status: 'Tiene una Orden de fabricación.',
+                                                                            status: `El ${ ofItem.startDate } se generó una orden de fabricación.`,
                                                                             progressBarValue: this.progressBarValue,
                                                                             verified: this.verified,
                                                                         } );
@@ -391,7 +391,7 @@ export class TrackingComponent implements OnInit {
                                                             dscription: item.dscription,
                                                             quantityP: item.quantity,
                                                             quantityD: 0,
-                                                            status: 'Tiene una Orden de fabricación.',
+                                                            status: `El ${ ofItem.startDate } se generó una orden de fabricación.`,
                                                             progressBarValue: this.progressBarValue,
                                                             verified: this.verified,
                                                         } );

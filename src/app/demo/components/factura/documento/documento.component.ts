@@ -165,4 +165,8 @@ export class DocumentoComponent implements OnInit {
         }
         pdf.save( 'documento.pdf' );
     }
+
+    closeModal() {
+        this.ref.close();
+    }
 }

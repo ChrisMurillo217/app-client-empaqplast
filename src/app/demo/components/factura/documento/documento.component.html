@@ -324,12 +324,18 @@
         </div>
     </ng-template>
 
-    <div class="modal-footer"> <!-- Boton que permite imprimir el contenido del modal-->
+    <div class="modal-footer justify-content-center"> <!-- Boton que permite imprimir el contenido del modal-->
         <p-button
             icon="pi pi-print"
             (click)="imprimirContenido()"
             label="Imprimir"
             styleClass="p-button-text">
+        </p-button>
+        <p-button
+            icon="pi pi-times"
+            (click)="closeModal()"
+            label="Cerrar"
+            styleClass="p-button-danger p-button-text">
         </p-button>
     </div>
 </div>

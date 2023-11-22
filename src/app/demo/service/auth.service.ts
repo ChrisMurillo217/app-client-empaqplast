@@ -43,17 +43,8 @@ export class AuthService {
                     const token = response[0].datosLogin.token
                     this.tokenService.setUserData( response );
                     this.tokenService.setToken( token );
-                    localStorage.setItem( 'token', token );
                 }
             } )
         );
-    }
-
-    getToken(): string | null {
-        return localStorage.getItem('token');
-    }
-
-    get IsLoggedIn$(): Observable< boolean > {
-        return this.isLoggedInSubject.asObservable();
     }
 }

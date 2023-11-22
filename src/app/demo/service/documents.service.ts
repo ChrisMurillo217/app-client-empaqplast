@@ -15,6 +15,10 @@ export class DocumentService {
         private tokenService: TokenService
     ) { }
 
+    private saveLocalStorage(): void {
+        // localStorage.setItem('history', )
+    }
+
     getAuthHeaders() {
         const token = this.tokenService.getToken();
         return new HttpHeaders( {
