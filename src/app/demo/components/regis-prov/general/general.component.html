@@ -1,0 +1,147 @@
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Información General
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Ingresa la información de tu empresa
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="field grid">
+                <div class="col-6 p-fluid">
+                    <label for="rucP" class="text-lg block">RUC</label>
+                    <p-inputMask
+                        class="bg-primary"
+                        id="rucP"
+                        mask="9999999999 001"
+                        placeholder="9999999999 001">
+                    </p-inputMask>
+                </div>
+                <div class="col-6 p-fluid">
+                    <label for="razonsocialP" class="text-lg block">
+                        Razón Social
+                    </label>
+                    <input id="razonsocialP" type="text" pInputText/>
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="nomRLP" class="text-lg block">
+                        Representante Legal
+                    </label>
+                    <input id="nomRLP" type="text" pInputText/>
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-6 p-fluid">
+                    <label for="paisP" class="text-lg block">
+                        País
+                    </label>
+                    <p-autoComplete field="paisP" [dropdown]="true">
+                        <ng-template let-country pTemplate="item">
+                            <div class="country-item">
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+                <div class="col-6 p-fluid">
+                    <label for="ciudadP" class="text-lg block">
+                        Ciudad
+                    </label>
+                    <p-autoComplete field="ciudadP" [dropdown]="true">
+                        <ng-template let-country pTemplate="item">
+                            <div class="country-item">
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="direccionP" class="text-lg block">
+                        Dirección
+                    </label>
+                    <textarea rows="2" cols="30" pInputTextarea></textarea>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="emailP" class="text-lg block">
+                        E-mail
+                    </label>
+                    <input
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="blockSpace"
+                        placeholder="xxxxxxxxx@ejemplo.com"
+                    />
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="paginaWP" class="text-lg block">
+                        Sitio Web
+                    </label>
+                    <input
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="blockSpace"
+                        placeholder="www.ejemplo.com"
+                    />
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="naturalezaP" class="text-lg block">
+                        Naturaleza del Negocio
+                    </label>
+                </div>
+                <div class="col-4 field-radiobutton">
+                    <p-radioButton
+                        name="naturalezaP"
+                        value="Fabricante"
+                        [(ngModel)]="naturalezaP"
+                        inputId="natu1">
+                    </p-radioButton>
+                    <label for="natu1">Fabricante</label>
+                </div>
+                <div class="col-4 field-radiobutton">
+                    <p-radioButton
+                        name="naturalezaP"
+                        value="Comercial / Intermediario"
+                        [(ngModel)]="naturalezaP"
+                        inputId="natu2">
+                    </p-radioButton>
+                    <label for="natu2">Comercial / Intermediario</label>
+                </div>
+                <div class="col-4 field-radiobutton">
+                    <p-radioButton
+                        name="naturalezaP"
+                        value="Servicios"
+                        [(ngModel)]="naturalezaP"
+                        inputId="natu3">
+                    </p-radioButton>
+                    <label for="natu3">Servicios</label>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="actividadEconomicaP" class="text-lg block">
+                        Actividad Económica
+                    </label>
+                    <input id="actividadEconomicaP" type="text" pInputText/>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter justify-content-end">
+                <p-button
+                    label="Next"
+                    (onClick)="nextPage()"
+                    icon="pi pi-angle-right"
+                    iconPos="right">
+                </p-button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

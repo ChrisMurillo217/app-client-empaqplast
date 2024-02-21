@@ -23,7 +23,7 @@ export class UsuariosService {
         } );
     }
 
-    newUser( dates: Dates ): Observable< any > {
+    newUser( dates: Dates ): Observable< any > { // A través de este método guardo nuevas personas en la BD
         const url = `${ this.urlAPI }/RegistroDatos`;
         const headers = this.getAuthHeaders();
         return this.__http.post( url, dates, { headers } ).pipe(
@@ -33,7 +33,7 @@ export class UsuariosService {
         );
     }
 
-    getDatosUsuarios( ): Observable< any[] > {
+    getDatosUsuarios( ): Observable< any[] > { // Con este método obtenemos la lista de todos los Usuarios
         const url = `${ this.urlAPI }/DatosUsuarios`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
@@ -43,7 +43,7 @@ export class UsuariosService {
         );
     }
 
-    getRoles( ): Observable< any[] > {
+    getRoles( ): Observable< any[] > { // Con este método obtenemos la lista de todos los roles
         const url = `${ this.urlAPI }/ListaRoles`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(

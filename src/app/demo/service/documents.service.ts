@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { Document } from '../models/document.model';
-import { TokenService } from './token.service';
+import { Injectable }                               from '@angular/core';
+import { HttpClient, HttpHeaders }                  from '@angular/common/http';
+import { Observable, catchError, throwError }       from 'rxjs';
+
+import { Document }                                 from '../models/document.model';
+import { GuiaInfo }                                 from '../models/guia-rem.model';
+
+import { TokenService }                             from './token.service';
 
 @Injectable( {
   providedIn: 'root'
@@ -15,10 +18,6 @@ export class DocumentService {
         private tokenService: TokenService
     ) { }
 
-    private saveLocalStorage(): void {
-        // localStorage.setItem('history', )
-    }
-
     getAuthHeaders() {
         const token = this.tokenService.getToken();
         return new HttpHeaders( {
@@ -26,7 +25,7 @@ export class DocumentService {
         } );
     }
 
-    getFacturasList( codClient: string ): Observable< any[] > {
+    getFacturasList( codClient: string ): Observable< any[] > { // Metodo para obtener la lista de todas las facturas y notas de credito que se tiene
         const url = `${ this.urlAPI }/Facturas?CodClient=${ codClient }`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
@@ -36,13 +35,23 @@ export class DocumentService {
         );
     }
 
-    getFacturaByDocNum( codClient: string, numeroFact: number ): Observable< any[] > {
+    getFacturaByDocNum( codClient: string, numeroFact: number ): Observable< any[] > { // Metodo para obtener el detalle de una factura especifica basado en el codigo del cliente y el numero de factura
         const url = `${ this.urlAPI }/Factura?CodClient=${ codClient }&NumeroFact=${ numeroFact }`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )
+        );
+    }
+
+    getGuiasList( cardCode: string ): Observable< any[] > { // Metodo para obtener la lista de todas las guías que se tiene
+        const url = `${ this.urlAPI }/Entrega?cardCode=${ cardCode }`;
+        const headers = this.getAuthHeaders();
+        return this.__http.get< GuiaInfo[] >( url, { headers } ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            })
         );
     }
 }

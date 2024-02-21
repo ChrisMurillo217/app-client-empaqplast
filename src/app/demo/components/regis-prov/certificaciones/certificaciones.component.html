@@ -1,0 +1,181 @@
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Certificaciones
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Ingresa las certificaciones que posea su empresa
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="field grid" *ngIf="agregarCertificaciones != 'Si'">
+                <div class="col-12 p-fluid">
+                    <label for="agregarCertificaciones" class="text-lg block">
+                        Su empresa tiene certificaciones
+                    </label>
+                </div>
+                <div class="col-4 field-radiobutton">
+                    <p-radioButton
+                        name="agregarCertificaciones"
+                        value="Si"
+                        [(ngModel)]="agregarCertificaciones">
+                    </p-radioButton>
+                    <label for="natu1">Si</label>
+                </div>
+                <div class="col-4 field-radiobutton">
+                    <p-radioButton
+                        name="agregarCertificaciones"
+                        value="No"
+                        [(ngModel)]="agregarCertificaciones">
+                    </p-radioButton>
+                    <label for="natu2">No</label>
+                </div>
+            </div>
+
+            <div *ngIf="agregarCertificaciones === 'Si'">
+                <div class="field grid">
+                    <div class="col-12 p-fluid">
+                        <label for="tipoCertP" class="text-lg block">
+                            Organismos
+                        </label>
+                    </div>
+                    <div class="col-6 field-radiobutton">
+                        <p-radioButton
+                            name="tipoCertP"
+                            value="FDA"
+                            [(ngModel)]="nuevoCertificacion.tipoCertP"
+                            inputId="tipoCertP">
+                        </p-radioButton>
+                        <label for="tipoCertP">FDA</label>
+                    </div>
+                    <div class="col-6 field-radiobutton">
+                        <p-radioButton
+                            name="tipoCertP"
+                            value="ISO"
+                            [(ngModel)]="nuevoCertificacion.tipoCertP"
+                            inputId="tipoCertP">
+                        </p-radioButton>
+                        <label for="tipoCertP">ISO</label>
+                    </div>
+                    <div class="col-6 field-radiobutton">
+                        <p-radioButton
+                            name="tipoCertP"
+                            value="CC"
+                            [(ngModel)]="nuevoCertificacion.tipoCertP"
+                            inputId="tipoCertP">
+                        </p-radioButton>
+                        <label for="tipoCertP">CC</label>
+                    </div>
+                    <div class="col-6 field-radiobutton">
+                        <p-radioButton
+                            name="tipoCertP"
+                            value="FT"
+                            [(ngModel)]="nuevoCertificacion.tipoCertP"
+                            inputId="tipoCertP">
+                        </p-radioButton>
+                        <label for="tipoCertP">FT</label>
+                    </div>
+                    <div class="col-6 p-fluid">
+                        <label for="tipoCertP">Otro</label>
+                        <input
+                            id="tipoCertP"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="nuevoCertificacion.tipoCertP"
+                        />
+                    </div>
+                </div>
+                <div class="field grid ">
+                    <div class="col-12 p-fluid">
+                        <label for="normaCertP" class="text-lg block">
+                            Normas
+                        </label>
+                        <input
+                            id="normaCertP"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="nuevoCertificacion.normaCertP"
+                        />
+                    </div>
+                </div>
+                <div class="field grid ">
+                    <div class="col-12 p-fluid">
+                        <label for="nombreCertP" class="text-lg block">
+                            Certificado
+                        </label>
+                        <input
+                            id="nombreCertP"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="nuevoCertificacion.nombreCertP"
+                        />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <div class="col-12 p-fluid">
+                        <label for="fechaVigenciCertP" class="text-lg">
+                            Vigencia
+                        </label>
+                        <p-calendar
+                            [(ngModel)]="nuevoCertificacion.fechaVigenciCertP"
+                            [showIcon]="true"
+                            inputId="fechaVigenciCertP">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <div class="col-12 p-fluid">
+                        <label for="obsCertP" class="text-lg block">
+                            Observaciones
+                        </label>
+                        <textarea
+                            id="obsCertP"
+                            rows="2"
+                            cols="30"
+                            pInputTextarea
+                            [(ngModel)]="nuevoCertificacion.obsCertP">
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="field grid">
+                    <div class="col-12">
+                        <button pButton type="button" (click)="agregarCampos()">
+                            Agregar otro certificado
+                        </button>
+                    </div>
+                </div>
+
+                <div class="field grid">
+                    <div class="col-12 p-fluid">
+                        <div *ngFor="let certificado of certificaciones">
+                            <p><strong>{{ certificado.tipoCertP }}</strong></p>
+                            <p>{{ certificado.normaCertP }}</p>
+                            <p>{{ certificado.nombreCertP }}</p>
+                            <p>{{ certificado.fechaVigenciCertP }}</p>
+                            <p>{{ certificado.obsCertP }}</p><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter">
+                <div class="col-6">
+                    <p-button
+                        label="Back"
+                        (onClick)="prevPage()"
+                        icon="pi pi-angle-left">
+                    </p-button>
+                </div>
+                <div class="col-6 grid grid-nogutter justify-content-end">
+                    <p-button
+                        label="Next"
+                        (onClick)="nextPage()"
+                        icon="pi pi-angle-right"
+                        iconPos="right">
+                    </p-button>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

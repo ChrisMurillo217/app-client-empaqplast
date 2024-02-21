@@ -1,0 +1,117 @@
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Principales clientes
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Ingrese sus principales clientes del ultimo año
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="nomRefPC" class="text-lg block">
+                        Compañia
+                    </label>
+                    <input
+                        id="nomRefPC"
+                        type="text"
+                        pInputText
+                        [(ngModel)]="nuevoCliente.nomRefPC"
+                    />
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="contacRefPC" class="text-lg block">
+                        Contacto
+                    </label>
+                    <p-inputMask
+                        class="bg-primary"
+                        id="contacRefPC"
+                        mask="099 999 9999"
+                        placeholder="099 999 9999"
+                        [(ngModel)]="nuevoCliente.contacRefPC">
+                    </p-inputMask>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="emailRefPC" class="text-lg block">
+                        E-mail
+                    </label>
+                    <input
+                        id="emailRefPC"
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="blockSpace"
+                        placeholder="xxxxxxxxx@ejemplo.com"
+                        [(ngModel)]="nuevoCliente.emailRefPC"
+                    />
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-6 p-fluid">
+                    <label for="paisRefPC" class="text-lg block">
+                        País
+                    </label>
+                    <p-autoComplete field="paisRefPC" [dropdown]="true">
+                        <ng-template let-country pTemplate="item">
+                            <div class="country-item">
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+                <div class="col-6 p-fluid">
+                    <label for="ciudadRefPC" class="text-lg block">
+                        Ciudad
+                    </label>
+                    <p-autoComplete field="ciudadRefPC" [dropdown]="true">
+                        <ng-template let-country pTemplate="item">
+                            <div class="country-item">
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <div class="col-12">
+                    <button pButton type="button" (click)="agregarCampos()">
+                        Agregar otro cliente
+                    </button>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <div *ngFor="let cliente of clientes">
+                        <p><strong>{{ cliente.nomRefPC }}</strong></p>
+                        <p>{{ cliente.contacRefPC }}</p>
+                        <p>{{ cliente.emailRefPC }}</p>
+                        <p>{{ cliente.paisRefPC }}</p>
+                        <p>{{ cliente.ciudadRefPC }}</p><br>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter">
+                <div class="col-6">
+                    <p-button
+                        label="Back"
+                        (onClick)="prevPage()"
+                        icon="pi pi-angle-left">
+                    </p-button>
+                </div>
+                <div class="col-6 grid grid-nogutter justify-content-end">
+                    <p-button
+                        label="Next"
+                        (onClick)="nextPage()"
+                        icon="pi pi-angle-right"
+                        iconPos="right">
+                    </p-button>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

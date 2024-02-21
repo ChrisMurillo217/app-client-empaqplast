@@ -55,19 +55,17 @@
                 </div>
                 <div class="flex-1 pr-5 pl-3 py-3 card border-dark backgroung-card">
                     <div class="grid">
-                        <div class="col-12 text-center">
-                            <h6 class="lara-light">R.U.C.: 1791240111001</h6>
-                            <h5 class="lara-light">F A C T U R A</h5>
-                        </div>
                         <div class="col-12">
+                            <h6 class="lara-light text-center">R.U.C.: 1791240111001</h6>
+                            <h5 class="lara-light text-center">F A C T U R A</h5>
                             <strong>No.:</strong> {{ formatNumber( docs.unDocsri ) }} <!-- Carga el número de factura -->
                             <br>
                             <br>
                             <strong>Número de autorización:</strong> {{ docs.autoSri }} <!-- Carga el número de autorización -->
                             <br>
                             <br>
-                            <strong>Ambiente:</strong> Producción
-                            <strong>Emisión:</strong> Normal
+                            <strong>Ambiente:</strong> Producción <br><br>
+                            <strong>Emisión:</strong> Normal <br><br>
                             <strong>CLAVE DE ACCESO:</strong>
                             <svg id='barcode'></svg> <!-- Genera un código de barras basado en el número de autorización-->
                         </div>
@@ -129,16 +127,12 @@
                                 </td>
                                 <td class="text-right lara-light"><!-- Precio unitario del item -->
                                     {{
-                                        itemF.pryUnit % 1 === 0 ?
-                                        itemF.pryUnit.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
-                                        itemF.pryUnit.toLocaleString( undefined )
+                                        itemF.pryUnit
                                     }}
                                 </td>
                                 <td class="text-right lara-light"> <!-- Precio total del item -->
                                     {{
-                                        itemF.totalLinea % 1 === 0 ?
-                                        itemF.totalLinea.toLocaleString( undefined, { maximimFractionDigits: 0 } ) :
-                                        itemF.totalLinea.toLocaleString( undefined )
+                                        itemF.totalLinea
                                     }}
                                 </td>
                             </tr>

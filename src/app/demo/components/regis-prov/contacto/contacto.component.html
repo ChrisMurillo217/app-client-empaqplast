@@ -1,0 +1,120 @@
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title">
+            Contacto
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Ingresa la información de las personas de contacto
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="nombrePC" class="text-lg block">
+                        Nombre
+                    </label>
+                    <input
+                        id="nombrePC"
+                        type="text"
+                        pInputText
+                        [(ngModel)]="nuevoContacto.nombre"
+                    />
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="cargoPC" class="text-lg block">
+                        Cargo
+                    </label>
+                    <input
+                        id="cargoPC"
+                        type="text"
+                        pInputText
+                        [(ngModel)]="nuevoContacto.cargo"
+                    />
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="celPC" class="text-lg block">
+                        Celular
+                    </label>
+                    <p-inputMask
+                        class="bg-primary"
+                        id="celPC"
+                        mask="099 999 9999"
+                        placeholder="099 999 9999"
+                        [(ngModel)]="nuevoContacto.celular">
+                    </p-inputMask>
+                </div>
+            </div>
+            <div class="field grid ">
+                <div class="col-12 p-fluid">
+                    <label for="telPC" class="text-lg block">
+                        Teléfono
+                    </label>
+                    <p-inputMask
+                        class="bg-primary"
+                        id="telPC"
+                        mask="099 999 999"
+                        placeholder="099 999 999"
+                        [(ngModel)]="nuevoContacto.telefono">
+                    </p-inputMask>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="emailPC" class="text-lg block">
+                        E-mail
+                    </label>
+                    <input
+                        id="emailPC"
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="blockSpace"
+                        placeholder="xxxxxxxxx@ejemplo.com"
+                        [(ngModel)]="nuevoContacto.mail"
+                    />
+                </div>
+            </div>
+
+            <div class="field grid">
+                <div class="col-12">
+                    <button pButton type="button" (click)="agregarCampos()">
+                        Agregar otro contacto
+                    </button>
+                </div>
+            </div>
+
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <div *ngFor="let contacto of contactos">
+                        <p><strong>{{ contacto.nombre }}</strong></p>
+                        <p>{{ contacto.cargo }}</p>
+                        <p>{{ contacto.celular }}</p>
+                        <p>{{ contacto.telefono }}</p>
+                        <p>{{ contacto.mail }}</p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter">
+                <div class="col-6">
+                    <p-button
+                        label="Back"
+                        (onClick)="prevPage()"
+                        icon="pi pi-angle-left">
+                    </p-button>
+                </div>
+                <div class="col-6 grid grid-nogutter justify-content-end">
+                    <p-button
+                        label="Next"
+                        (onClick)="nextPage()"
+                        icon="pi pi-angle-right"
+                        iconPos="right">
+                    </p-button>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
-import { LayoutService } from "./service/app.layout.service";
-import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppTopBarComponent } from './app.topbar.component';
+import { Component, OnDestroy, Renderer2, ViewChild }   from '@angular/core';
+import { NavigationEnd, Router }                        from '@angular/router';
+import { filter, Subscription }                         from 'rxjs';
+import { LayoutService }                                from "./service/app.layout.service";
+import { AppSidebarComponent }                          from "./app.sidebar.component";
+import { AppTopBarComponent }                           from './app.topbar.component';
 
 @Component( {
     selector: 'app-layout',
@@ -42,10 +42,6 @@ export class AppLayoutComponent implements OnDestroy {
                     }
                 } );
             }
-
-            if ( this.layoutService.state.staticMenuMobileActive ) {
-                this.blockBodyScroll();
-            }
         } );
 
         this.router.events.pipe( filter( event => event instanceof NavigationEnd ) )
@@ -64,7 +60,6 @@ export class AppLayoutComponent implements OnDestroy {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
         }
-        this.unblockBodyScroll();
     }
 
     hideProfileMenu() {
@@ -72,25 +67,6 @@ export class AppLayoutComponent implements OnDestroy {
         if ( this.profileMenuOutsideClickListener ) {
             this.profileMenuOutsideClickListener();
             this.profileMenuOutsideClickListener = null;
-        }
-    }
-
-    blockBodyScroll(): void {
-        if ( document.body.classList ) {
-            document.body.classList.add( 'blocked-scroll' );
-        }
-        else {
-            document.body.className += ' blocked-scroll';
-        }
-    }
-
-    unblockBodyScroll(): void {
-        if ( document.body.classList ) {
-            document.body.classList.remove( 'blocked-scroll' );
-        }
-        else {
-            document.body.className = document.body.className.replace( new RegExp( '(^|\\b)' +
-                'blocked-scroll'.split( ' ' ).join( '|' ) + '(\\b|$)', 'gi' ), ' ' );
         }
     }
 

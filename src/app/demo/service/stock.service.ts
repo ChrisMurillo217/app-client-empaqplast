@@ -22,7 +22,7 @@ export class StockService {
         } );
     }
 
-    getStock( cardCode: string ): Observable< any[] > {
+    getStock( cardCode: string ): Observable< any[] > { // Metodo para obtener la lista del stock que tiene cada empresa basado en el cardCode
         const url = `${ this.urlAPI }/Stock?CardCode=${ cardCode }`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Stock[] >( url, { headers } ).pipe(

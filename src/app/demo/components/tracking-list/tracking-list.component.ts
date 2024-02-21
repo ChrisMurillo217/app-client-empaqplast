@@ -49,7 +49,7 @@ export class TrackingListComponent implements OnInit {
                 data.forEach(
                     ( item ) => {
                         const docDate = new Date( item.docDate )
-                        if ( docDate.getFullYear().toString() === currentYear.toString() ) {
+                        if ( docDate.getFullYear().toString() === currentYear.toString() || docDate.getFullYear().toString() === (currentYear - 1).toString() ) {
                             this.pedidos.push( item );
                         }
                     }

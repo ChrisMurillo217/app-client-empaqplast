@@ -15,14 +15,14 @@ export class AuthService {
         private tokenService: TokenService
     ) {}
 
-    getAuthHeaders() {
+    getAuthHeaders() { // Este metodo me sirve para conectarme con el servicio de token donde estamos recibiendo y enviando el token configurado como Bearer
         const token = this.tokenService.getToken();
         return new HttpHeaders( {
             Authorization: `Bearer ${ token }`
         } );
     }
 
-    getUsuariosList(): Observable< Usuarios[] > {
+    getUsuariosList(): Observable< Usuarios[] > { // A traves de este metodo podemos presentar la lista de usuarios que tenemos en la BD
         const url = `${ this.urlAPI }/Permisos`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Usuarios[] >( url, { headers } ).pipe(
@@ -32,7 +32,7 @@ export class AuthService {
         );
     }
 
-    getLogin( usuario: string, contrasena: string ): Observable< Usuarios[] > {
+    getLogin( usuario: string, contrasena: string ): Observable< Usuarios[] > { // Este metodo nos sirve para realizar una comparación entre lo que se escribe en pantalla y lo que esta en la BD y en base a eso iniciar sesión o mostrar un mensaje de error
         const url = `${ this.urlAPI }/PermisosLogin?usuario=${ usuario }&contrasena=${ contrasena }`;
         return this.__http.get< Usuarios[] >( url ).pipe(
             catchError( ( error ) => {
@@ -40,9 +40,9 @@ export class AuthService {
             } ),
             tap( ( response ) => {
                 if ( response && response.length > 0 ) {
-                    const token = response[0].datosLogin.token
-                    this.tokenService.setUserData( response );
-                    this.tokenService.setToken( token );
+                    const token = response[0].datosLogin.token // Obtenemos el token solo si las credenciales son correctas
+                    this.tokenService.setUserData( response ); // Enviamos la información del usuario para poder tener acceso a ella conforme vayamos necesitando mas adelante
+                    this.tokenService.setToken( token ); // Enviamos el registro del token  que sera utilizado para las diferentes consultas durante el uso del sistema
                 }
             } )
         );

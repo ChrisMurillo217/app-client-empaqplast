@@ -57,6 +57,12 @@
                                     <p-sortIcon field="numAtCard"></p-sortIcon>
                                 </div>
                             </th>
+                            <th pSortableColumn="docNum" style="width: 15%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Pedido interno
+                                    <p-sortIcon field="docNum"></p-sortIcon>
+                                </div>
+                            </th>
                             <th pSortableColumn="seriesName" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Sucursal
@@ -90,7 +96,10 @@
                     <ng-template pTemplate="body" let-pedido let-columns="columns">
                         <tr>
                             <td class="align-middle">
-                                {{ pedido.numAtCard }} {{ pedido.docNum }}
+                                {{ pedido.numAtCard }}
+                            </td>
+                            <td class="align-middle">
+                                {{ pedido.docNum }}
                             </td>
                             <td class="align-middle">
                                 {{ pedido.seriesName }}

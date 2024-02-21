@@ -30,9 +30,9 @@ export class PersonComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.usuariosService.getDatosUsuarios().subscribe(
+        this.usuariosService.getDatosUsuarios().subscribe( // Llama al metodo de getDatosUsuarios del UsuarioService para obtener la lista de personas creadas
             ( data ) => {
-                this.datos = data;
+                this.datos = data; // Guarda la información en la variable de datos
                 this.dataLoaded = true;
             },
             ( error ) => {
@@ -55,7 +55,7 @@ export class PersonComponent implements OnInit {
         this.submitted = false;
     }
 
-    savePerson() {
+    savePerson() { // En este metodo se esta generando la lógica para almacenar en la base de datos una nueva persona
         this.submitted = true
 
         const newPerson: Dates = {
@@ -66,7 +66,7 @@ export class PersonComponent implements OnInit {
             telefonoUsuarioTr:      this.telefonoUsuarioTr
         }
 
-        this.usuariosService.newUser( newPerson ).subscribe(
+        this.usuariosService.newUser( newPerson ).subscribe( // Aquí se esta enviando el objeto newPerson de tipo Dates al metodo newUser para guardar en la BD
             ( response: any ) => {
                 console.log( response );
             },

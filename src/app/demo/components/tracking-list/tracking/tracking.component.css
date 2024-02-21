@@ -1,0 +1,24 @@
+.text-animation h4 {
+    overflow: hidden; /* Oculta el texto que no cabe en el contenedor */
+    white-space: nowrap; /* Evita que el texto se rompa automáticamente */
+    animation: typing 3s steps(40, end), blink-caret 0.5s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from,
+    to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: black; /* Cambia el color del cursor al escribir */
+    }
+}

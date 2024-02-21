@@ -70,7 +70,7 @@ export class DocumentoComponent implements OnInit {
                     format: 'CODE128', // Formato para un código de barras de alta densidad
                     displayValue: true, // Muestra la información que tiene el BarCode
                     width: 0.85,
-                    height: 50,
+                    height: 25,
                     fontSize: 10
                 };
 

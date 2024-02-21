@@ -1,0 +1,108 @@
+<div class="grid">
+	<div class="col-12">
+        <div *ngIf="!dataLoaded; else dataIsLoaded"> <!-- ngIf que permite el dinamismo de mostrar ya sea este div que contiene una animación de cargando si esque dataLoaded es falso o si es verdadero se ejecuta el dataIsLoaded -->
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando tus guías.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #dataIsLoaded>
+            <div class="card">
+                <h5>Guías de remisión</h5>
+                <p-table
+                    #dt1
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="guias"
+                    [rowHover]="true"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} guías"
+                    [globalFilterFields]="['docNum']"
+                    [tableStyle]="{ 'min-width': '50rem' }"> <!-- Carga la información mediante el vector guías -->
+
+                    <!-- Input de busqueda -->
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt1, $event)"
+                                    placeholder="Buscar"
+                                    class="w-full"
+                                /> <!-- Input de busqueda con los parametros seleccionados -->
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <!-- Cabecera de la tabla -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="docNum" style="width: 20%">
+                                <div class="flex justify-content-between align-items-center">
+                                    N° de guías
+                                    <p-sortIcon field="docNum"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="docDate" style="width: 20%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de creación
+                                    <p-sortIcon field="docDate"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="docDueDate" style="width: 20%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Fecha de vencimiento
+                                    <p-sortIcon field="docDueDate"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Contenido dinamico que se mostrará en la tabla -->
+                    <ng-template pTemplate="body" let-guia let-columns="columns">
+                        <tr>
+                            <td class="align-middle">
+                                {{ guia.DocNum }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( guia.DocDate ) }}
+                            </td>
+                            <td class="align-middle">
+                                {{ formatDate( guia.DocDueDate ) }}
+                            </td>
+                            <td class="text-left">
+                                <!-- Botón que abre modal -->
+                                <div class="flex justify-content-center">
+                                    <button (click)="showDocs(guia.docNum); details=true" pButton label="Ver" class="p-button-outlined mb-2"></button> <!-- Abre el modal creado con DinamycDialog de PrimeNG-->
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Mensaje en caso de que no exista información -->
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">No se encontraron guías.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
+	</div>
+</div>
