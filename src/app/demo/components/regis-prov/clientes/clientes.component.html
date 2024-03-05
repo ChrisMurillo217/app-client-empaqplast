@@ -50,24 +50,55 @@
                 </div>
             </div>
             <div class="field grid ">
-                <div class="col-6 p-fluid">
+                <div class="col-4 p-fluid">
                     <label for="paisRefPC" class="text-lg block">
                         País
                     </label>
-                    <p-autoComplete field="paisRefPC" [dropdown]="true">
+                    <p-autoComplete
+                        field="name"
+                        [dropdown]="true"
+                        [(ngModel)]="paisRefPC"
+                        [suggestions]="filteredCountries"
+                        (completeMethod)="filterCountry($event)"
+                        (onSelect)="filterState($event)">
                         <ng-template let-country pTemplate="item">
                             <div class="country-item">
+                                <div>{{ country.name }}</div>
                             </div>
                         </ng-template>
                     </p-autoComplete>
                 </div>
-                <div class="col-6 p-fluid">
+                <div class="col-4 p-fluid">
+                    <label for="estadoRefPC" class="text-lg block">
+                        Estado
+                    </label>
+                    <p-autoComplete
+                        field="name"
+                        [dropdown]="true"
+                        [(ngModel)]="estadoRefPC"
+                        [suggestions]="filteredStates"
+                        (completeMethod)="filterState($event)"
+                        (onSelect)="filterCity($event)">
+                        <ng-template let-state pTemplate="item">
+                            <div class="country-item">
+                                <div>{{ state.name }}</div>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+                <div class="col-4 p-fluid">
                     <label for="ciudadRefPC" class="text-lg block">
                         Ciudad
                     </label>
-                    <p-autoComplete field="ciudadRefPC" [dropdown]="true">
-                        <ng-template let-country pTemplate="item">
+                    <p-autoComplete
+                        field="name"
+                        [dropdown]="true"
+                        [(ngModel)]="ciudadRefPC"
+                        [suggestions]="filteredCities"
+                        (completeMethod)="filterCity($event)">
+                        <ng-template let-city pTemplate="item">
                             <div class="country-item">
+                                <div>{{ city.name }}</div>
                             </div>
                         </ng-template>
                     </p-autoComplete>

@@ -1,7 +1,7 @@
 export interface Clientes {
-    nomRefPC            : string;
-    contacRefPC         : string;
-    emailRefPC          : string;
-    paisRefPC           : string;
-    ciudadRefPC         : string;
+    nomRefPc            : string;
+    contacRefPc         : string;
+    emailRefPc          : string;
+    paisRefPc           : string;
+    ciudadRefPc         : string;
 }

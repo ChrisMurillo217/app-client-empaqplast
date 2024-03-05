@@ -21,8 +21,6 @@ export class GeneralComponent implements OnInit {
     estadoP:            Estado;
     paisP:              Pais;
     pais:               Pais[] = [];
-    estado:             Estado[] = [];
-    ciudad:             Ciudad[] = [];
     naturaleza:         Naturaleza[] = [];
     general:            General[] = [];
     nuevaInfo:          General = {
@@ -122,7 +120,7 @@ export class GeneralComponent implements OnInit {
                             filtered.push( city );
                         }
                     }
-                    this.filteredStates = filtered;
+                    this.filteredCities = filtered;
                 },
                 ( error ) => {
                     console.error( error );
