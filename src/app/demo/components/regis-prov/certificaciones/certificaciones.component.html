@@ -38,50 +38,14 @@
                             Organismos
                         </label>
                     </div>
-                    <div class="col-6 field-radiobutton">
+                    <div class="col-6 field-checkbox"  *ngFor="let category of tipo">
                         <p-radioButton
-                            name="tipoCertP"
-                            value="FDA"
+                            name="category"
+                            [value]="category.tipoCertP"
                             [(ngModel)]="nuevoCertificacion.tipoCertP"
-                            inputId="tipoCertP">
+                            [inputId]="category.idCertificacion">
                         </p-radioButton>
-                        <label for="tipoCertP">FDA</label>
-                    </div>
-                    <div class="col-6 field-radiobutton">
-                        <p-radioButton
-                            name="tipoCertP"
-                            value="ISO"
-                            [(ngModel)]="nuevoCertificacion.tipoCertP"
-                            inputId="tipoCertP">
-                        </p-radioButton>
-                        <label for="tipoCertP">ISO</label>
-                    </div>
-                    <div class="col-6 field-radiobutton">
-                        <p-radioButton
-                            name="tipoCertP"
-                            value="CC"
-                            [(ngModel)]="nuevoCertificacion.tipoCertP"
-                            inputId="tipoCertP">
-                        </p-radioButton>
-                        <label for="tipoCertP">CC</label>
-                    </div>
-                    <div class="col-6 field-radiobutton">
-                        <p-radioButton
-                            name="tipoCertP"
-                            value="FT"
-                            [(ngModel)]="nuevoCertificacion.tipoCertP"
-                            inputId="tipoCertP">
-                        </p-radioButton>
-                        <label for="tipoCertP">FT</label>
-                    </div>
-                    <div class="col-6 p-fluid">
-                        <label for="tipoCertP">Otro</label>
-                        <input
-                            id="tipoCertP"
-                            type="text"
-                            pInputText
-                            [(ngModel)]="nuevoCertificacion.tipoCertP"
-                        />
+                        <label for="category.idCertificacion">{{ category.tipoCertP }}</label>
                     </div>
                 </div>
                 <div class="field grid ">
@@ -89,12 +53,18 @@
                         <label for="normaCertP" class="text-lg block">
                             Normas
                         </label>
-                        <input
-                            id="normaCertP"
-                            type="text"
-                            pInputText
+                        <p-autoComplete
+                            field="normaCertificacion"
+                            [dropdown]="true"
                             [(ngModel)]="nuevoCertificacion.normaCertP"
-                        />
+                            [suggestions]="filteredNorms"
+                            (completeMethod)="filterNorm($event)">
+                            <ng-template let-norm pTemplate="item">
+                                <div class="country-item">
+                                    <div>{{ norm.normaCertificacion }}</div>
+                                </div>
+                            </ng-template>
+                        </p-autoComplete>
                     </div>
                 </div>
                 <div class="field grid ">

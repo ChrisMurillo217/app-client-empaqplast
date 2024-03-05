@@ -1,24 +1,37 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { GeneralService } from 'src/app/demo/service/proveedores/general.service';
 
 @Component( {
   selector: 'app-terminos',
   templateUrl: './terminos.component.html'
 } )
 export class TerminosComponent {
-    leyendaDisclaimer: any[];
+    terminos                : string;
+    leyendaDisclaimer       : any[];
 
-    constructor( private router: Router ) {
+    constructor(
+        private router: Router,
+        private generalService: GeneralService
+    ) {
         this.leyendaDisclaimer = [
             {
-                label: 'No',
-                value: 'No'
+                label: 'Si',
+                value: '1'
             },
             {
-                label: 'Si',
-                value: 'Si'
+                label: 'No',
+                value: '0'
             }
         ];
+    }
+
+    ngOnInit(): void {
+        this.generalService.getTerminos().subscribe(
+            ( data ) => {
+                this.terminos = data;
+            }
+        )
     }
 
     nextPage() {

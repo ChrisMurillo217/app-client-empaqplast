@@ -1,13 +1,19 @@
-import { Component }                from '@angular/core';
-import { Router }                   from '@angular/router';
-import { Certificaciones }          from 'src/app/demo/models/certificaciones.model';
+import { Component, OnInit }            from '@angular/core';
+import { Router }                       from '@angular/router';
+
+import { Certificaciones, Tipo, Norma } from 'src/app/demo/models/certificaciones.model';
+
+import { CertificacionesService }       from 'src/app/demo/service/proveedores/certificaciones.service';
 
 @Component( {
   selector: 'app-certificaciones',
   templateUrl: './certificaciones.component.html'
 } )
-export class CertificacionesComponent {
+export class CertificacionesComponent implements OnInit {
     agregarCertificaciones:     string = '';
+    filteredNorms:              any[];
+    tipo:                       Tipo[] = [];
+    norma:                      Norma[] = [];
     certificaciones:            Certificaciones[] = [];
     nuevoCertificacion:         Certificaciones = {
                                     tipoCertP: '',
@@ -17,7 +23,23 @@ export class CertificacionesComponent {
                                     obsCertP: ''
                                 };
 
-    constructor( private router: Router ){}
+    constructor(
+        private router: Router,
+        private certificacionesService: CertificacionesService
+    ) {}
+
+    ngOnInit(): void {
+        this.certificacionesService.getTipo().subscribe(
+            ( data ) => {
+                this.tipo = data.resultado;
+            }
+        )
+        this.certificacionesService.getNorma().subscribe(
+            ( data ) => {
+                this.norma = data.resultado;
+            }
+        )
+    }
 
     nextPage() {
         this.router.navigate( [ 'registro/clientes' ] );
@@ -45,5 +67,20 @@ export class CertificacionesComponent {
             this.nuevoCertificacion.fechaVigenciCertP = null;
             this.nuevoCertificacion.obsCertP = '';
         }
+    }
+
+    filterNorm(event) {
+        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+        let filtered : any[] = [];
+        let query = event.query;
+
+        for(let i = 0; i < this.norma.length; i++) {
+            let norm = this.norma[i];
+            if (norm.normaCertificacion.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(norm);
+            }
+        }
+
+        this.filteredNorms = filtered;
     }
 }

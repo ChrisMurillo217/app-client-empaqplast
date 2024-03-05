@@ -1,6 +1,6 @@
 import { Component }                from '@angular/core';
 import { Router }                   from '@angular/router';
-import { Datos } from 'src/app/demo/models/datos.model';
+import { General }                  from 'src/app/demo/models/general.model';
 
 @Component( {
   selector: 'app-datos',
@@ -8,16 +8,16 @@ import { Datos } from 'src/app/demo/models/datos.model';
 } )
 export class DatosComponent {
     blockSpace:         RegExp = /[^\s]/;
-    datosFin:           Datos[] = [];
-    nuevoDatoFin:       Datos = {
-                            nombrePagoBP: '',
-                            direccionBP: '',
-                            numeroBP: '',
-                            codigoABABP: '',
-                            ciudadBP: '',
-                            paisBP: '',
-                            tipoCBP: '',
-                            codigoSwiftBP: ''
+    datosFin:           General[] = [];
+    nuevoDatoFin:       General = {
+                            nombrePagoBp: '',
+                            direccionBp: '',
+                            numeroBp: '',
+                            codigoAbabp: '',
+                            ciudadBp: 0,
+                            paisBp: 0,
+                            tipoCbp: '',
+                            codigoSwiftBp: ''
                         }
 
     constructor( private router: Router ){}
@@ -32,25 +32,25 @@ export class DatosComponent {
 
     agregarCampos() {
         if (
-            this.nuevoDatoFin.nombrePagoBP.trim() !== '' &&
-            this.nuevoDatoFin.direccionBP.trim() !== '' &&
-            this.nuevoDatoFin.numeroBP.trim() !== '' &&
-            this.nuevoDatoFin.codigoABABP.trim() !== '' &&
-            this.nuevoDatoFin.ciudadBP.trim() !== '' &&
-            this.nuevoDatoFin.paisBP.trim() !== '' &&
-            this.nuevoDatoFin.tipoCBP.trim() !== '' &&
-            this.nuevoDatoFin.codigoSwiftBP.trim() !== ''
+            this.nuevoDatoFin.nombrePagoBp.trim() !== '' &&
+            this.nuevoDatoFin.direccionBp.trim() !== '' &&
+            this.nuevoDatoFin.numeroBp.trim() !== '' &&
+            this.nuevoDatoFin.codigoAbabp.trim() !== '' &&
+            this.nuevoDatoFin.ciudadBp !== 0 &&
+            this.nuevoDatoFin.paisBp !== 0 &&
+            this.nuevoDatoFin.tipoCbp.trim() !== '' &&
+            this.nuevoDatoFin.codigoSwiftBp.trim() !== ''
         ) {
             this.datosFin.push( { ...this.nuevoDatoFin } );
 
-            this.nuevoDatoFin.nombrePagoBP = '';
-            this.nuevoDatoFin.direccionBP = '';
-            this.nuevoDatoFin.numeroBP = '';
-            this.nuevoDatoFin.codigoABABP = '';
-            this.nuevoDatoFin.ciudadBP = '';
-            this.nuevoDatoFin.paisBP = '';
-            this.nuevoDatoFin.tipoCBP = '';
-            this.nuevoDatoFin.codigoSwiftBP = '';
+            this.nuevoDatoFin.nombrePagoBp = '';
+            this.nuevoDatoFin.direccionBp = '';
+            this.nuevoDatoFin.numeroBp = '';
+            this.nuevoDatoFin.codigoAbabp = '';
+            this.nuevoDatoFin.ciudadBp = 0;
+            this.nuevoDatoFin.paisBp = 0;
+            this.nuevoDatoFin.tipoCbp = '';
+            this.nuevoDatoFin.codigoSwiftBp = '';
         }
     }
 }

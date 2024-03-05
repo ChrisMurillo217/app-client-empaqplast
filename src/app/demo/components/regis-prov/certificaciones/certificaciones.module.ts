@@ -8,6 +8,7 @@ import { CertificacionesComponent }     from './certificaciones.component';
 import { CardModule }                   from 'primeng/card';
 import { RadioButtonModule }            from 'primeng/radiobutton';
 import { InputTextModule }              from 'primeng/inputtext';
+import { AutoCompleteModule }           from 'primeng/autocomplete';
 import { CalendarModule }               from 'primeng/calendar';
 import { InputTextareaModule }          from 'primeng/inputtextarea';
 import { ButtonModule }                 from 'primeng/button';
@@ -19,6 +20,7 @@ import { ButtonModule }                 from 'primeng/button';
         FormsModule,
         CardModule,
         RadioButtonModule,
+        AutoCompleteModule,
         InputTextModule,
         CalendarModule,
         InputTextareaModule,
