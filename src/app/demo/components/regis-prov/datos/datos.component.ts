@@ -26,6 +26,7 @@ export class DatosComponent implements OnInit {
                             numeroBp: '',
                             codigoAbabp: '',
                             ciudadBp: 0,
+                            estadoBp: 0,
                             paisBp: 0,
                             tipoCbp: '',
                             codigoSwiftBp: ''
@@ -45,6 +46,36 @@ export class DatosComponent implements OnInit {
     }
 
     nextPage() {
+        if (
+            this.nuevoDatoFin.nombrePagoBp.trim() !== '' &&
+            this.nuevoDatoFin.direccionBp.trim() !== '' &&
+            this.nuevoDatoFin.numeroBp.trim() !== '' &&
+            this.nuevoDatoFin.codigoAbabp.trim() !== '' &&
+            this.ciudadBp.id !== 0 &&
+            this.estadoBp.id !== 0 &&
+            this.paisBp.id !== 0 &&
+            this.nuevoDatoFin.tipoCbp.trim() !== '' &&
+            this.nuevoDatoFin.codigoSwiftBp.trim() !== ''
+        ) {
+            this.nuevoDatoFin.paisBp = this.paisBp.id;
+            this.nuevoDatoFin.ciudadBp = this.ciudadBp.id;
+            this.nuevoDatoFin.estadoBp = this.estadoBp.id;
+
+            this.datosFin.push( { ...this.nuevoDatoFin } );
+
+            localStorage.setItem( 'datosData', JSON.stringify( this.datosFin ) );
+
+            this.nuevoDatoFin.nombrePagoBp = '';
+            this.nuevoDatoFin.direccionBp = '';
+            this.nuevoDatoFin.numeroBp = '';
+            this.nuevoDatoFin.codigoAbabp = '';
+            this.nuevoDatoFin.ciudadBp = 0;
+            this.nuevoDatoFin.estadoBp = 0;
+            this.nuevoDatoFin.paisBp = 0;
+            this.nuevoDatoFin.tipoCbp = '';
+            this.nuevoDatoFin.codigoSwiftBp = '';
+        }
+
         this.router.navigate( [ 'registro/sucursales' ] );
     }
 
@@ -119,30 +150,6 @@ export class DatosComponent implements OnInit {
                     console.error( error );
                 }
             );
-        }
-    }
-
-    agregarCampos() {
-        if (
-            this.nuevoDatoFin.nombrePagoBp.trim() !== '' &&
-            this.nuevoDatoFin.direccionBp.trim() !== '' &&
-            this.nuevoDatoFin.numeroBp.trim() !== '' &&
-            this.nuevoDatoFin.codigoAbabp.trim() !== '' &&
-            this.nuevoDatoFin.ciudadBp !== 0 &&
-            this.nuevoDatoFin.paisBp !== 0 &&
-            this.nuevoDatoFin.tipoCbp.trim() !== '' &&
-            this.nuevoDatoFin.codigoSwiftBp.trim() !== ''
-        ) {
-            this.datosFin.push( { ...this.nuevoDatoFin } );
-
-            this.nuevoDatoFin.nombrePagoBp = '';
-            this.nuevoDatoFin.direccionBp = '';
-            this.nuevoDatoFin.numeroBp = '';
-            this.nuevoDatoFin.codigoAbabp = '';
-            this.nuevoDatoFin.ciudadBp = 0;
-            this.nuevoDatoFin.paisBp = 0;
-            this.nuevoDatoFin.tipoCbp = '';
-            this.nuevoDatoFin.codigoSwiftBp = '';
         }
     }
 }

@@ -1,8 +1,10 @@
 export interface General{
+    fechaRp?                 : Date;
     rucP?                    : string;
     razonSocialP?            : string;
     direccionP?              : string;
     ciudadP?                 : number;
+    estadoP?                 : number;
     paisP?                   : number;
     emailP?                  : string;
     nomRlp?                  : string;
@@ -14,11 +16,13 @@ export interface General{
     numeroBp?                : string;
     codigoAbabp?             : string;
     ciudadBp?                : number;
+    estadoBp?                : number;
     paisBp?                  : number;
     tipoCbp?                 : string;
     codigoSwiftBp?           : string;
     nombreEmpP?              : string;
     cargoEmpP?               : string;
+    fechaEmpP?               : Date;
     aceptacionLeyenda?       : number;
     registroIp?              : string;
 }

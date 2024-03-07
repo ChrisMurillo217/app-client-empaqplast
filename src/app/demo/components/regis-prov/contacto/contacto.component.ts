@@ -7,13 +7,15 @@ import { Contacto }                 from 'src/app/demo/models/contacto.model';
   templateUrl: './contacto.component.html'
 })
 export class ContactoComponent {
+    blockSpace:         RegExp = /[^\s]/;
     contactos:          Contacto[] = [];
     nuevoContacto:      Contacto = {
-                            nombre: '',
-                            cargo: '',
-                            celular: '',
-                            telefono: '',
-                            mail: ''
+                            nombrePc: '',
+                            cargoPc: '',
+                            celPc: '',
+                            telPc: '',
+                            dirPc: '',
+                            emailPc: ''
                         };
 
     constructor( private router: Router ){}
@@ -29,21 +31,25 @@ export class ContactoComponent {
     agregarCampos() {
         // Verificar si los campos están llenos
         if (
-            this.nuevoContacto.nombre.trim() !== '' &&
-            this.nuevoContacto.cargo.trim() !== '' &&
-            this.nuevoContacto.celular.trim() !== '' &&
-            this.nuevoContacto.telefono.trim() !== '' &&
-            this.nuevoContacto.mail.trim() !== ''
+            this.nuevoContacto.nombrePc.trim() !== '' &&
+            this.nuevoContacto.cargoPc.trim() !== '' &&
+            this.nuevoContacto.celPc.trim() !== '' &&
+            this.nuevoContacto.telPc.trim() !== '' &&
+            this.nuevoContacto.dirPc.trim() !== '' &&
+            this.nuevoContacto.emailPc.trim() !== ''
         ) {
             // Agregar la nueva sucursal al vector
             this.contactos.push( { ...this.nuevoContacto } );
 
+            localStorage.setItem( 'contactoData', JSON.stringify( this.contactos ) );
+
             // Vaciar los campos de entrada
-            this.nuevoContacto.nombre = '';
-            this.nuevoContacto.cargo = '';
-            this.nuevoContacto.celular = '';
-            this.nuevoContacto.telefono = '';
-            this.nuevoContacto.mail = '';
+            this.nuevoContacto.nombrePc = '';
+            this.nuevoContacto.cargoPc = '';
+            this.nuevoContacto.celPc = '';
+            this.nuevoContacto.telPc = '';
+            this.nuevoContacto.dirPc = '';
+            this.nuevoContacto.emailPc = '';
         }
     }
 }

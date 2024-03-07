@@ -11,20 +11,22 @@ import { GeolocationService }           from 'src/app/demo/service/proveedores/g
   templateUrl: './clientes.component.html'
 } )
 export class ClientesComponent implements OnInit {
+    blockSpace:             RegExp = /[^\s]/;
     filteredCountries:      any[];
     filteredStates:         any[];
     filteredCities:         any[];
-    ciudadRefPC:            Ciudad;
-    estadoRefPC:            Estado;
-    paisRefPC:              Pais;
+    ciudadRefPc:            Ciudad;
+    estadoRefPc:            Estado;
+    paisRefPc:              Pais;
     pais:                   Pais[] = [];
     clientes:               Clientes[] = [];
     nuevoCliente:           Clientes = {
                                     nomRefPc: '',
                                     contacRefPc: '',
                                     emailRefPc: '',
-                                    paisRefPc: '',
-                                    ciudadRefPc: ''
+                                    paisRefPc: 0,
+                                    estadoRefPc: 0,
+                                    ciudadRefPc: 0
                                 };
 
     constructor( 
@@ -67,7 +69,7 @@ export class ClientesComponent implements OnInit {
         let filtered: any[] = [];
 
         // Obtener el ID del país seleccionado
-        let selectedCountry = this.paisRefPC;
+        let selectedCountry = this.paisRefPc;
 
         if ( selectedCountry ) {
             let selectedCountryId = selectedCountry.id
@@ -95,7 +97,7 @@ export class ClientesComponent implements OnInit {
         let filtered: any[] = [];
 
         // Obtener el ID del estado seleccionado
-        let selectedState = this.estadoRefPC;     
+        let selectedState = this.estadoRefPc;     
 
         if ( selectedState ) {
             let selectedStateId = selectedState.id
@@ -124,18 +126,26 @@ export class ClientesComponent implements OnInit {
             this.nuevoCliente.nomRefPc.trim() !== '' &&
             this.nuevoCliente.contacRefPc.trim() !== '' &&
             this.nuevoCliente.emailRefPc.trim() !== '' &&
-            this.nuevoCliente.paisRefPc.trim() !== '' &&
-            this.nuevoCliente.ciudadRefPc.trim() !== ''
+            this.paisRefPc.id !== 0 &&
+            this.estadoRefPc.id !== 0 &&
+            this.ciudadRefPc.id !== 0
         ) {
+            this.nuevoCliente.paisRefPc = this.paisRefPc.id;
+            this.nuevoCliente.ciudadRefPc = this.ciudadRefPc.id;
+            this.nuevoCliente.estadoRefPc = this.estadoRefPc.id;
+
             // Agregar la nueva sucursal al vector
             this.clientes.push( { ...this.nuevoCliente } );
+
+            localStorage.setItem( 'clienteData', JSON.stringify( this.clientes ) );
 
             // Vaciar los campos de entrada
             this.nuevoCliente.nomRefPc = '';
             this.nuevoCliente.contacRefPc = '';
             this.nuevoCliente.emailRefPc = '';
-            this.nuevoCliente.paisRefPc = '';
-            this.nuevoCliente.ciudadRefPc = '';
+            this.nuevoCliente.paisRefPc = 0;
+            this.nuevoCliente.estadoRefPc = 0;
+            this.nuevoCliente.ciudadRefPc = 0;
         }
     }
 }

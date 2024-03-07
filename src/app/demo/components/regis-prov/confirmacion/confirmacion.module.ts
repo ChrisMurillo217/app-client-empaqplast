@@ -5,8 +5,9 @@ import { FormsModule }                  from '@angular/forms';
 import { ConfirmacionRoutingModule }    from './confirmacion-routing.module';
 import { ConfirmacionComponent }        from './confirmacion.component';
 
-import {CardModule} from 'primeng/card';
-import {ButtonModule} from 'primeng/button';
+import { CardModule }                   from 'primeng/card';
+import { ButtonModule }                 from 'primeng/button';
+import { TableModule }                  from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import {ButtonModule} from 'primeng/button';
         ConfirmacionRoutingModule,
         FormsModule,
         CardModule,
-        ButtonModule
+        ButtonModule,
+        TableModule
     ],
     declarations: [ ConfirmacionComponent ],
 })

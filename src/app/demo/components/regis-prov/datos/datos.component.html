@@ -7,12 +7,16 @@
             Ingresa tu información financiera
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="field grid ">
+            <div class="field grid">
                 <div class="col-12 p-fluid">
                     <label for="nombrePagoBP" class="text-lg block">
                         Nombre del Banco
                     </label>
-                    <input id="nombrePagoBP" type="text" pInputText/>
+                    <input 
+                        id="nombrePagoBP" 
+                        type="text" 
+                        [(ngModel)]="nuevoDatoFin.nombrePagoBp"
+                        pInputText/>
                 </div>
             </div>
             
@@ -76,7 +80,12 @@
                     <label for="direccionBP" class="text-lg block">
                         Dirección
                     </label>
-                    <textarea rows="2" cols="30" pInputTextarea></textarea>
+                    <textarea 
+                        rows="2" 
+                        cols="30" 
+                        [(ngModel)]="nuevoDatoFin.direccionBp"
+                        pInputTextarea>
+                    </textarea>
                 </div>
             </div>
             <div class="field grid">
@@ -84,13 +93,21 @@
                     <label for="numeroBP" class="text-lg block">
                         Número de cuenta
                     </label>
-                    <input id="numeroBP" type="text" pInputText/>
+                    <input 
+                        id="numeroBP" 
+                        type="text" 
+                        [(ngModel)]="nuevoDatoFin.numeroBp"
+                        pInputText/>
                 </div>
                 <div class="col-6 p-fluid">
                     <label for="tipoCBP" class="text-lg block">
                         Tipo de Cuenta
                     </label>
-                    <input id="tipoCBP" type="text" pInputText/>
+                    <input 
+                        id="tipoCBP" 
+                        type="text" 
+                        [(ngModel)]="nuevoDatoFin.tipoCbp"
+                        pInputText/>
                 </div>
             </div>
             <div class="field grid">
@@ -101,6 +118,7 @@
                     <input
                         type="text"
                         pInputText
+                        [(ngModel)]="nuevoDatoFin.codigoAbabp"
                         [pKeyFilter]="blockSpace"
                     />
                 </div>
@@ -113,6 +131,7 @@
                     <input
                         type="text"
                         pInputText
+                        [(ngModel)]="nuevoDatoFin.codigoSwiftBp"
                         [pKeyFilter]="blockSpace"
                     />
                 </div>

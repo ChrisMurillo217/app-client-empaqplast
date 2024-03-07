@@ -10,7 +10,7 @@ import { Sucursal }             from '../../../models/sucursal.model';
 export class SucursalesComponent {
     agregarSucursales:  string = '';
     sucursales:         Sucursal[] = [];
-    nuevaSucursal:      Sucursal = { nombre: '', direccion: '' };
+    nuevaSucursal:      Sucursal = { nombreSucP: '', dirSucP: '' };
 
     constructor( private router: Router ){}
 
@@ -25,15 +25,17 @@ export class SucursalesComponent {
     agregarCampos() {
         // Verificar si los campos están llenos
         if (
-            this.nuevaSucursal.nombre.trim() !== '' &&
-            this.nuevaSucursal.direccion.trim() !== ''
+            this.nuevaSucursal.nombreSucP.trim() !== '' &&
+            this.nuevaSucursal.dirSucP.trim() !== ''
         ) {
             // Agregar la nueva sucursal al vector
             this.sucursales.push( { ...this.nuevaSucursal } );
 
+            localStorage.setItem( 'sucursalesData', JSON.stringify( this.sucursales ) );
+
             // Vaciar los campos de entrada
-            this.nuevaSucursal.nombre = '';
-            this.nuevaSucursal.direccion = '';
+            this.nuevaSucursal.nombreSucP = '';
+            this.nuevaSucursal.dirSucP = '';
         }
     }
 }

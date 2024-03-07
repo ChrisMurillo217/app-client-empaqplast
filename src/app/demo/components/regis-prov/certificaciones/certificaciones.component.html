@@ -56,7 +56,7 @@
                         <p-autoComplete
                             field="normaCertificacion"
                             [dropdown]="true"
-                            [(ngModel)]="nuevoCertificacion.normaCertP"
+                            [(ngModel)]="normaCertP"
                             [suggestions]="filteredNorms"
                             (completeMethod)="filterNorm($event)">
                             <ng-template let-norm pTemplate="item">
@@ -114,18 +114,26 @@
                         </button>
                     </div>
                 </div>
-
-                <div class="field grid">
-                    <div class="col-12 p-fluid">
-                        <div *ngFor="let certificado of certificaciones">
-                            <p><strong>{{ certificado.tipoCertP }}</strong></p>
-                            <p>{{ certificado.normaCertP }}</p>
-                            <p>{{ certificado.nombreCertP }}</p>
-                            <p>{{ certificado.fechaVigenciCertP }}</p>
-                            <p>{{ certificado.obsCertP }}</p><br>
-                        </div>
-                    </div>
-                </div>
+                <p-table [value]="certificaciones" [tableStyle]="{'min-width': '50rem'}">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Organismos</th>
+                            <th>Norma</th>
+                            <th>Certificado</th>
+                            <th>Vigencia</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-certificado>
+                        <tr>
+                            <td>{{ certificado.tipoCertP }}</td>
+                            <td>{{ certificado.normaCertP }}</td>
+                            <td>{{ certificado.nombreCertP }}</td>
+                            <td>{{ certificado.fechaVigenciCertP }}</td>
+                            <td>{{ certificado.obsCertP }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">

@@ -28,6 +28,7 @@ export class GeneralComponent implements OnInit {
                             razonSocialP: '',
                             direccionP: '',
                             ciudadP: 0,
+                            estadoP: 0,
                             paisP: 0,
                             emailP: '',
                             nomRlp: '',
@@ -46,16 +47,56 @@ export class GeneralComponent implements OnInit {
         this.generalService.getNaturaleza().subscribe(
             ( data ) => {
                 this.naturaleza = data.resultado;
+            },
+            ( error ) => {
+                console.error( error );
             }
         )
         this.geolocationService.getPais().subscribe(
             ( data ) => {
                 this.pais = data;
+            },
+            ( error ) => {
+                console.error( error );
             }
         )
     }
 
     nextPage() {
+        if (
+            this.nuevaInfo.rucP.trim() !== '' &&
+            this.nuevaInfo.razonSocialP.trim() !== '' &&
+            this.nuevaInfo.direccionP.trim() !== '' &&
+            this.ciudadP.id !== 0 &&
+            this.estadoP.id !== 0 &&
+            this.paisP.id !== 0 &&
+            this.nuevaInfo.emailP.trim() !== '' &&
+            this.nuevaInfo.nomRlp.trim() !== '' &&
+            this.nuevaInfo.paginaWp.trim() !== '' &&
+            this.nuevaInfo.idNaturaleza !== 0 &&
+            this.nuevaInfo.actividadEconomicaP.trim() !== ''
+        ) {
+            this.nuevaInfo.paisP = this.paisP.id;
+            this.nuevaInfo.ciudadP = this.ciudadP.id;
+            this.nuevaInfo.estadoP = this.estadoP.id;
+
+            this.general.push( { ...this.nuevaInfo } );
+
+            localStorage.setItem( 'generalData', JSON.stringify( this.general ) );
+
+            this.nuevaInfo.rucP = '';
+            this.nuevaInfo.razonSocialP = '';
+            this.nuevaInfo.direccionP = '';
+            this.nuevaInfo.ciudadP = 0;
+            this.nuevaInfo.estadoP = 0;
+            this.nuevaInfo.paisP = 0;
+            this.nuevaInfo.emailP = '';
+            this.nuevaInfo.nomRlp = '';
+            this.nuevaInfo.paginaWp = '';
+            this.nuevaInfo.idNaturaleza = 0;
+            this.nuevaInfo.actividadEconomicaP = '';
+        }
+
         this.router.navigate( [ 'registro/datos' ] );
     }
 
@@ -126,34 +167,6 @@ export class GeneralComponent implements OnInit {
                     console.error( error );
                 }
             );
-        }
-    }
-
-    agregarCampos() {
-        if (
-            this.nuevaInfo.rucP.trim() !== '' &&
-            this.nuevaInfo.razonSocialP.trim() !== '' &&
-            this.nuevaInfo.direccionP.trim() !== '' &&
-            this.nuevaInfo.ciudadP !== 0 &&
-            this.nuevaInfo.paisP !== 0 &&
-            this.nuevaInfo.emailP.trim() !== '' &&
-            this.nuevaInfo.nomRlp.trim() !== '' &&
-            this.nuevaInfo.paginaWp.trim() !== '' &&
-            this.nuevaInfo.idNaturaleza !== 0 &&
-            this.nuevaInfo.actividadEconomicaP.trim() !== ''
-        ) {
-            this.general.push( { ...this.nuevaInfo } );
-
-            this.nuevaInfo.rucP = '';
-            this.nuevaInfo.razonSocialP = '';
-            this.nuevaInfo.direccionP = '';
-            this.nuevaInfo.ciudadP = 0;
-            this.nuevaInfo.paisP = 0;
-            this.nuevaInfo.emailP = '';
-            this.nuevaInfo.nomRlp = '';
-            this.nuevaInfo.paginaWp = '';
-            this.nuevaInfo.idNaturaleza = 0;
-            this.nuevaInfo.actividadEconomicaP = '';
         }
     }
 }

@@ -12,6 +12,7 @@ import { AutoCompleteModule }           from 'primeng/autocomplete';
 import { CalendarModule }               from 'primeng/calendar';
 import { InputTextareaModule }          from 'primeng/inputtextarea';
 import { ButtonModule }                 from 'primeng/button';
+import { TableModule }                  from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { ButtonModule }                 from 'primeng/button';
         CalendarModule,
         InputTextareaModule,
         ButtonModule,
+        TableModule,
     ],
     declarations: [ CertificacionesComponent ],
 })

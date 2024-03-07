@@ -41,7 +41,7 @@
                             id="nombreSucP"
                             type="text"
                             pInputText
-                            [(ngModel)]="nuevaSucursal.nombre"
+                            [(ngModel)]="nuevaSucursal.nombreSucP"
                         />
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                             rows="2"
                             cols="30"
                             pInputTextarea
-                            [(ngModel)]="nuevaSucursal.direccion">
+                            [(ngModel)]="nuevaSucursal.dirSucP">
                         </textarea>
                     </div>
                 </div>
@@ -69,10 +69,20 @@
                 </div>
                 <div class="field grid">
                     <div class="col-12 p-fluid">
-                        <div *ngFor="let sucursal of sucursales">
-                            <strong>{{ sucursal.nombre }}</strong>
-                            <p>{{ sucursal.direccion }}</p>
-                        </div>
+                        <p-table [value]="sucursales" [tableStyle]="{'min-width': '50rem'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Dirección</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-sucursal>
+                                <tr>
+                                    <td>{{ sucursal.nombreSucP }}</td>
+                                    <td>{{ sucursal.dirSucP }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                     </div>
                 </div>
             </div>

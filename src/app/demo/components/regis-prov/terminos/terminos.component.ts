@@ -35,6 +35,7 @@ export class TerminosComponent {
     }
 
     nextPage() {
+        localStorage.setItem( 'terminosData', JSON.stringify( this.leyendaDisclaimer ) );
         this.router.navigate( [ 'registro/elaboracion' ] );
     }
 

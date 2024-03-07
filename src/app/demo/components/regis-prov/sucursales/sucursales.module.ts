@@ -12,6 +12,7 @@ import { InputTextareaModule }          from 'primeng/inputtextarea';
 import { KeyFilterModule }              from 'primeng/keyfilter';
 import { ButtonModule }                 from 'primeng/button';
 import { RadioButtonModule }            from 'primeng/radiobutton';
+import { TableModule }                  from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { RadioButtonModule }            from 'primeng/radiobutton';
         KeyFilterModule,
         ButtonModule,
         RadioButtonModule,
+        TableModule
     ],
     declarations: [ SucursalesComponent ],
 })

@@ -4,6 +4,7 @@ export interface Certificaciones {
     nombreCertP                 : string;
     fechaVigenciCertP           : Date;
     obsCertP                    : string;
+    idProveedor?                : number;
 }
 
 export interface Tipo {

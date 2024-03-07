@@ -14,6 +14,7 @@ export class CertificacionesComponent implements OnInit {
     filteredNorms:              any[];
     tipo:                       Tipo[] = [];
     norma:                      Norma[] = [];
+    normaCertP:                 Norma;
     certificaciones:            Certificaciones[] = [];
     nuevoCertificacion:         Certificaciones = {
                                     tipoCertP: '',
@@ -51,14 +52,17 @@ export class CertificacionesComponent implements OnInit {
 
     agregarCampos() {
         // Verificar si los campos están llenos
+        this.nuevoCertificacion.normaCertP = this.normaCertP.normaCertificacion;
         if (
             this.nuevoCertificacion.tipoCertP.trim() !== '' &&
             this.nuevoCertificacion.normaCertP.trim() !== '' &&
             this.nuevoCertificacion.nombreCertP.trim() !== '' &&
             this.nuevoCertificacion.obsCertP.trim() !== ''
         ) {
-            // Agregar la nueva sucursal al vector
+            // Agregar la nueva certificación al vector
             this.certificaciones.push( { ...this.nuevoCertificacion } );
+
+            localStorage.setItem( 'certificacionData', JSON.stringify( this.certificaciones ) );
 
             // Vaciar los campos de entrada
             this.nuevoCertificacion.tipoCertP = '';
@@ -70,7 +74,6 @@ export class CertificacionesComponent implements OnInit {
     }
 
     filterNorm(event) {
-        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
         let filtered : any[] = [];
         let query = event.query;
 

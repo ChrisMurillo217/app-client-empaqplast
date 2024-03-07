@@ -12,7 +12,11 @@
                     <label for="nombreEmpP" class="text-lg block">
                         Nombre
                     </label>
-                    <input id="nombreEmpP" type="text" pInputText/>
+                    <input 
+                        id="nombreEmpP" 
+                        type="text" 
+                        [(ngModel)]="nuevaElab.nombreEmpP"
+                        pInputText/>
                 </div>
             </div>
             <div class="field grid ">
@@ -20,7 +24,11 @@
                     <label for="cargoEmpP" class="text-lg block">
                         Cargo
                     </label>
-                    <input id="cargoEmpP" type="text" pInputText/>
+                    <input 
+                        id="cargoEmpP" 
+                        type="text" 
+                        [(ngModel)]="nuevaElab.cargoEmpP"
+                        pInputText/>
                 </div>
             </div>
         </ng-template>

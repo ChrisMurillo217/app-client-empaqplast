@@ -14,6 +14,7 @@
                         class="bg-primary"
                         id="rucP"
                         mask="9999999999 001"
+                        [(ngModel)]="nuevaInfo.rucP"
                         placeholder="9999999999 001">
                     </p-inputMask>
                 </div>
@@ -21,7 +22,11 @@
                     <label for="razonsocialP" class="text-lg block">
                         Razón Social
                     </label>
-                    <input id="razonsocialP" type="text" pInputText/>
+                    <input 
+                        id="razonSocialP" 
+                        type="text" 
+                        [(ngModel)]="nuevaInfo.razonSocialP"
+                        pInputText/>
                 </div>
             </div>
             <div class="field grid ">
@@ -29,7 +34,11 @@
                     <label for="nomRLP" class="text-lg block">
                         Representante Legal
                     </label>
-                    <input id="nomRLP" type="text" pInputText/>
+                    <input 
+                        id="nomRlp" 
+                        type="text"  
+                        [(ngModel)]="nuevaInfo.nomRlp"
+                        pInputText/>
                 </div>
             </div>
             <div class="field grid ">
@@ -92,7 +101,11 @@
                     <label for="direccionP" class="text-lg block">
                         Dirección
                     </label>
-                    <textarea rows="2" cols="30" pInputTextarea>
+                    <textarea 
+                        rows="2" 
+                        cols="30" 
+                        [(ngModel)]="nuevaInfo.direccionP"
+                        pInputTextarea>
                     </textarea>
                 </div>
             </div>
@@ -105,6 +118,7 @@
                         type="text"
                         pInputText
                         [pKeyFilter]="blockSpace"
+                        [(ngModel)]="nuevaInfo.emailP"
                         placeholder="xxxxxxxxx@ejemplo.com"
                     />
                 </div>
@@ -118,6 +132,7 @@
                         type="text"
                         pInputText
                         [pKeyFilter]="blockSpace"
+                        [(ngModel)]="nuevaInfo.paginaWp"
                         placeholder="www.ejemplo.com"
                     />
                 </div>
@@ -143,7 +158,11 @@
                     <label for="actividadEconomicaP" class="text-lg block">
                         Actividad Económica
                     </label>
-                    <input id="actividadEconomicaP" type="text" pInputText/>
+                    <input 
+                        id="actividadEconomicaP" 
+                        type="text" 
+                        [(ngModel)]="nuevaInfo.actividadEconomicaP"
+                        pInputText/>
                 </div>
             </div>
         </ng-template>

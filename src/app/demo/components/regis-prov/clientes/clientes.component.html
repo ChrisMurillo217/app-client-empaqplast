@@ -16,7 +16,7 @@
                         id="nomRefPC"
                         type="text"
                         pInputText
-                        [(ngModel)]="nuevoCliente.nomRefPC"
+                        [(ngModel)]="nuevoCliente.nomRefPc"
                     />
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         id="contacRefPC"
                         mask="099 999 9999"
                         placeholder="099 999 9999"
-                        [(ngModel)]="nuevoCliente.contacRefPC">
+                        [(ngModel)]="nuevoCliente.contacRefPc">
                     </p-inputMask>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                         pInputText
                         [pKeyFilter]="blockSpace"
                         placeholder="xxxxxxxxx@ejemplo.com"
-                        [(ngModel)]="nuevoCliente.emailRefPC"
+                        [(ngModel)]="nuevoCliente.emailRefPc"
                     />
                 </div>
             </div>
@@ -57,7 +57,7 @@
                     <p-autoComplete
                         field="name"
                         [dropdown]="true"
-                        [(ngModel)]="paisRefPC"
+                        [(ngModel)]="paisRefPc"
                         [suggestions]="filteredCountries"
                         (completeMethod)="filterCountry($event)"
                         (onSelect)="filterState($event)">
@@ -75,7 +75,7 @@
                     <p-autoComplete
                         field="name"
                         [dropdown]="true"
-                        [(ngModel)]="estadoRefPC"
+                        [(ngModel)]="estadoRefPc"
                         [suggestions]="filteredStates"
                         (completeMethod)="filterState($event)"
                         (onSelect)="filterCity($event)">
@@ -93,7 +93,7 @@
                     <p-autoComplete
                         field="name"
                         [dropdown]="true"
-                        [(ngModel)]="ciudadRefPC"
+                        [(ngModel)]="ciudadRefPc"
                         [suggestions]="filteredCities"
                         (completeMethod)="filterCity($event)">
                         <ng-template let-city pTemplate="item">
@@ -112,18 +112,26 @@
                     </button>
                 </div>
             </div>
-
-            <div class="field grid">
-                <div class="col-12 p-fluid">
-                    <div *ngFor="let cliente of clientes">
-                        <p><strong>{{ cliente.nomRefPC }}</strong></p>
-                        <p>{{ cliente.contacRefPC }}</p>
-                        <p>{{ cliente.emailRefPC }}</p>
-                        <p>{{ cliente.paisRefPC }}</p>
-                        <p>{{ cliente.ciudadRefPC }}</p><br>
-                    </div>
-                </div>
-            </div>
+            <p-table [value]="clientes" [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>E-mail</th>
+                        <th>País</th>
+                        <th>Ciudad</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cliente>
+                    <tr>
+                        <td>{{ cliente.nomRefPc }}</td>
+                        <td>{{ cliente.contacRefPc }}</td>
+                        <td>{{ cliente.emailRefPc }}</td>
+                        <td>{{ cliente.paisRefPc }}</td>
+                        <td>{{ cliente.ciudadRefPc }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="grid grid-nogutter">

@@ -10,6 +10,8 @@ import { InputTextModule }              from 'primeng/inputtext';
 import { InputMaskModule }              from 'primeng/inputmask';
 import { KeyFilterModule }              from 'primeng/keyfilter';
 import { ButtonModule }                 from 'primeng/button';
+import { InputTextareaModule }          from 'primeng/inputtextarea';
+import { TableModule }                  from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -21,6 +23,8 @@ import { ButtonModule }                 from 'primeng/button';
         InputMaskModule,
         KeyFilterModule,
         ButtonModule,
+        InputTextareaModule,
+        TableModule,
     ],
     declarations: [ ContactoComponent ],
 })

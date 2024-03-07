@@ -9,70 +9,83 @@
         <ng-template pTemplate="content">
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="nombrePC" class="text-lg block">
+                    <label for="nombrePc" class="text-lg block">
                         Nombre
                     </label>
                     <input
-                        id="nombrePC"
+                        id="nombrePc"
                         type="text"
                         pInputText
-                        [(ngModel)]="nuevoContacto.nombre"
+                        [(ngModel)]="nuevoContacto.nombrePc"
                     />
                 </div>
             </div>
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="cargoPC" class="text-lg block">
+                    <label for="cargoPc" class="text-lg block">
                         Cargo
                     </label>
                     <input
-                        id="cargoPC"
+                        id="cargoPc"
                         type="text"
                         pInputText
-                        [(ngModel)]="nuevoContacto.cargo"
+                        [(ngModel)]="nuevoContacto.cargoPc"
                     />
                 </div>
             </div>
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="celPC" class="text-lg block">
+                    <label for="celPc" class="text-lg block">
                         Celular
                     </label>
                     <p-inputMask
                         class="bg-primary"
-                        id="celPC"
+                        id="celPc"
                         mask="099 999 9999"
                         placeholder="099 999 9999"
-                        [(ngModel)]="nuevoContacto.celular">
+                        [(ngModel)]="nuevoContacto.celPc">
                     </p-inputMask>
                 </div>
             </div>
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="telPC" class="text-lg block">
+                    <label for="telPc" class="text-lg block">
                         Teléfono
                     </label>
                     <p-inputMask
                         class="bg-primary"
-                        id="telPC"
+                        id="telPc"
                         mask="099 999 999"
                         placeholder="099 999 999"
-                        [(ngModel)]="nuevoContacto.telefono">
+                        [(ngModel)]="nuevoContacto.telPc">
                     </p-inputMask>
                 </div>
             </div>
             <div class="field grid">
                 <div class="col-12 p-fluid">
-                    <label for="emailPC" class="text-lg block">
+                    <label for="dirPc" class="text-lg block">
+                        Dirección
+                    </label>
+                    <textarea 
+                        rows="2" 
+                        cols="30" 
+                        [(ngModel)]="nuevoContacto.dirPc"
+                        pInputTextarea>
+                    </textarea>
+                </div>
+            </div>
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <label for="emailPc" class="text-lg block">
                         E-mail
                     </label>
                     <input
-                        id="emailPC"
+                        id="emailPc"
                         type="text"
                         pInputText
                         [pKeyFilter]="blockSpace"
                         placeholder="xxxxxxxxx@ejemplo.com"
-                        [(ngModel)]="nuevoContacto.mail"
+                        [(ngModel)]="nuevoContacto.emailPc"
                     />
                 </div>
             </div>
@@ -87,13 +100,28 @@
 
             <div class="field grid">
                 <div class="col-12 p-fluid">
-                    <div *ngFor="let contacto of contactos">
-                        <p><strong>{{ contacto.nombre }}</strong></p>
-                        <p>{{ contacto.cargo }}</p>
-                        <p>{{ contacto.celular }}</p>
-                        <p>{{ contacto.telefono }}</p>
-                        <p>{{ contacto.mail }}</p>
-                    </div>
+                    <p-table [value]="contactos" [tableStyle]="{'min-width': '50rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Celular</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>E-mail</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-contacto>
+                            <tr>
+                                <td>{{ contacto.nombrePc }}</td>
+                                <td>{{ contacto.cargoPc }}</td>
+                                <td>{{ contacto.celPc }}</td>
+                                <td>{{ contacto.telPc }}</td>
+                                <td>{{ contacto.dirPc }}</td>
+                                <td>{{ contacto.emailPc }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
             </div>
         </ng-template>

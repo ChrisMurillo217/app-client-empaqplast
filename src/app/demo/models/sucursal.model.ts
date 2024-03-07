@@ -1,4 +1,5 @@
 export interface Sucursal {
-    nombre:         string;
-    direccion:      string;
+    nombreSucP:     string;
+    dirSucP:        string;
+    idProveedor?:   number;
   }

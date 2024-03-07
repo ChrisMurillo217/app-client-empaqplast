@@ -4,7 +4,219 @@
             Revisa que la información este correcta
         </ng-template>
         <ng-template pTemplate="content">
-
+            <div class="field grid">
+                <div class="col-12 p-fluid">
+                    <h4>Información General</h4>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>RUC:</strong>
+                            {{ generalData[0].rucP }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Razón Social:</strong>
+                            {{ generalData[0].razonSocialP }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Representante Legal:</strong>
+                            {{ generalData[0].nomRlp }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>País:</strong>
+                            {{ paisNombre }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Ciudad:</strong>
+                            {{ ciudadNombre }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Dirección:</strong>
+                            {{ generalData[0].direccionP }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>E-mail:</strong>
+                            {{ generalData[0].emailP }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Sitio Web:</strong>
+                            {{ generalData[0].paginaWp }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>Naturaleza del Negocio:</strong>
+                            {{ naturalezaNombre }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Actividad Económica:</strong>
+                            {{ generalData[0].actividadEconomicaP }}
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Datos Financieros</h4>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Nombre del Banco:</strong>
+                            {{ datosData[0].nombrePagoBp }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>País:</strong>
+                            {{ paisNombre }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Ciudad:</strong>
+                            {{ ciudadNombre }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Dirección:</strong>
+                            {{ datosData[0].direccionBp }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>Número de Cuenta:</strong>
+                            {{ datosData[0].numeroBp }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Tipo de Cuenta:</strong>
+                            {{ datosData[0].tipoCbp }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-6 p-fluid">
+                            <strong>Código ABA:</strong>
+                            {{ datosData[0].codigoAbabp }}
+                        </div>
+                        <div class="col-6 p-fluid">
+                            <strong>Código Swift:</strong>
+                            {{ datosData[0].codigoSwiftBp }}
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Sucursales</h4>
+                    <p-table [value]="sucursalesData" [tableStyle]="{'min-width': '50rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Dirección</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-sucursal>
+                            <tr>
+                                <td>{{ sucursal.nombreSucP }}</td>
+                                <td>{{ sucursal.dirSucP }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Personas de Contacto</h4>
+                    <p-table [value]="contactoData" [tableStyle]="{'min-width': '50rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Celular</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>E-mail</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-contacto>
+                            <tr>
+                                <td>{{ contacto.nombrePc }}</td>
+                                <td>{{ contacto.cargoPc }}</td>
+                                <td>{{ contacto.celPc }}</td>
+                                <td>{{ contacto.telPc }}</td>
+                                <td>{{ contacto.dirPc }}</td>
+                                <td>{{ contacto.emailPc }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Certificaciones</h4>
+                    <p-table [value]="certificacionData" [tableStyle]="{'min-width': '50rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Organismos</th>
+                                <th>Norma</th>
+                                <th>Certificado</th>
+                                <th>Vigencia</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-certificado>
+                            <tr>
+                                <td>{{ certificado.tipoCertP }}</td>
+                                <td>{{ certificado.normaCertP }}</td>
+                                <td>{{ certificado.nombreCertP }}</td>
+                                <td>{{ certificado.fechaVigenciCertP }}</td>
+                                <td>{{ certificado.obsCertP }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Principales clientes</h4>
+                    <p-table [value]="clienteData" [tableStyle]="{'min-width': '50rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Contacto</th>
+                                <th>E-mail</th>
+                                <th>País</th>
+                                <th>Ciudad</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cliente>
+                            <tr>
+                                <td>{{ cliente.nomRefPc }}</td>
+                                <td>{{ cliente.contacRefPc }}</td>
+                                <td>{{ cliente.emailRefPc }}</td>
+                                <td>{{ cliente.paisRefPc }}</td>
+                                <td>{{ cliente.ciudadRefPc }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <br>
+                </div>
+                <div class="col-12 p-fluid">
+                    <h4>Elaborado por:</h4>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Nombre:</strong>
+                            {{ elaboracionData[0].nombreEmpP }}
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <div class="col-12 p-fluid">
+                            <strong>Cargo:</strong>
+                            {{ elaboracionData[0].cargoEmpP }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="grid grid-nogutter">

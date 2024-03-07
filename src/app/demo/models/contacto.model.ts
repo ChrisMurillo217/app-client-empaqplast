@@ -1,7 +1,9 @@
 export interface Contacto {
-    nombre          : string;
-    cargo           : string;
-    celular         : string;
-    telefono        : string;
-    mail            : string;
+    nombrePc        : string;
+    cargoPc         : string;
+    celPc           : string;
+    telPc           : string;
+    dirPc           : string;
+    emailPc         : string;
+    idProveedor?    : number;
   }
