@@ -5,8 +5,8 @@ import { DynamicDialogConfig }                      from 'primeng/dynamicdialog'
 import { TrackingService }                          from './../../../service/tracking.service';
 import { TokenService }                             from './../../../service/token.service';
 
-import { Items }                                    from './../../../models/item.model';
-import { Usuarios }                                 from './../../../models/usuarios.model';
+import { Items }                                    from '../../../models/tracking/item.model';
+import { Usuarios }                                 from '../../../models/admin/usuarios.model';
 
 @Component({
   selector: 'app-detalles',

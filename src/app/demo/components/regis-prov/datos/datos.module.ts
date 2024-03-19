@@ -13,7 +13,7 @@ import { InputTextareaModule }          from 'primeng/inputtextarea';
 import { CardModule }                   from 'primeng/card';
 import { ButtonModule }                 from 'primeng/button';
 
-@NgModule({
+@NgModule( {
     imports: [
         CommonModule,
         DatosRoutingModule,
@@ -27,5 +27,5 @@ import { ButtonModule }                 from 'primeng/button';
         ButtonModule,
     ],
     declarations: [ DatosComponent ],
-})
+} )
 export class DatosModule { }

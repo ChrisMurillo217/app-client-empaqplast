@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError, BehaviorSubject, tap } from 'rxjs';
-import { Usuarios } from '../models/usuarios.model';
+import { Usuarios } from '../models/admin/usuarios.model';
 import { TokenService } from './token.service';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AuthService {
     }
 
     getUsuariosList(): Observable< Usuarios[] > { // A traves de este metodo podemos presentar la lista de usuarios que tenemos en la BD
-        const url = `${ this.urlAPI }/Permisos`;
+        const url = `${ this.urlAPI }/usuarios/lista/permisos`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Usuarios[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
@@ -33,7 +33,7 @@ export class AuthService {
     }
 
     getLogin( usuario: string, contrasena: string ): Observable< Usuarios[] > { // Este metodo nos sirve para realizar una comparación entre lo que se escribe en pantalla y lo que esta en la BD y en base a eso iniciar sesión o mostrar un mensaje de error
-        const url = `${ this.urlAPI }/PermisosLogin?usuario=${ usuario }&contrasena=${ contrasena }`;
+        const url = `${ this.urlAPI }/usuarios/permisos/login?usuario=${ usuario }&contrasena=${ contrasena }`;
         return this.__http.get< Usuarios[] >( url ).pipe(
             catchError( ( error ) => {
                 return throwError( error );

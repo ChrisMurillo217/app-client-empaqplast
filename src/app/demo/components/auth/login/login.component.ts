@@ -22,6 +22,7 @@ export class LoginComponent {
     // Variables donde se van a almacenar tanto el correo como la contraseña del usuario
     mail            : string;
     password        : string;
+    loading         : boolean = false;
 
     constructor(
         private authService: AuthService,
@@ -31,6 +32,7 @@ export class LoginComponent {
     ) { }
 
     login() {
+        this.loading = true;
         this.authService.getLogin( this.mail, this.password ).subscribe( // Función que se conecta al servicio para iniciar sesión
             ( data ) => {
                 this.tokenService.setToken( data[0].datosLogin.token ); // Envia el token hacia el servicio donde se lo manejará en el resto de la aplicación
@@ -45,6 +47,8 @@ export class LoginComponent {
                     detail: 'El usuario o contraseña son incorrectos o no existen.'
                 } );
             }
-        );
+        ).add( () => {
+            this.loading = false; // Ocultar la animación de carga
+        } );
     }
 }

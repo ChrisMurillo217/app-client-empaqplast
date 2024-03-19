@@ -2,7 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { TokenService } from '../demo/service/token.service';
-import { Usuarios } from '../demo/models/usuarios.model';
+import { Usuarios } from '../demo/models/admin/usuarios.model';
 
 @Component( {
     selector: 'app-menu',

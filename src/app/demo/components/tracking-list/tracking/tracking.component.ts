@@ -6,8 +6,8 @@ import { DynamicDialogConfig }                      from 'primeng/dynamicdialog'
 import { TrackingService }                          from './../../../service/tracking.service';
 import { TokenService }                             from './../../../service/token.service';
 
-import { Items }                                    from './../../../models/item.model';
-import { Usuarios }                                 from './../../../models/usuarios.model';
+import { Items }                                    from '../../../models/tracking/item.model';
+import { Usuarios }                                 from '../../../models/admin/usuarios.model';
 
 @Component({
   selector: 'app-tracking',
@@ -73,8 +73,6 @@ export class TrackingComponent implements OnInit {
                 this.items = Object.keys( itemCodeMap ).map(
                     ( itemCode ) => {
                         const originalItem = this.items.find( ( item ) => item.itemCode === itemCode );
-                        console.log(originalItem);
-
                         return {
                             docEntry: originalItem.docEntry, // Agrega el valor correcto para docEntry
                             dscription: originalItem.dscription, // Agrega el valor correcto para dscription

@@ -2,8 +2,9 @@ import { Injectable }                           from '@angular/core';
 import { HttpClient }                           from '@angular/common/http';
 import { Observable, catchError, throwError }   from 'rxjs';
 
-import { Ultimo }                               from '../../models/ultimoreg.model';
-import { Naturaleza }                           from '../../models/naturaleza.model';
+import { Ultimo }                               from '../../models/proveedores/ultimoreg.model';
+import { Naturaleza }                           from '../../models/proveedores/naturaleza.model';
+import { General } from '../../models/proveedores/general.model';
 
 @Injectable( {
     providedIn: 'root'
@@ -14,6 +15,10 @@ export class GeneralService {
     constructor(
         private __http: HttpClient
     ) { }
+
+    getIPAddress(): Observable< any>  {
+        return this.__http.get( 'https://api.ipify.org?format=json' );
+    }
 
     getLastReg(): Observable< any > {
         const url = `${ this.urlAPI }/proveedores/ultimo-numero-registro`;
@@ -36,6 +41,15 @@ export class GeneralService {
     getTerminos(): Observable< any > {
         const url = `${ this.urlAPI }/proveedores/consulta-aceptar-terminos`;
         return this.__http.get< any >( url ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        )
+    }
+
+    setGeneral( generalData: General ): Observable< any > {
+        const url = `${ this.urlAPI }/proveedores/registro/general`
+        return this.__http.post( url, generalData ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )

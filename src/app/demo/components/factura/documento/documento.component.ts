@@ -9,9 +9,9 @@ import { DynamicDialogConfig }                          from 'primeng/dynamicdia
 import { DocumentService }                              from '../../../service/documents.service';
 import { TokenService }                                 from '../../../service/token.service';
 
-import { ItemFact }                                     from '../../../models/itemFact.model';
-import { Document }                                     from '../../../models/document.model';
-import { Usuarios }                                     from '../../../models/usuarios.model';
+import { ItemFact }                                     from '../../../models/tracking/itemFact.model';
+import { Document }                                     from '../../../models/tracking/document.model';
+import { Usuarios }                                     from '../../../models/admin/usuarios.model';
 
 @Component({
   selector: 'app-documento',

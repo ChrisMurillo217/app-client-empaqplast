@@ -1,4 +1,4 @@
-export interface Dates {
+export interface Person {
     idDatosU?               : number;
     nombreUsuarioTr         : string;
     apellidoUsuarioTr       : string;

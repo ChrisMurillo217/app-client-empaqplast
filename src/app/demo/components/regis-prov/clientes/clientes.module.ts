@@ -10,6 +10,7 @@ import { InputMaskModule }              from 'primeng/inputmask';
 import { KeyFilterModule }              from 'primeng/keyfilter';
 import { AutoCompleteModule }           from 'primeng/autocomplete';
 import { ButtonModule }                 from 'primeng/button';
+import { TableModule }                  from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { ButtonModule }                 from 'primeng/button';
         KeyFilterModule,
         AutoCompleteModule,
         ButtonModule,
+        TableModule,
     ],
     declarations: [ ClientesComponent ],
 })

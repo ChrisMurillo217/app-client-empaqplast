@@ -10,17 +10,17 @@
                     <div class="field grid">
                         <div class="col-6 p-fluid">
                             <strong>RUC:</strong>
-                            {{ generalData[0].rucP }}
+                            {{ generalData.rucP }}
                         </div>
                         <div class="col-6 p-fluid">
                             <strong>Razón Social:</strong>
-                            {{ generalData[0].razonSocialP }}
+                            {{ generalData.razonSocialP }}
                         </div>
                     </div>
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>Representante Legal:</strong>
-                            {{ generalData[0].nomRlp }}
+                            {{ generalData.nomRlp }}
                         </div>
                     </div>
                     <div class="field grid">
@@ -36,19 +36,19 @@
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>Dirección:</strong>
-                            {{ generalData[0].direccionP }}
+                            {{ generalData.direccionP }}
                         </div>
                     </div>
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>E-mail:</strong>
-                            {{ generalData[0].emailP }}
+                            {{ generalData.emailP }}
                         </div>
                     </div>
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>Sitio Web:</strong>
-                            {{ generalData[0].paginaWp }}
+                            {{ generalData.paginaWp }}
                         </div>
                     </div>
                     <div class="field grid">
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-6 p-fluid">
                             <strong>Actividad Económica:</strong>
-                            {{ generalData[0].actividadEconomicaP }}
+                            {{ generalData.actividadEconomicaP }}
                         </div>
                     </div>
                     <br>
@@ -68,7 +68,7 @@
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>Nombre del Banco:</strong>
-                            {{ datosData[0].nombrePagoBp }}
+                            {{ datosData.nombrePagoBp }}
                         </div>
                     </div>
                     <div class="field grid">
@@ -84,27 +84,27 @@
                     <div class="field grid">
                         <div class="col-12 p-fluid">
                             <strong>Dirección:</strong>
-                            {{ datosData[0].direccionBp }}
+                            {{ datosData.direccionBp }}
                         </div>
                     </div>
                     <div class="field grid">
                         <div class="col-6 p-fluid">
                             <strong>Número de Cuenta:</strong>
-                            {{ datosData[0].numeroBp }}
+                            {{ datosData.numeroBp }}
                         </div>
                         <div class="col-6 p-fluid">
                             <strong>Tipo de Cuenta:</strong>
-                            {{ datosData[0].tipoCbp }}
+                            {{ datosData.tipoCbp }}
                         </div>
                     </div>
                     <div class="field grid">
                         <div class="col-6 p-fluid">
                             <strong>Código ABA:</strong>
-                            {{ datosData[0].codigoAbabp }}
+                            {{ datosData.codigoAbabp }}
                         </div>
                         <div class="col-6 p-fluid">
                             <strong>Código Swift:</strong>
-                            {{ datosData[0].codigoSwiftBp }}
+                            {{ datosData.codigoSwiftBp }}
                         </div>
                     </div>
                     <br>
@@ -179,7 +179,7 @@
                 </div>
                 <div class="col-12 p-fluid">
                     <h4>Principales clientes</h4>
-                    <p-table [value]="clienteData" [tableStyle]="{'min-width': '50rem'}">
+                    <p-table [value]="clientesVista" [tableStyle]="{'min-width': '50rem'}">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Nombre</th>
@@ -204,15 +204,13 @@
                 <div class="col-12 p-fluid">
                     <h4>Elaborado por:</h4>
                     <div class="field grid">
-                        <div class="col-12 p-fluid">
+                        <div class="col-6 p-fluid">
                             <strong>Nombre:</strong>
-                            {{ elaboracionData[0].nombreEmpP }}
+                            {{ elaboracionData.nombreEmpP }}
                         </div>
-                    </div>
-                    <div class="field grid">
-                        <div class="col-12 p-fluid">
+                        <div class="col-6 p-fluid">
                             <strong>Cargo:</strong>
-                            {{ elaboracionData[0].cargoEmpP }}
+                            {{ elaboracionData.cargoEmpP }}
                         </div>
                     </div>
                 </div>

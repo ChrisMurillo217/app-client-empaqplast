@@ -1,7 +1,7 @@
 import { Injectable }                           from '@angular/core';
 import { HttpClient, HttpHeaders }              from '@angular/common/http';
 import { Observable, catchError, throwError }   from 'rxjs';
-import { Stock }                                from '../models/stock.model';
+import { Stock }                                from '../models/tracking/stock.model';
 import { TokenService }                         from './token.service';
 
 @Injectable( {

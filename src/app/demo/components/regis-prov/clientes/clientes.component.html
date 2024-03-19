@@ -9,11 +9,11 @@
         <ng-template pTemplate="content">
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="nomRefPC" class="text-lg block">
+                    <label for="nomRefPc" class="text-lg block">
                         Compañia
                     </label>
                     <input
-                        id="nomRefPC"
+                        id="nomRefPc"
                         type="text"
                         pInputText
                         [(ngModel)]="nuevoCliente.nomRefPc"
@@ -22,12 +22,12 @@
             </div>
             <div class="field grid ">
                 <div class="col-12 p-fluid">
-                    <label for="contacRefPC" class="text-lg block">
+                    <label for="contacRefPc" class="text-lg block">
                         Contacto
                     </label>
                     <p-inputMask
                         class="bg-primary"
-                        id="contacRefPC"
+                        id="contacRefPc"
                         mask="099 999 9999"
                         placeholder="099 999 9999"
                         [(ngModel)]="nuevoCliente.contacRefPc">
@@ -36,11 +36,11 @@
             </div>
             <div class="field grid">
                 <div class="col-12 p-fluid">
-                    <label for="emailRefPC" class="text-lg block">
+                    <label for="emailRefPc" class="text-lg block">
                         E-mail
                     </label>
                     <input
-                        id="emailRefPC"
+                        id="emailRefPc"
                         type="text"
                         pInputText
                         [pKeyFilter]="blockSpace"
@@ -112,7 +112,7 @@
                     </button>
                 </div>
             </div>
-            <p-table [value]="clientes" [tableStyle]="{'min-width': '50rem'}">
+            <p-table [value]="clientesVista" [tableStyle]="{'min-width': '50rem'}">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Nombre</th>

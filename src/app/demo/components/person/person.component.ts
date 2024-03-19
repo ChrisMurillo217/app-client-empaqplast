@@ -4,8 +4,8 @@ import { MessageService }                                           from 'primen
 
 import { UsuariosService }                                          from '../../service/usuarios.service';
 
-import { Usuarios }                                                 from './../../models/usuarios.model';
-import { Dates }                                                    from '../../models/dates.model';
+import { Usuarios }                                                 from '../../models/admin/usuarios.model';
+import { Person }                                                    from '../../models/admin/person.model';
 
 @Component({
   templateUrl: './person.component.html',
@@ -13,7 +13,7 @@ import { Dates }                                                    from '../../
   providers: [ MessageService ],
 })
 export class PersonComponent implements OnInit {
-    datos:                  Dates[] = [];
+    datos:                  Person[] = [];
     newPerson:              boolean;
     submitted:              boolean;
     dataLoaded:             boolean = false;
@@ -58,15 +58,15 @@ export class PersonComponent implements OnInit {
     savePerson() { // En este metodo se esta generando la lógica para almacenar en la base de datos una nueva persona
         this.submitted = true
 
-        const newPerson: Dates = {
+        const newPerson: Person = {
             nombreUsuarioTr:        this.nombreUsuarioTr,
             apellidoUsuarioTr:      this.apellidoUsuarioTr,
             direccionUsuarioTr:     this.direccionUsuarioTr,
             emailUsuarioTr:         this.emailUsuarioTr,
             telefonoUsuarioTr:      this.telefonoUsuarioTr
         }
-
-        this.usuariosService.newUser( newPerson ).subscribe( // Aquí se esta enviando el objeto newPerson de tipo Dates al metodo newUser para guardar en la BD
+        
+        this.usuariosService.newPerson( newPerson ).subscribe( // Aquí se esta enviando el objeto newPerson de tipo Dates al metodo newUser para guardar en la BD
             ( response: any ) => {
                 console.log( response );
             },

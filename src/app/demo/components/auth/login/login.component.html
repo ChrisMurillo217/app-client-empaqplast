@@ -20,7 +20,18 @@
                     <span class="text-600 font-medium">Iniciar sesión para continuar</span>
                 </div>
 
-                <form>
+                <div class="loading-animation" *ngIf="loading">
+                    <div class="d-flex align-items-center justify-content-center" style="min-height: 30vh; flex-direction: column;">
+                        <div class="spinner-grow text-primary spinner-grow-lg" style="width: 12rem; height: 12rem;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="text-animation d-flex justify-content-center align-items-center">
+                            <h4 class="text-center" style="margin-bottom: 5px;">Iniciando Sesión</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <form *ngIf="!loading">
                     <label for="id1" class="block text-900 text-xl font-medium mb-2">Correo Electrónico</label>
                     <input
                         id="id1"

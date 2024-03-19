@@ -5,9 +5,10 @@ import { MessageService }                                           from 'primen
 import { AuthService }                                              from './../../service/auth.service';
 import { UsuariosService }                                          from '../../service/usuarios.service';
 
-import { Usuarios }                                                 from './../../models/usuarios.model';
-import { InfoUsers }                                                from '../../models/info-users.model';
-import { Dates }                                                    from '../../models/dates.model';
+import { Usuarios }                                                 from '../../models/admin/usuarios.model';
+import { InfoUsers }                                                from '../../models/admin/info-users.model';
+import { Person }                                                   from '../../models/admin/person.model';
+import { Role }                                                     from '../../models/admin/role.model';
 
 @Component({
     templateUrl: './usuarios.component.html',
@@ -15,31 +16,29 @@ import { Dates }                                                    from '../../
     providers: [ MessageService ],
 })
 export class UsuariosComponent implements OnInit {
-    dates:                  Dates[] = [];
+    dates:                  Person[] = [];
+    rol:                    Role[] = [];
     usuarios:               Usuarios[] = [];
     newUser:                boolean;
     editarUser:             boolean;
     submitted:              boolean;
     selectedPerson:         any = {};
-    idDatosU:               number;
-    idRol:                  number;
-    nombreUsuarioTrL:       string;
-    contrasenaUsuarioTrL:   string;
-    cardCode:               string;
-    cardName:               string;
-    seriesNameSucursal:     string;
     dataLoaded:             boolean = false;
     filteredPerson:         any[] = [];
     sucursales:             any[] = [
-        {
-            key: 'UIO',
-            name: 'Quito'
-        },
-        {
-            key: 'GYE',
-            name: 'Guayaquil'
-        }
+        { key: 'UIO', name: 'Quito' },
+        { key: 'GYE', name: 'Guayaquil' }
     ]
+    user:                   InfoUsers;
+    nuevoUsuario:           InfoUsers = {
+                                idDatosU : 0,
+                                nombreUsuarioTrL : '',
+                                contrasenaUsuarioTrL : '',
+                                idRol : 0,
+                                cardCode : '',
+                                cardName : '',
+                                seriesNameSucursal : ''
+                            }
 
     @ViewChild( 'filter' ) filter!: ElementRef;
 
@@ -70,26 +69,34 @@ export class UsuariosComponent implements OnInit {
                 console.error( error );
             }
         );
+        this.usuariosService.getRoles().subscribe(
+            ( data ) => {
+                this.rol = data;
+            },
+            ( error ) => {
+                console.error( error );
+            }
+        );
         this.submitted = false;
     }
 
     filterPerson( event: any ) {
-        const query = event.query.toLowerCase();
+        let filtered: any[] = []
+        let query = event.query.toLowerCase();
 
-        this.filteredPerson = this.dates.filter(
-            ( user: any ) => {
-                return user.label.toLowerCase().includes( query )
+        for( let i = 0; i < this.dates.length; i++ ) {
+            let user = this.dates[i];
+            if ( user.nombreUsuarioTr.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                filtered.push( user );
             }
-        );
-        console.log(this.filteredPerson);
+        }
 
+        this.filteredPerson = filtered;
     }
 
     onPersonSelect( event: any ) {
-        if ( event.value ) {
-            const personaSeleccionada: Dates = event.value;
-            console.log(personaSeleccionada);
-
+        if ( event ) {
+            this.selectedPerson = event;
         }
     }
 
@@ -104,25 +111,27 @@ export class UsuariosComponent implements OnInit {
 
     saveProduct() {
         this.submitted = true;
+        this.nuevoUsuario.idDatosU = this.selectedPerson.idDatosU;
+        this.nuevoUsuario.nombreUsuarioTrL = this.selectedPerson.emailUsuarioTr;
 
-        const nuevoUsuario: InfoUsers = {
-            idDatosU: this.idDatosU,
-            idRol: this.idRol,
-            nombreUsuarioTrL: this.nombreUsuarioTrL,
-            contrasenaUsuarioTrL: this.contrasenaUsuarioTrL,
-            cardCode: this.cardCode,
-            cardName: this.cardName,
-            seriesNameSucursal: this.seriesNameSucursal,
+        this.user = {
+            idDatosU: this.nuevoUsuario.idDatosU,
+            nombreUsuarioTrL: this.nuevoUsuario.nombreUsuarioTrL,
+            contrasenaUsuarioTrL: this.nuevoUsuario.contrasenaUsuarioTrL,
+            idRol: this.nuevoUsuario.idRol,
+            cardCode: this.nuevoUsuario.cardCode,
+            seriesNameSucursal: this.nuevoUsuario.seriesNameSucursal,
+            cardName: this.nuevoUsuario.cardName,
         }
 
-        // this.usuariosService.newUser( nuevoUsuario ).subscribe(
-        //     ( response ) => {
-        //         console.log('Usuario creado con éxito:', response);
-        //     },
-        //     ( error ) => {
-        //         console.error('Error al crear el usuario:', error);
-        //     }
-        // );
+        this.usuariosService.newUser( this.user ).subscribe(
+            ( response ) => {
+                console.log( response );
+            },
+            ( error ) => {
+                console.error( 'Error al crear el usuario:', error );
+            }
+        );
 
         this.newUser = false;
     }

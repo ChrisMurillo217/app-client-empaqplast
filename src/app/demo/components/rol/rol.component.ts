@@ -4,8 +4,8 @@ import { MessageService }                                           from 'primen
 
 import { UsuariosService }                                          from '../../service/usuarios.service';
 
-import { Usuarios }                                                 from './../../models/usuarios.model';
-import { Role }                                                    from '../../models/role.model';
+import { Usuarios }                                                 from '../../models/admin/usuarios.model';
+import { Role }                                                    from '../../models/admin/role.model';
 
 @Component({
   templateUrl: './rol.component.html',

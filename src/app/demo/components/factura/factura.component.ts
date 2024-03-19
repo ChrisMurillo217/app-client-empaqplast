@@ -7,8 +7,8 @@ import { DynamicDialogRef }                             from 'primeng/dynamicdia
 import { DocumentService }                              from '../../service/documents.service';
 import { TokenService }                                 from '../../service/token.service';
 
-import { Document }                                     from '../../models/document.model';
-import { Usuarios }                                     from '../../models/usuarios.model';
+import { Document }                                     from '../../models/tracking/document.model';
+import { Usuarios }                                     from '../../models/admin/usuarios.model';
 
 import { DocumentoComponent }                           from './documento/documento.component';
 

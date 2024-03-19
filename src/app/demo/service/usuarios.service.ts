@@ -5,7 +5,8 @@ import { Observable, catchError, throwError }           from 'rxjs';
 
 import { TokenService }                                 from './token.service';
 
-import { Dates }                                        from '../models/dates.model';
+import { Person }                                        from '../models/admin/person.model';
+import { InfoUsers } from '../models/admin/info-users.model';
 
 @Injectable()
 export class UsuariosService {
@@ -23,8 +24,8 @@ export class UsuariosService {
         } );
     }
 
-    newUser( dates: Dates ): Observable< any > { // A través de este método guardo nuevas personas en la BD
-        const url = `${ this.urlAPI }/RegistroDatos`;
+    newPerson( dates: Person ): Observable< any > { // A través de este método guardo nuevas personas en la BD
+        const url = `${ this.urlAPI }/usuarios/registro/dato`;
         const headers = this.getAuthHeaders();
         return this.__http.post( url, dates, { headers } ).pipe(
             catchError( ( error ) => {
@@ -33,8 +34,18 @@ export class UsuariosService {
         );
     }
 
+    newUser( user: InfoUsers ): Observable< any > { // A través de este método guardo nuevas personas en la BD
+        const url = `${ this.urlAPI }/usuarios/registro/usuario`;
+        const headers = this.getAuthHeaders();
+        return this.__http.post( url, user, { headers } ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        );
+    }
+
     getDatosUsuarios( ): Observable< any[] > { // Con este método obtenemos la lista de todos los Usuarios
-        const url = `${ this.urlAPI }/DatosUsuarios`;
+        const url = `${ this.urlAPI }/usuarios/lista/datos`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
@@ -44,7 +55,7 @@ export class UsuariosService {
     }
 
     getRoles( ): Observable< any[] > { // Con este método obtenemos la lista de todos los roles
-        const url = `${ this.urlAPI }/ListaRoles`;
+        const url = `${ this.urlAPI }/usuarios/lista/rol`;
         const headers = this.getAuthHeaders();
         return this.__http.get< Document[] >( url, { headers } ).pipe(
             catchError( ( error ) => {

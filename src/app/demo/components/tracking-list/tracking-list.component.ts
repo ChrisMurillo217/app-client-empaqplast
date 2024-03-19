@@ -8,8 +8,8 @@ import { DynamicDialogRef }                         from 'primeng/dynamicdialog'
 import { TrackingService }                          from './../../service/tracking.service';
 import { TokenService }                             from '../../service/token.service';
 
-import { Pedidos }                                  from './../../models/pedido.model';
-import { Usuarios }                                 from '../../models/usuarios.model';
+import { Pedidos }                                  from '../../models/tracking/pedido.model';
+import { Usuarios }                                 from '../../models/admin/usuarios.model';
 
 import { DetallesComponent }                        from './detalles/detalles.component';
 import { TrackingComponent }                        from './tracking/tracking.component';

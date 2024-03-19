@@ -5,8 +5,8 @@ import { Table }                                            from 'primeng/table'
 import { StockService }                                     from '../../service/stock.service';
 import { TokenService }                                     from '../../service/token.service';
 
-import { Stock }                                            from '../../models/stock.model';
-import { Usuarios }                                         from '../../models/usuarios.model';
+import { Stock }                                            from '../../models/tracking/stock.model';
+import { Usuarios }                                         from '../../models/admin/usuarios.model';
 
 @Component( {
     templateUrl: './stock.component.html',

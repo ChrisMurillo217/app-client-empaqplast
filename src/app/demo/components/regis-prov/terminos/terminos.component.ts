@@ -9,12 +9,13 @@ import { GeneralService } from 'src/app/demo/service/proveedores/general.service
 export class TerminosComponent {
     terminos                : string;
     leyendaDisclaimer       : any[];
+    selectedOption          : any[];
 
     constructor(
         private router: Router,
         private generalService: GeneralService
     ) {
-        this.leyendaDisclaimer = [
+        this.selectedOption = [
             {
                 label: 'Si',
                 value: '1'
@@ -32,6 +33,10 @@ export class TerminosComponent {
                 this.terminos = data;
             }
         )
+        const storedData = JSON.parse( localStorage.getItem( 'terminosData' ) );
+        if ( storedData ) {
+            this.leyendaDisclaimer = storedData;
+        }
     }
 
     nextPage() {

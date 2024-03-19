@@ -63,6 +63,12 @@
 
                     <ng-template pTemplate="header" let-columns>
                         <tr>
+                            <th pSortableColumn="datosLogin.datos.nombreUsuarioTr" style="width: 30%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Empleado
+                                    <p-sortIcon field="datosLogin.datos.nombreUsuarioTr"></p-sortIcon>
+                                </div>
+                            </th>
                             <th pSortableColumn="datosLogin.nombreUsuarioTrL" style="width: 15%">
                                 <div class="flex justify-content-between align-items-center">
                                     Nombre de Usuario
@@ -75,22 +81,10 @@
                                     <p-sortIcon field="datosLogin.cardName"></p-sortIcon>
                                 </div>
                             </th>
-                            <th pSortableColumn="datosLogin.cardCode" style="width: 15%">
-                                <div class="flex justify-content-between align-items-center">
-                                    Identificación
-                                    <p-sortIcon field="datosLogin.cardCode"></p-sortIcon>
-                                </div>
-                            </th>
                             <th pSortableColumn="datosLogin.rol.nombreRol" style="width: 10%">
                                 <div class="flex justify-content-between align-items-center">
                                     Rol
                                     <p-sortIcon field="datosLogin.rol.nombreRol"></p-sortIcon>
-                                </div>
-                            </th>
-                            <th pSortableColumn="datosLogin.datos.nombreUsuarioTr" style="width: 30%">
-                                <div class="flex justify-content-between align-items-center">
-                                    Empleado
-                                    <p-sortIcon field="datosLogin.datos.nombreUsuarioTr"></p-sortIcon>
                                 </div>
                             </th>
                             <th style="width: 5%"></th>
@@ -100,19 +94,16 @@
                     <ng-template pTemplate="body" let-user>
                         <tr [pEditableRow]="user.datosLogin">
                             <td>
+                                {{ user.datosLogin.datos.nombreUsuarioTr }} {{ user.datosLogin.datos.apellidoUsuarioTr }}
+                            </td>
+                            <td>
                                 {{ user.datosLogin.nombreUsuarioTrL }}
                             </td>
                             <td>
                                 {{ user.datosLogin.cardName }}
                             </td>
                             <td>
-                                {{ user.datosLogin.cardCode }}
-                            </td>
-                            <td>
                                 {{ user.datosLogin.rol.nombreRol }}
-                            </td>
-                            <td>
-                                {{ user.datosLogin.datos.nombreUsuarioTr }} {{ user.datosLogin.datos.apellidoUsuarioTr }}
                             </td>
                             <td>
                                 <div class="flex align-items-center justify-content-center gap-2">
@@ -160,12 +151,28 @@
                 styleClass="p-fluid">
                 <ng-template pTemplate="content">
                     <div class="field">
+                        <label>Persona</label>
+                        <p-autoComplete
+                            field="nombreUsuarioTr"
+                            [dropdown]="true"
+                            [(ngModel)]="selectedPerson"
+                            [suggestions]="filteredPerson"
+                            (completeMethod)="filterPerson($event)"
+                            (onSelect)="onPersonSelect($event)">
+                        </p-autoComplete>
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !cardCode">
+                            Persona es requerida.
+                        </small>
+                    </div>
+                    <div class="field">
                         <label>Nombre de usuario</label>
                         <input
                             pInputText
                             required
                             type="text"
-                            [(ngModel)]="nombreUsuarioTrL"
+                            [(ngModel)]="selectedPerson.emailUsuarioTr"
                         />
                         <small
                             class="p-error"
@@ -177,7 +184,7 @@
                         <label>Contraseña</label>
                         <p-password
                             required
-                            [(ngModel)]="contrasenaUsuarioTrL">
+                            [(ngModel)]="nuevoUsuario.contrasenaUsuarioTrL">
                             <ng-template pTemplate="header">
                                 <h6>Ingresa tú contraseña</h6>
                             </ng-template>
@@ -200,36 +207,60 @@
                         </small>
                     </div>
                     <div class="field">
+                        <label class="mb-3">Rol</label>
+                        <div class="formgrid grid">
+                            <div *ngFor="let category of rol" class="field-radiobutton col-6">
+                                <p-radioButton
+                                    name="category"
+                                    [inputId]="category.idRol"
+                                    [(ngModel)]="nuevoUsuario.idRol"
+                                    [value]="category.idRol">
+                                </p-radioButton>
+                                <label for="category.idRol">{{ category.nombreRol }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Empresa</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="nuevoUsuario.cardName"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !nombreUsuarioTrL">
+                            Nombre de usuario es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
+                        <label>RUC</label>
+                        <input
+                            pInputText
+                            required
+                            type="text"
+                            [(ngModel)]="nuevoUsuario.cardCode"
+                        />
+                        <small
+                            class="p-error"
+                            *ngIf="submitted && !nombreUsuarioTrL">
+                            Nombre de usuario es requerido.
+                        </small>
+                    </div>
+                    <div class="field">
                         <label class="mb-3">Sucursal</label>
                         <div class="formgrid grid">
                             <div *ngFor="let sucursal of sucursales" class="field-radiobutton col-6">
                                 <p-radioButton
                                     [inputId]="sucursal.key"
                                     name="sucursal"
-                                    [(ngModel)]="seriesNameSucursal"
-                                    [value]="sucursal">
+                                    [(ngModel)]="nuevoUsuario.seriesNameSucursal"
+                                    [value]="sucursal.name">
                                 </p-radioButton>
                                 <label [for]="sucursal.key">{{ sucursal.name }}</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label>Persona</label>
-                        <p-autoComplete
-                            [(ngModel)]="selectedPerson"
-                            [ngModelOptions]="{ standalone: true }"
-                            [dropdown]="true"
-                            [suggestions]="filteredPerson"
-                            (completeMethod)="filterPerson($event)"
-                            (onSelect)="onPersonSelect($event)"
-                            field="label"
-                            placeholder="Escoje la persona">
-                        </p-autoComplete>
-                        <small
-                            class="p-error"
-                            *ngIf="submitted && !cardCode">
-                            Persona es requerida.
-                        </small>
                     </div>
                 </ng-template>
 

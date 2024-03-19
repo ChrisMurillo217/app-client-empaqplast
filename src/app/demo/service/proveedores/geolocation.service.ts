@@ -2,7 +2,7 @@ import { Injectable }                               from '@angular/core';
 import { HttpClient }                               from '@angular/common/http';
 import { Observable, catchError, throwError }       from 'rxjs';
 
-import { Pais, Estado, Ciudad }                     from '../../models/geolocation.model'
+import { Pais, Estado, Ciudad }                     from '../../models/proveedores/geolocation.model'
 
 @Injectable( {
     providedIn: 'root'

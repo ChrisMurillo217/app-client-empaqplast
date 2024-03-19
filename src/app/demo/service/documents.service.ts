@@ -2,8 +2,8 @@ import { Injectable }                               from '@angular/core';
 import { HttpClient, HttpHeaders }                  from '@angular/common/http';
 import { Observable, catchError, throwError }       from 'rxjs';
 
-import { Document }                                 from '../models/document.model';
-import { GuiaInfo }                                 from '../models/guia-rem.model';
+import { Document }                                 from '../models/tracking/document.model';
+import { GuiaInfo }                                 from '../models/tracking/guia-rem.model';
 
 import { TokenService }                             from './token.service';
 

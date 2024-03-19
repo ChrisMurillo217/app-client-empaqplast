@@ -1,8 +1,8 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
-import { General }                      from 'src/app/demo/models/general.model';
-import { Ciudad, Estado, Pais }         from 'src/app/demo/models/geolocation.model';
+import { Datos }                        from 'src/app/demo/models/proveedores/general.model';
+import { Ciudad, Estado, Pais }         from 'src/app/demo/models/proveedores/geolocation.model';
 
 import { GeolocationService }           from 'src/app/demo/service/proveedores/geolocation.service';
 
@@ -15,12 +15,18 @@ export class DatosComponent implements OnInit {
     filteredCountries:  any[];
     filteredStates:     any[];
     filteredCities:     any[];
+    paisNombre:         string;
+    paisId:             number;
+    estadoNombre:       string;
+    estadoId:           number;
+    ciudadNombre:       string;
+    ciudadId:           number;
     ciudadBp:           Ciudad;
     estadoBp:           Estado;
     paisBp:             Pais;
     pais:               Pais[] = [];
-    datosFin:           General[] = [];
-    nuevoDatoFin:       General = {
+    datosFin:           Datos;
+    nuevoDatoFin:       Datos = {
                             nombrePagoBp: '',
                             direccionBp: '',
                             numeroBp: '',
@@ -32,12 +38,84 @@ export class DatosComponent implements OnInit {
                             codigoSwiftBp: ''
                         }
 
-    constructor( 
+    constructor(
         private router: Router,
-        private geolocationService: GeolocationService 
+        private geolocationService: GeolocationService
     ) {}
 
     ngOnInit(): void {
+        // Obtener datos del localStorage si existen
+        const storedData = JSON.parse( localStorage.getItem( 'datosData' ) );
+        if ( storedData ) {
+            this.datosFin = storedData;
+            const lastInfo = this.datosFin; // Obtener la última información almacenada
+            // Llenar los campos del formulario con la última información almacenada
+            this.geolocationService.getPais().subscribe(
+                ( data ) => {
+                    for ( let i = 0; i < data.length; i++ ) {
+                        if ( data[i].id === this.datosFin.paisBp ) {
+                            this.paisId = data[i].id;
+                            this.paisNombre = data[i].name;
+                            this.paisBp = {
+                                id: this.paisId,
+                                name: this.paisNombre
+                            }
+                        }
+                    }
+                    this.geolocationService.getEstado( this.paisId ).subscribe(
+                        ( data ) => {
+                            for ( let i = 0; i < data.length; i++ ) {
+                                if ( data[i].id === this.datosFin.estadoBp ) {
+                                    this.estadoId = data[i].id;
+                                    this.estadoNombre = data[i].name;
+                                    this.estadoBp = {
+                                        id: this.estadoId,
+                                        idCountry: this.paisId,
+                                        name: this.estadoNombre
+                                    }
+                                }
+                            }
+                            this.geolocationService.getCiudad( this.estadoId ).subscribe(
+                                ( data ) => {
+                                    for ( let i = 0; i < data.length; i++ ) {
+                                        if ( data[i].id === this.datosFin.ciudadBp ) {
+                                            this.ciudadId = data[i].id;
+                                            this.ciudadNombre = data[i].name;
+                                            this.ciudadBp = {
+                                                id: this.ciudadId,
+                                                idState: this.estadoId,
+                                                name: this.ciudadNombre
+                                            }
+                                        }
+                                    }
+                                },
+                                ( error ) => {
+                                    console.error( error );
+                                }
+                            );
+                        },
+                        ( error ) => {
+                            console.error( error );
+                        }
+                    )
+                },
+                ( error ) => {
+                    console.error( error );
+                }
+            )
+            this.nuevoDatoFin = {
+                nombrePagoBp: lastInfo.nombrePagoBp || '',
+                direccionBp: lastInfo.direccionBp || '',
+                numeroBp: lastInfo.numeroBp || '',
+                ciudadBp: lastInfo.ciudadBp || 0,
+                estadoBp: lastInfo.estadoBp || 0,
+                paisBp: lastInfo.paisBp || 0,
+                codigoAbabp: lastInfo.codigoAbabp || '',
+                tipoCbp: lastInfo.tipoCbp || '',
+                codigoSwiftBp: lastInfo.codigoSwiftBp || ''
+            };
+        }
+
         this.geolocationService.getPais().subscribe(
             ( data ) => {
                 this.pais = data;
@@ -61,7 +139,17 @@ export class DatosComponent implements OnInit {
             this.nuevoDatoFin.ciudadBp = this.ciudadBp.id;
             this.nuevoDatoFin.estadoBp = this.estadoBp.id;
 
-            this.datosFin.push( { ...this.nuevoDatoFin } );
+            this.datosFin= {
+                nombrePagoBp: this.nuevoDatoFin.nombrePagoBp || '',
+                direccionBp: this.nuevoDatoFin.direccionBp || '',
+                numeroBp: this.nuevoDatoFin.numeroBp || '',
+                ciudadBp: this.nuevoDatoFin.ciudadBp || 0,
+                estadoBp: this.nuevoDatoFin.estadoBp || 0,
+                paisBp: this.nuevoDatoFin.paisBp || 0,
+                codigoAbabp: this.nuevoDatoFin.codigoAbabp || '',
+                tipoCbp: this.nuevoDatoFin.tipoCbp || '',
+                codigoSwiftBp: this.nuevoDatoFin.codigoSwiftBp || ''
+            };
 
             localStorage.setItem( 'datosData', JSON.stringify( this.datosFin ) );
 
@@ -89,7 +177,7 @@ export class DatosComponent implements OnInit {
 
         for( let i = 0; i < this.pais.length; i++ ) {
             let country = this.pais[i];
-            if ( country.name.toLowerCase().indexOf( query.toLowerCase() ) == 0) {
+            if ( country.name.toLowerCase().indexOf( query ) == 0) {
                 filtered.push( country );
             }
         }
@@ -112,7 +200,7 @@ export class DatosComponent implements OnInit {
                     // Filtrar los estados que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let state = data[i];
-                        if ( state.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( state.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( state );
                         }
                     }
@@ -130,7 +218,7 @@ export class DatosComponent implements OnInit {
         let filtered: any[] = [];
 
         // Obtener el ID del estado seleccionado
-        let selectedState = this.estadoBp;     
+        let selectedState = this.estadoBp;
 
         if ( selectedState ) {
             let selectedStateId = selectedState.id
@@ -140,7 +228,7 @@ export class DatosComponent implements OnInit {
                     // Filtrar las ciudades que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let city = data[i];
-                        if ( city.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( city.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( city );
                         }
                     }

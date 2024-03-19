@@ -1,7 +1,7 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
-import { Certificaciones, Tipo, Norma } from 'src/app/demo/models/certificaciones.model';
+import { Certificaciones, Tipo, Norma } from 'src/app/demo/models/proveedores/certificaciones.model';
 
 import { CertificacionesService }       from 'src/app/demo/service/proveedores/certificaciones.service';
 
@@ -20,7 +20,7 @@ export class CertificacionesComponent implements OnInit {
                                     tipoCertP: '',
                                     normaCertP: '',
                                     nombreCertP: '',
-                                    fechaVigenciCertP: new Date(2024, 0, 1),
+                                    fechaVigenciCertP: new Date(),
                                     obsCertP: ''
                                 };
 
@@ -40,6 +40,14 @@ export class CertificacionesComponent implements OnInit {
                 this.norma = data.resultado;
             }
         )
+        const storedData = JSON.parse( localStorage.getItem( 'certificacionData' ) );
+        const cerData = JSON.parse( localStorage.getItem( 'agregarCertificaciones' ) );
+        if ( storedData ) {
+            this.certificaciones = storedData;
+        }
+        if ( cerData ) {
+            this.agregarCertificaciones = cerData;
+        }
     }
 
     nextPage() {
@@ -62,6 +70,7 @@ export class CertificacionesComponent implements OnInit {
             // Agregar la nueva certificación al vector
             this.certificaciones.push( { ...this.nuevoCertificacion } );
 
+            localStorage.setItem( 'agregarCertificaciones', JSON.stringify( this.agregarCertificaciones ) );
             localStorage.setItem( 'certificacionData', JSON.stringify( this.certificaciones ) );
 
             // Vaciar los campos de entrada
@@ -73,14 +82,14 @@ export class CertificacionesComponent implements OnInit {
         }
     }
 
-    filterNorm(event) {
-        let filtered : any[] = [];
+    filterNorm( event: any ) {
+        let filtered: any[] = [];
         let query = event.query;
 
-        for(let i = 0; i < this.norma.length; i++) {
+        for( let i = 0; i < this.norma.length; i++ ) {
             let norm = this.norma[i];
-            if (norm.normaCertificacion.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                filtered.push(norm);
+            if ( norm.normaCertificacion.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                filtered.push( norm );
             }
         }
 

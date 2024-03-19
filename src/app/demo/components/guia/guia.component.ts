@@ -7,8 +7,8 @@ import { DynamicDialogRef }                             from 'primeng/dynamicdia
 import { DocumentService }                              from '../../service/documents.service';
 import { TokenService }                                 from '../../service/token.service';
 
-import { Usuarios }                                     from '../../models/usuarios.model';
-import { GuiaInfo, GuiaValue }                            from '../../models/guia-rem.model';
+import { Usuarios }                                     from '../../models/admin/usuarios.model';
+import { GuiaInfo, GuiaValue }                            from '../../models/tracking/guia-rem.model';
 
 @Component({
   selector: 'app-guia',

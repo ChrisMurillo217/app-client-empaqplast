@@ -1,8 +1,8 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
-import { Clientes }                     from 'src/app/demo/models/clientes.model';
-import { Ciudad, Estado, Pais }         from 'src/app/demo/models/geolocation.model';
+import { Clientes }                     from 'src/app/demo/models/proveedores/clientes.model';
+import { Ciudad, Estado, Pais }         from 'src/app/demo/models/proveedores/geolocation.model';
 
 import { GeolocationService }           from 'src/app/demo/service/proveedores/geolocation.service';
 
@@ -15,11 +15,18 @@ export class ClientesComponent implements OnInit {
     filteredCountries:      any[];
     filteredStates:         any[];
     filteredCities:         any[];
+    paisNombre:             string;
+    paisId:                 number;
+    estadoNombre:           string;
+    estadoId:               number;
+    ciudadNombre:           string;
+    ciudadId:               number;
     ciudadRefPc:            Ciudad;
     estadoRefPc:            Estado;
     paisRefPc:              Pais;
     pais:                   Pais[] = [];
     clientes:               Clientes[] = [];
+    clientesVista:          Clientes[] = [];
     nuevoCliente:           Clientes = {
                                     nomRefPc: '',
                                     contacRefPc: '',
@@ -28,8 +35,15 @@ export class ClientesComponent implements OnInit {
                                     estadoRefPc: 0,
                                     ciudadRefPc: 0
                                 };
+    nuevoClienteVista:      any = {
+                                    nomRefPc: '',
+                                    contacRefPc: '',
+                                    emailRefPc: '',
+                                    paisRefPc: '',
+                                    ciudadRefPc: ''
+                                };
 
-    constructor( 
+    constructor(
         private router: Router,
         private geolocationService: GeolocationService
     ) {}
@@ -40,6 +54,47 @@ export class ClientesComponent implements OnInit {
                 this.pais = data;
             }
         )
+        const storedData = JSON.parse( localStorage.getItem( 'clienteData' ) );
+        if ( storedData ) {
+            for (let i = 0; i < storedData.length; i++) {
+                this.clientes.push( { ...storedData[i] } );
+            }
+            const procesarDatosCliente = async ( data ) => {
+                for ( let i = 0; i < data.length; i++ ) {
+                    const paisData = await obtenerDatosPais( data[i].paisRefPc );
+                    const estadoData = await obtenerDatosEstado( data[i].estadoRefPc, paisData.id );
+                    const ciudadData = await obtenerDatosCiudad( data[i].ciudadRefPc, estadoData.id );
+
+                    const nuevoClienteVista = {
+                        nomRefPc: data[i].nomRefPc,
+                        contacRefPc: data[i].contacRefPc,
+                        emailRefPc: data[i].emailRefPc,
+                        paisRefPc: paisData.name,
+                        ciudadRefPc: ciudadData.name
+                    };
+
+                    this.clientesVista.push( { ...nuevoClienteVista } );
+                }
+            };
+
+            const obtenerDatosPais = async ( paisRefPc ) => {
+                const data = await this.geolocationService.getPais().toPromise();
+                return data.find( pais => pais.id === paisRefPc );
+            };
+
+            const obtenerDatosEstado = async ( estadoRefPc, paisId ) => {
+                const data = await this.geolocationService.getEstado( paisId ).toPromise();
+                return data.find( estado => estado.id === estadoRefPc );
+            };
+
+            const obtenerDatosCiudad = async ( ciudadRefPc, estadoId ) => {
+                const data = await this.geolocationService.getCiudad( estadoId ).toPromise();
+                return data.find( ciudad => ciudad.id === ciudadRefPc );
+            };
+
+            procesarDatosCliente( storedData )
+                .then().catch( error => console.error( error ) );
+        }
     }
 
     nextPage() {
@@ -56,7 +111,7 @@ export class ClientesComponent implements OnInit {
 
         for( let i = 0; i < this.pais.length; i++ ) {
             let country = this.pais[i];
-            if ( country.name.toLowerCase().indexOf( query.toLowerCase() ) == 0) {
+            if ( country.name.toLowerCase().indexOf( query ) == 0) {
                 filtered.push( country );
             }
         }
@@ -79,7 +134,7 @@ export class ClientesComponent implements OnInit {
                     // Filtrar los estados que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let state = data[i];
-                        if ( state.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( state.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( state );
                         }
                     }
@@ -97,7 +152,7 @@ export class ClientesComponent implements OnInit {
         let filtered: any[] = [];
 
         // Obtener el ID del estado seleccionado
-        let selectedState = this.estadoRefPc;     
+        let selectedState = this.estadoRefPc;
 
         if ( selectedState ) {
             let selectedStateId = selectedState.id
@@ -107,7 +162,7 @@ export class ClientesComponent implements OnInit {
                     // Filtrar las ciudades que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let city = data[i];
-                        if ( city.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( city.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( city );
                         }
                     }
@@ -134,8 +189,15 @@ export class ClientesComponent implements OnInit {
             this.nuevoCliente.ciudadRefPc = this.ciudadRefPc.id;
             this.nuevoCliente.estadoRefPc = this.estadoRefPc.id;
 
+            this.nuevoClienteVista.nomRefPc = this.nuevoCliente.nomRefPc;
+            this.nuevoClienteVista.contacRefPc = this.nuevoCliente.contacRefPc;
+            this.nuevoClienteVista.emailRefPc = this.nuevoCliente.emailRefPc;
+            this.nuevoClienteVista.paisRefPc = this.paisRefPc.name;
+            this.nuevoClienteVista.ciudadRefPc = this.ciudadRefPc.name;
+
             // Agregar la nueva sucursal al vector
             this.clientes.push( { ...this.nuevoCliente } );
+            this.clientesVista.push( { ...this.nuevoClienteVista } );
 
             localStorage.setItem( 'clienteData', JSON.stringify( this.clientes ) );
 

@@ -1,12 +1,12 @@
-import { Component }                from '@angular/core';
+import { Component, OnInit }        from '@angular/core';
 import { Router }                   from '@angular/router';
-import { Contacto }                 from 'src/app/demo/models/contacto.model';
+import { Contacto }                 from 'src/app/demo/models/proveedores/contacto.model';
 
 @Component({
   selector: 'app-contacto',
   templateUrl: './contacto.component.html'
 })
-export class ContactoComponent {
+export class ContactoComponent implements OnInit {
     blockSpace:         RegExp = /[^\s]/;
     contactos:          Contacto[] = [];
     nuevoContacto:      Contacto = {
@@ -19,6 +19,13 @@ export class ContactoComponent {
                         };
 
     constructor( private router: Router ){}
+
+    ngOnInit(): void {
+        const storedData = JSON.parse( localStorage.getItem( 'contactoData' ) );
+        if ( storedData ) {
+            this.contactos = storedData;
+        }
+    }
 
     nextPage() {
         this.router.navigate( [ 'registro/certificaciones' ] );

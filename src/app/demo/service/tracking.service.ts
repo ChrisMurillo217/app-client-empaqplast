@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Pedidos } from '../models/pedido.model';
-import { Fabricacion } from '../models/fabricacion.model';
-import { Guia } from '../models/guia.model';
+import { Pedidos } from '../models/tracking/pedido.model';
+import { Fabricacion } from '../models/tracking/fabricacion.model';
+import { Guia } from '../models/tracking/guia.model';
 import { TokenService } from './token.service';
 
 @Injectable( {

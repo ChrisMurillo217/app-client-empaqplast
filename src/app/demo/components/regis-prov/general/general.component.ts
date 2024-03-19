@@ -1,9 +1,9 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
-import { General }                      from 'src/app/demo/models/general.model';
-import { Ciudad, Estado, Pais }         from 'src/app/demo/models/geolocation.model';
-import { Naturaleza }                   from 'src/app/demo/models/naturaleza.model';
+import { Informacion }                  from 'src/app/demo/models/proveedores/general.model';
+import { Ciudad, Estado, Pais }         from 'src/app/demo/models/proveedores/geolocation.model';
+import { Naturaleza }                   from 'src/app/demo/models/proveedores/naturaleza.model';
 
 import { GeneralService }               from 'src/app/demo/service/proveedores/general.service';
 import { GeolocationService }           from 'src/app/demo/service/proveedores/geolocation.service';
@@ -17,13 +17,19 @@ export class GeneralComponent implements OnInit {
     filteredCountries:  any[];
     filteredStates:     any[];
     filteredCities:     any[];
+    paisNombre:         string;
+    paisId:             number;
+    estadoNombre:       string;
+    estadoId:           number;
+    ciudadNombre:       string;
+    ciudadId:           number;
     ciudadP:            Ciudad;
     estadoP:            Estado;
     paisP:              Pais;
     pais:               Pais[] = [];
     naturaleza:         Naturaleza[] = [];
-    general:            General[] = [];
-    nuevaInfo:          General = {
+    general:            Informacion;
+    nuevaInfo:          Informacion = {
                             rucP: '',
                             razonSocialP: '',
                             direccionP: '',
@@ -44,6 +50,81 @@ export class GeneralComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        // Obtener datos del localStorage si existen
+        const storedData = JSON.parse( localStorage.getItem( 'generalData' ) );
+        if ( storedData ) {
+            this.general = storedData;
+            const lastInfo = this.general;
+            // Llenar los campos del formulario con la última información almacenada
+            this.geolocationService.getPais().subscribe(
+                ( data ) => {
+                    for ( let i = 0; i < data.length; i++ ) {
+                        if ( data[i].id === this.general.paisP ) {
+                            this.paisId = data[i].id;
+                            this.paisNombre = data[i].name;
+                            this.paisP = {
+                                id: this.paisId,
+                                name: this.paisNombre
+                            }
+                        }
+                    }
+                    this.geolocationService.getEstado( this.paisId ).subscribe(
+                        ( data ) => {
+                            for ( let i = 0; i < data.length; i++ ) {
+                                if ( data[i].id === this.general.estadoP ) {
+                                    this.estadoId = data[i].id;
+                                    this.estadoNombre = data[i].name;
+                                    this.estadoP = {
+                                        id: this.estadoId,
+                                        idCountry: this.paisId,
+                                        name: this.estadoNombre
+                                    }
+                                }
+                            }
+                            this.geolocationService.getCiudad( this.estadoId ).subscribe(
+                                ( data ) => {
+                                    for ( let i = 0; i < data.length; i++ ) {
+                                        if ( data[i].id === this.general.ciudadP ) {
+                                            this.ciudadId = data[i].id;
+                                            this.ciudadNombre = data[i].name;
+                                            this.ciudadP = {
+                                                id: this.ciudadId,
+                                                idState: this.estadoId,
+                                                name: this.ciudadNombre
+                                            }
+                                        }
+                                    }
+                                },
+                                ( error ) => {
+                                    console.error( error );
+                                }
+                            );
+                        },
+                        ( error ) => {
+                            console.error( error );
+                        }
+                    )
+                },
+                ( error ) => {
+                    console.error( error );
+                }
+            )
+            this.nuevaInfo = {
+                rucP: lastInfo.rucP || '',
+                razonSocialP: lastInfo.razonSocialP || '',
+                direccionP: lastInfo.direccionP || '',
+                ciudadP: lastInfo.ciudadP || 0,
+                estadoP: lastInfo.estadoP || 0,
+                paisP: lastInfo.paisP || 0,
+                emailP: lastInfo.emailP || '',
+                nomRlp: lastInfo.nomRlp || '',
+                paginaWp: lastInfo.paginaWp || '',
+                idNaturaleza: lastInfo.idNaturaleza || 0,
+                actividadEconomicaP: lastInfo.actividadEconomicaP || ''
+            };
+        }
+
+        // Llamar a los métodos para obtener los datos necesarios (si es necesario)
         this.generalService.getNaturaleza().subscribe(
             ( data ) => {
                 this.naturaleza = data.resultado;
@@ -51,7 +132,7 @@ export class GeneralComponent implements OnInit {
             ( error ) => {
                 console.error( error );
             }
-        )
+        );
         this.geolocationService.getPais().subscribe(
             ( data ) => {
                 this.pais = data;
@@ -59,7 +140,7 @@ export class GeneralComponent implements OnInit {
             ( error ) => {
                 console.error( error );
             }
-        )
+        );
     }
 
     nextPage() {
@@ -80,7 +161,19 @@ export class GeneralComponent implements OnInit {
             this.nuevaInfo.ciudadP = this.ciudadP.id;
             this.nuevaInfo.estadoP = this.estadoP.id;
 
-            this.general.push( { ...this.nuevaInfo } );
+            this.general = {
+                rucP: this.nuevaInfo.rucP,
+                razonSocialP: this.nuevaInfo.razonSocialP,
+                direccionP: this.nuevaInfo.direccionP,
+                ciudadP: this.nuevaInfo.ciudadP,
+                estadoP: this.nuevaInfo.estadoP,
+                paisP: this.nuevaInfo.paisP,
+                emailP: this.nuevaInfo.emailP,
+                nomRlp: this.nuevaInfo.nomRlp,
+                paginaWp: this.nuevaInfo.paginaWp,
+                idNaturaleza: this.nuevaInfo.idNaturaleza,
+                actividadEconomicaP: this.nuevaInfo.actividadEconomicaP
+            };
 
             localStorage.setItem( 'generalData', JSON.stringify( this.general ) );
 
@@ -106,7 +199,7 @@ export class GeneralComponent implements OnInit {
 
         for( let i = 0; i < this.pais.length; i++ ) {
             let country = this.pais[i];
-            if ( country.name.toLowerCase().indexOf( query.toLowerCase() ) == 0) {
+            if ( country.name.toLowerCase().indexOf( query ) == 0) {
                 filtered.push( country );
             }
         }
@@ -129,7 +222,7 @@ export class GeneralComponent implements OnInit {
                     // Filtrar los estados que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let state = data[i];
-                        if ( state.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( state.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( state );
                         }
                     }
@@ -147,7 +240,7 @@ export class GeneralComponent implements OnInit {
         let filtered: any[] = [];
 
         // Obtener el ID del estado seleccionado
-        let selectedState = this.estadoP;     
+        let selectedState = this.estadoP;
 
         if ( selectedState ) {
             let selectedStateId = selectedState.id
@@ -157,7 +250,7 @@ export class GeneralComponent implements OnInit {
                     // Filtrar las ciudades que coincidan con la consulta
                     for ( let i = 0; i < data.length; i++ ) {
                         let city = data[i];
-                        if ( city.name.toLowerCase().indexOf( query.toLowerCase() ) == 0 ) {
+                        if ( city.name.toLowerCase().indexOf( query ) == 0 ) {
                             filtered.push( city );
                         }
                     }

@@ -2,7 +2,7 @@ import { HttpClient }                           from '@angular/common/http';
 import { Injectable }                           from '@angular/core';
 import { Observable, catchError, throwError }   from 'rxjs';
 
-import { Certificaciones, Tipo, Norma }         from '../../models/certificaciones.model';
+import { Certificaciones, Tipo, Norma }         from '../../models/proveedores/certificaciones.model';
 
 @Injectable( {
     providedIn: 'root'
@@ -26,6 +26,15 @@ export class CertificacionesService {
     getNorma(): Observable< any > {
         const url = `${ this.urlAPI }/proveedores/certificaciones/normas?pagina=1&elementosPorPagina=10`;
         return this.__http.get< Norma >( url ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        )
+    }
+
+    setCertificaciones( certificacionData: Certificaciones[] ): Observable< any > {
+        const url = `${ this.urlAPI }/proveedores/registro/certificaciones`
+        return this.__http.post( url, certificacionData ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )
