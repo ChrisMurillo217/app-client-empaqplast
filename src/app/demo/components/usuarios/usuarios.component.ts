@@ -36,8 +36,8 @@ export class UsuariosComponent implements OnInit {
                                 contrasenaUsuarioTrL : '',
                                 idRol : 0,
                                 cardCode : '',
-                                cardName : '',
-                                seriesNameSucursal : ''
+                                seriesNameSucursal : '',
+                                cardName : ''
                             }
 
     @ViewChild( 'filter' ) filter!: ElementRef;

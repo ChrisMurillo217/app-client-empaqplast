@@ -9,11 +9,11 @@ import { TokenService }                             from './../../../service/tok
 import { Items }                                    from '../../../models/tracking/item.model';
 import { Usuarios }                                 from '../../../models/admin/usuarios.model';
 
-@Component({
+@Component( {
   selector: 'app-tracking',
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.css']
-})
+} )
 export class TrackingComponent implements OnInit {
     userData:           Usuarios[] = [];
     cardCode:           string = '';
@@ -85,20 +85,36 @@ export class TrackingComponent implements OnInit {
                 this.trackingService.getOF( this.cardCode, this.docNum ).subscribe(
                     ( ofData ) => {
                         let itemQuantities = [];
+                        let items1 = [];
 
                         this.trackingService.getGuia( this.cardCode, this.docNum ).subscribe(
                             ( guiaData ) => {
+                                // console.log(guiaData);
                                 this.guiaLoaded = true;
                                 for ( let i = 0; i < guiaData.length; i++ ) {
                                     const items = guiaData[i].items;
-                                    for ( let j = 0; j < guiaData.length; j++ ) {
+                                    items1 = [ ...guiaData[i].items ];
+                                    // console.log(items);
+                                    // console.log(items1);
+                                    // console.log(items1.length);
+                                    // console.log(guiaData.length);
+
+                                    for ( let j = 0; j < items.length; j++ ) {
                                         const itemG = items[j];
+                                        // console.log(itemG);
                                         if ( itemG && itemG.itemCode !== null ) {
                                             // Verificar si el elemento ya está en el array itemQuantities
                                             const existingItem = itemQuantities.find( ( item ) => item.itemCode === itemG.itemCode );
+                                            // console.log(existingItem);
+                                            
                                             if ( existingItem ) {
                                                 // Si ya existe, aumenta la cantidad
-                                                existingItem.quantity += itemG.quantity;
+                                                for (let k = 0; k < itemQuantities.length; k++) {
+                                                    if ( itemQuantities[k].itemCode === itemG.itemCode ) {
+                                                        itemQuantities.splice( k, 1, { itemCode: itemG.itemCode, quantity: existingItem.quantity + itemG.quantity } )
+                                                    }
+                                                }
+                                                // console.log(itemQuantities);
                                             } else {
                                                 // Si no existe, crea un nuevo objeto y agrégalo al array
                                                 itemQuantities.push( {
@@ -106,7 +122,9 @@ export class TrackingComponent implements OnInit {
                                                     quantity: itemG.quantity,
                                                 } );
                                             }
+                                            // console.log(itemQuantities);
                                         } else {
+                                            // console.log('Ya salimos');
                                             break;
                                         }
                                     }
@@ -288,7 +306,7 @@ export class TrackingComponent implements OnInit {
                                                                         } );
                                                                     } else if ( itemG.itemCode === item.itemCode ) {
                                                                         this.progress = 100;
-                                                                        console.log(this.progress);
+                                                                        // console.log(this.progress);
                                                                         if ( itemG.quantity >= item.quantity ) {
                                                                             this.progressBarValue = parseFloat( ( this.progressBarValue + this.progress ).toFixed( 2 ) );
                                                                             if ( this.progressBarValue >= 100 ) {

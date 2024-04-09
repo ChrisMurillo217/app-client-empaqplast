@@ -1,12 +1,12 @@
 import { NgModule }                     from '@angular/core';
 
-import { GeneralComponent }             from './general.component';
+import { InicioProvComponent }          from './inicio-prov.component';
 import { RouterModule }                 from '@angular/router';
 
 @NgModule( {
     imports: [ RouterModule.forChild( [
-        { path: '', component: GeneralComponent }
+        { path: '', component: InicioProvComponent }
     ] ) ],
     exports: [ RouterModule ],
 } )
-export class GeneralRoutingModule { }
+export class InicioProvRoutingModule { }

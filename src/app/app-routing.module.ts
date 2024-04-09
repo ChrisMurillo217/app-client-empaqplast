@@ -50,6 +50,11 @@ import { AuthGuard }                    from './demo/guards/auth.guard';
                         path: 'guias',
                         loadChildren: () => import( './demo/components/guia/guia.module' )
                             .then( m => m.GuiaModule )
+                    },
+                    {
+                        path: 'proveedores',
+                        loadChildren: () => import( './demo/components/proveedores/proveedores.module' )
+                            .then( m => m.ProveedoresModule )
                     }
                 ]
             },
@@ -57,43 +62,58 @@ import { AuthGuard }                    from './demo/guards/auth.guard';
                 path: 'registro', component: RegisProvComponent, children:
                 [
                     {
-                        path: 'general', loadChildren: () => import( './demo/components/regis-prov/general/general.module' )
+                        path: 'proveedores',
+                        loadChildren: () => import( './demo/components/regis-prov/inicio-prov/inicio-prov.module' )
+                            .then( m => m.InicioProvModule )
+                    },
+                    {
+                        path: 'general',
+                        loadChildren: () => import( './demo/components/regis-prov/general/general.module' )
                             .then( m => m.GeneralModule )
                     },
                     {
-                        path: 'datos', loadChildren: () => import( './demo/components/regis-prov/datos/datos.module' )
+                        path: 'datos',
+                        loadChildren: () => import( './demo/components/regis-prov/datos/datos.module' )
                             .then( m => m.DatosModule )
                     },
                     {
-                        path: 'sucursales', loadChildren: () => import( './demo/components/regis-prov/sucursales/sucursales.module' )
+                        path: 'sucursales',
+                        loadChildren: () => import( './demo/components/regis-prov/sucursales/sucursales.module' )
                             .then( m => m.SucursalesModule )
                     },
                     {
-                        path: 'contacto', loadChildren: () => import( './demo/components/regis-prov/contacto/contacto.module' )
+                        path: 'contacto',
+                        loadChildren: () => import( './demo/components/regis-prov/contacto/contacto.module' )
                             .then( m => m.ContactoModule )
                     },
                     {
-                        path: 'certificaciones', loadChildren: () => import( './demo/components/regis-prov/certificaciones/certificaciones.module' )
+                        path: 'certificaciones',
+                        loadChildren: () => import( './demo/components/regis-prov/certificaciones/certificaciones.module' )
                             .then( m => m.CertificacionesModule )
                     },
                     {
-                        path: 'clientes', loadChildren: () => import( './demo/components/regis-prov/clientes/clientes.module' )
+                        path: 'clientes',
+                        loadChildren: () => import( './demo/components/regis-prov/clientes/clientes.module' )
                             .then( m => m.ClientesModule )
                     },
                     {
-                        path: 'terminos', loadChildren: () => import( './demo/components/regis-prov/terminos/terminos.module' )
+                        path: 'terminos',
+                        loadChildren: () => import( './demo/components/regis-prov/terminos/terminos.module' )
                             .then( m => m.TerminosModule )
                     },
                     {
-                        path: 'elaboracion', loadChildren: () => import( './demo/components/regis-prov/elaboracion/elaboracion.module' )
+                        path: 'elaboracion',
+                        loadChildren: () => import( './demo/components/regis-prov/elaboracion/elaboracion.module' )
                             .then( m => m.ElaboracionModule )
                     },
                     {
-                        path: 'confirmacion', loadChildren: () => import( './demo/components/regis-prov/confirmacion/confirmacion.module' )
+                        path: 'confirmacion',
+                        loadChildren: () => import( './demo/components/regis-prov/confirmacion/confirmacion.module' )
                             .then( m => m.ConfirmacionModule )
                     }
                 ]
             },
+            { path: 'registro', redirectTo: 'registro/proveedores' },
             {
                 path: 'auth',
                 loadChildren: () => import( './demo/components/auth/auth.module' )

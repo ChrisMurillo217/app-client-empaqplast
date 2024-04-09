@@ -14,7 +14,7 @@ import { CardModule }                   from 'primeng/card';
 import { ButtonModule }                 from 'primeng/button';
 import { RadioButtonModule }            from 'primeng/radiobutton';
 
-@NgModule({
+@NgModule( {
     imports: [
         CommonModule,
         GeneralRoutingModule,
@@ -29,5 +29,5 @@ import { RadioButtonModule }            from 'primeng/radiobutton';
         RadioButtonModule,
     ],
     declarations: [ GeneralComponent ],
-})
+} )
 export class GeneralModule { }

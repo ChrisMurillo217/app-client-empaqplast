@@ -1,0 +1,132 @@
+<div class="grid">
+    <div class="col-12">
+
+        <!-- Animación de carga mientras se procesa la información -->
+        <div *ngIf="!dataLoaded; else dataIsLoaded">
+            <div class="d-flex align-items-center justify-content-center" style="min-height: 78vh; flex-direction: column;">
+                <div class="spinner-grow text-primary spinner-grow-lg" style="width: 9rem; height: 9rem;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-bottom: 5px;">Estamos procesando la información.</h4>
+                </div>
+                <div class="text-animation d-flex justify-content-center align-items-center">
+                    <h4 class="text-center" style="margin-top: 5px;">Espera por favor.</h4>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #dataIsLoaded>
+            <div class="card px-6 py-6">
+                <p-table
+                    #dt
+                    class="table table-responsive"
+                    responsiveLayout="stack"
+                    [value]="datos"
+                    [loading]="loading"
+                    [rowHover]="true"
+                    editMode="row"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[5,10,20]"
+                    [paginator]="true"
+                    currentPageReportTemplate="Montrando del {first} al {last} de {totalRecords} proveedores"
+                    [globalFilterFields]="['nomRlp','razonSocialP','rucP']"
+                    [tableStyle]="{ 'min-width': '50rem' }"> <!-- Carga la ingomación mediante el vector datos -->
+
+                    <ng-template pTemplate="caption">
+                        <!-- Input de busqueda con los parametros seleccionados -->
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <h5 class="m-0">Administrar proveedores</h5>
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input
+                                    #filter
+                                    pInputText
+                                    type="text"
+                                    (input)="onGlobalFilter(dt, $event)"
+                                    placeholder="Buscar..."
+                                    class="w-full"
+                                />
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pSortableColumn="nomRlp" style="width: 15%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Nombre
+                                    <p-sortIcon field="nomRlp"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="razonSocialP" style="width: 15%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Proveedor
+                                    <p-sortIcon field="razonSocialP"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="rucP" style="width: 15%">
+                                <div class="flex justify-content-between align-items-center">
+                                    RUC
+                                    <p-sortIcon field="rucP"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="emailP" style="width: 15%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Correo
+                                    <p-sortIcon field="emailP"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th pSortableColumn="direccionP" style="width: 25%">
+                                <div class="flex justify-content-between align-items-center">
+                                    Dirección
+                                    <p-sortIcon field="direccionP"></p-sortIcon>
+                                </div>
+                            </th>
+                            <th style="width: 15%"></th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-user>
+                        <tr>
+                            <td>
+                                {{ user.nomRlp }}
+                            </td>
+                            <td>
+                                {{ user.razonSocialP }}
+                            </td>
+                            <td>
+                                {{ user.rucP }}
+                            </td>
+                            <td>
+                                {{ user.emailP }}
+                            </td>
+                            <td>
+                                {{ user.direccionP }}
+                            </td>
+                            <td>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button
+                                        pButton
+                                        pRipple
+                                        type="button"
+                                        icon="pi pi-star"
+                                        class="p-button-rounded p-button-success">
+                                    </button>
+                                    <button
+                                        pButton
+                                        pRipple
+                                        type="button"
+                                        icon="pi pi-file-pdf"
+                                        class="p-button-rounded">
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -8,7 +8,14 @@ export interface InfoUsers {
     seriesNameSucursal      : string;
     idDatosU                : number;
     idRol                   : number;
+    datos?                  : Data;
 }
 
-
+interface Data {
+    idDatosU?               : number;
+    nombreUsuarioTr         : string;
+    apellidoUsuarioTr       : string;
+    emailUsuarioTr          : string;
+    telefonoUsuarioTr       : string;
+}
 

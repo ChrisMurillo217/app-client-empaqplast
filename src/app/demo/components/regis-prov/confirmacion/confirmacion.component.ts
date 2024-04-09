@@ -1,6 +1,8 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
+import { MessageService }               from 'primeng/api';
+
 import { Certificaciones }              from 'src/app/demo/models/proveedores/certificaciones.model';
 import { Clientes }                     from 'src/app/demo/models/proveedores/clientes.model';
 import { Contacto }                     from 'src/app/demo/models/proveedores/contacto.model';
@@ -56,6 +58,7 @@ export class ConfirmacionComponent implements OnInit {
         private contactoService: ContactoService,
         private certificacionesService: CertificacionesService,
         private clienteService: ClienteService,
+        private messageService: MessageService,
     ) {}
 
     ngOnInit(): void {
@@ -64,7 +67,7 @@ export class ConfirmacionComponent implements OnInit {
                 this.idProveedor = data.ultimoNumeroRegistro;
             }
         )
-        this.generalService.getIPAddress().subscribe( 
+        this.generalService.getIPAddress().subscribe(
             ( res: any ) => {
                 const IP = res.ip;
                 this.registroIp = IP;
@@ -221,7 +224,7 @@ export class ConfirmacionComponent implements OnInit {
             this.elaboracionData = JSON.parse( elaboracionData );
         }
     }
-    
+
     finalizar() {
         for (let i = 0; i < this.sucursalesData.length; i++) {
             this.sucursalesData[i].idProveedor = this.idProveedor;
@@ -261,14 +264,23 @@ export class ConfirmacionComponent implements OnInit {
             aceptacionLeyenda: this.terminosData,
             registroIp: this.registroIp
         }
-        
-        
+
+
         this.generalService.setGeneral( this.saveGeneralData ).subscribe(
             ( response ) => {
                 console.log( response );
+                this.messageService.add( {
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Tu información a sido guardada con exito.'
+                } );
             },
             ( error ) => {
-                console.error( 'Error al subir la información general:', error );
+                this.messageService.add( {
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar datos generales.' + error
+                } );
             }
         );
         this.sucursalesService.setSucursales( this.sucursalesData ).subscribe(
@@ -276,7 +288,11 @@ export class ConfirmacionComponent implements OnInit {
                 console.log( response );
             },
             ( error ) => {
-                console.error( 'Error al subir las sucursales:', error );
+                this.messageService.add( {
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar las sucursales.' + error
+                } );
             }
         );
         this.contactoService.setContacto( this.contactoData ).subscribe(
@@ -284,7 +300,11 @@ export class ConfirmacionComponent implements OnInit {
                 console.log( response );
             },
             ( error ) => {
-                console.error( 'Error al subir los contactos:', error );
+                this.messageService.add( {
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar los contactos.' + error
+                } );
             }
         );
         this.certificacionesService.setCertificaciones( this.certificacionData ).subscribe(
@@ -292,7 +312,11 @@ export class ConfirmacionComponent implements OnInit {
                 console.log( response );
             },
             ( error ) => {
-                console.error( 'Error al subir las certificaciones:', error );
+                this.messageService.add( {
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar los certificados.' + error
+                } );
             }
         );
         this.clienteService.setCliente( this.clienteData ).subscribe(
@@ -300,7 +324,11 @@ export class ConfirmacionComponent implements OnInit {
                 console.log( response );
             },
             ( error ) => {
-                console.error( 'Error al subir los clientes:', error );
+                this.messageService.add( {
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Error al guardar los clientes.' + error
+                } );
             }
         );
         localStorage.clear();

@@ -5,5 +5,5 @@ export interface Guia {
     guia1           : number;
     docDate         : Date;
     cardCode        : string;
-    items           : Items;
+    items           : Items[];
 }

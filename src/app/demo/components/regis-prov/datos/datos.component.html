@@ -12,14 +12,15 @@
                     <label for="nombrePagoBP" class="text-lg block">
                         Nombre del Banco
                     </label>
-                    <input 
-                        id="nombrePagoBP" 
-                        type="text" 
+                    <input
+                        id="nombrePagoBP"
+                        type="text"
                         [(ngModel)]="nuevoDatoFin.nombrePagoBp"
-                        pInputText/>
+                        pInputText
+                        required/>
                 </div>
             </div>
-            
+
             <div class="field grid ">
                 <div class="col-4 p-fluid">
                     <label for="paisP" class="text-lg block">
@@ -31,7 +32,8 @@
                         [(ngModel)]="paisBp"
                         [suggestions]="filteredCountries"
                         (completeMethod)="filterCountry($event)"
-                        (onSelect)="filterState($event)">
+                        (onSelect)="filterState($event)"
+                        required>
                         <ng-template let-country pTemplate="item">
                             <div class="country-item">
                                 <div>{{ country.name }}</div>
@@ -49,7 +51,8 @@
                         [(ngModel)]="estadoBp"
                         [suggestions]="filteredStates"
                         (completeMethod)="filterState($event)"
-                        (onSelect)="filterCity($event)">
+                        (onSelect)="filterCity($event)"
+                        required>
                         <ng-template let-state pTemplate="item">
                             <div class="country-item">
                                 <div>{{ state.name }}</div>
@@ -66,7 +69,8 @@
                         [dropdown]="true"
                         [(ngModel)]="ciudadBp"
                         [suggestions]="filteredCities"
-                        (completeMethod)="filterCity($event)">
+                        (completeMethod)="filterCity($event)"
+                        required>
                         <ng-template let-city pTemplate="item">
                             <div class="country-item">
                                 <div>{{ city.name }}</div>
@@ -80,11 +84,12 @@
                     <label for="direccionBP" class="text-lg block">
                         Dirección
                     </label>
-                    <textarea 
-                        rows="2" 
-                        cols="30" 
+                    <textarea
+                        rows="2"
+                        cols="30"
                         [(ngModel)]="nuevoDatoFin.direccionBp"
-                        pInputTextarea>
+                        pInputTextarea
+                        required>
                     </textarea>
                 </div>
             </div>
@@ -93,21 +98,38 @@
                     <label for="numeroBP" class="text-lg block">
                         Número de cuenta
                     </label>
-                    <input 
-                        id="numeroBP" 
-                        type="text" 
+                    <input
+                        id="numeroBP"
+                        type="text"
+                        pInputText
+                        pKeyFilter="int"
                         [(ngModel)]="nuevoDatoFin.numeroBp"
-                        pInputText/>
+                        required>
                 </div>
-                <div class="col-6 p-fluid">
-                    <label for="tipoCBP" class="text-lg block">
-                        Tipo de Cuenta
-                    </label>
-                    <input 
-                        id="tipoCBP" 
-                        type="text" 
-                        [(ngModel)]="nuevoDatoFin.tipoCbp"
-                        pInputText/>
+                <div class="col-6 p-fluid field grid">
+                    <div class="col-12 p-fluid pb-1">
+                        <label for="tipoCBP" class="text-lg block">
+                            Tipo de Cuenta
+                        </label>
+                    </div>
+                    <div class="col-6 field-radiobutton pt-2">
+                        <p-radioButton
+                            name="Ahorros"
+                            value="Ahorros"
+                            [(ngModel)]="nuevoDatoFin.tipoCbp"
+                            required>
+                        </p-radioButton>
+                        <label for="Ahorros">Ahorros</label>
+                    </div>
+                    <div class="col-6 field-radiobutton pt-2">
+                        <p-radioButton
+                            name="Corriente"
+                            value="Corriente"
+                            [(ngModel)]="nuevoDatoFin.tipoCbp"
+                            required>
+                        </p-radioButton>
+                        <label for="Corriente">Corriente</label>
+                    </div>
                 </div>
             </div>
             <div class="field grid">
@@ -118,9 +140,9 @@
                     <input
                         type="text"
                         pInputText
+                        pKeyFilter="int"
                         [(ngModel)]="nuevoDatoFin.codigoAbabp"
-                        [pKeyFilter]="blockSpace"
-                    />
+                        required>
                 </div>
             </div>
             <div class="field grid">
@@ -132,8 +154,8 @@
                         type="text"
                         pInputText
                         [(ngModel)]="nuevoDatoFin.codigoSwiftBp"
-                        [pKeyFilter]="blockSpace"
-                    />
+                        pKeyFilter="int"
+                        required>
                 </div>
             </div>
         </ng-template>

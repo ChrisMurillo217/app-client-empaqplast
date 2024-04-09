@@ -7,6 +7,10 @@ import { RegisProvComponent }           from './regis-prov.component';
         {   path: 'registro', component: RegisProvComponent, children:
             [
                 {
+                    path: 'proveedores', loadChildren: () => import( './inicio-prov/inicio-prov.module' )
+                        .then( m => m.InicioProvModule )
+                },
+                {
                     path: 'general', loadChildren: () => import( './general/general.module' )
                         .then( m => m.GeneralModule )
                 },

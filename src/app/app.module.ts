@@ -16,6 +16,7 @@ import { AuthService }                                      from './demo/service
 import { TokenService }                                     from './demo/service/token.service';
 import { UsuariosService }                                  from './demo/service/usuarios.service';
 import { StockService }                                     from './demo/service/stock.service';
+import { ProveedorService }                                 from './demo/service/proveedores/proveedores.service';
 import { RegisProvModule }                                  from './demo/components/regis-prov/regis-prov.module';
 
 @NgModule( {
@@ -42,6 +43,7 @@ import { RegisProvModule }                                  from './demo/compone
         TokenService,
         UsuariosService,
         StockService,
+        ProveedorService
     ],
     bootstrap: [ AppComponent ],
 } )

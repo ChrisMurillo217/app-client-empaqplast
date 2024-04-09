@@ -13,20 +13,33 @@
                     <p-inputMask
                         class="bg-primary"
                         id="rucP"
-                        mask="9999999999 001"
+                        mask="9999999999001"
                         [(ngModel)]="nuevaInfo.rucP"
-                        placeholder="9999999999 001">
+                        placeholder="9999999999001"
+                        required
+                        autofocus>
                     </p-inputMask>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.rucP">
+                        RUC es requerido
+                    </small>
                 </div>
                 <div class="col-6 p-fluid">
                     <label for="razonsocialP" class="text-lg block">
                         Razón Social
                     </label>
-                    <input 
-                        id="razonSocialP" 
-                        type="text" 
+                    <input
+                        id="razonSocialP"
+                        type="text"
                         [(ngModel)]="nuevaInfo.razonSocialP"
-                        pInputText/>
+                        pInputText
+                        required/>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.razonSocialP">
+                        Razón Social es requerida
+                    </small>
                 </div>
             </div>
             <div class="field grid ">
@@ -34,11 +47,17 @@
                     <label for="nomRLP" class="text-lg block">
                         Representante Legal
                     </label>
-                    <input 
-                        id="nomRlp" 
-                        type="text"  
+                    <input
+                        id="nomRlp"
+                        type="text"
                         [(ngModel)]="nuevaInfo.nomRlp"
-                        pInputText/>
+                        pInputText
+                        required/>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.nomRlp">
+                        Representante Legal es requerido
+                    </small>
                 </div>
             </div>
             <div class="field grid ">
@@ -52,17 +71,23 @@
                         [(ngModel)]="paisP"
                         [suggestions]="filteredCountries"
                         (completeMethod)="filterCountry($event)"
-                        (onSelect)="filterState($event)">
+                        (onSelect)="filterState($event)"
+                        required>
                         <ng-template let-country pTemplate="item">
                             <div class="country-item">
                                 <div>{{ country.name }}</div>
                             </div>
                         </ng-template>
                     </p-autoComplete>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !paisP">
+                        País es requerido
+                    </small>
                 </div>
                 <div class="col-4 p-fluid">
                     <label for="provinciaP" class="text-lg block">
-                        Estado
+                        Provincia
                     </label>
                     <p-autoComplete
                         field="name"
@@ -70,13 +95,19 @@
                         [(ngModel)]="estadoP"
                         [suggestions]="filteredStates"
                         (completeMethod)="filterState($event)"
-                        (onSelect)="filterCity($event)">
+                        (onSelect)="filterCity($event)"
+                        required>
                         <ng-template let-state pTemplate="item">
                             <div class="country-item">
                                 <div>{{ state.name }}</div>
                             </div>
                         </ng-template>
                     </p-autoComplete>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !estadoP">
+                        Provincia es requerida
+                    </small>
                 </div>
                 <div class="col-4 p-fluid">
                     <label for="ciudadP" class="text-lg block">
@@ -87,13 +118,19 @@
                         [dropdown]="true"
                         [(ngModel)]="ciudadP"
                         [suggestions]="filteredCities"
-                        (completeMethod)="filterCity($event)">
+                        (completeMethod)="filterCity($event)"
+                        required>
                         <ng-template let-city pTemplate="item">
                             <div class="country-item">
                                 <div>{{ city.name }}</div>
                             </div>
                         </ng-template>
                     </p-autoComplete>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !ciudadP">
+                        Ciudad es requerida
+                    </small>
                 </div>
             </div>
             <div class="field grid">
@@ -101,12 +138,18 @@
                     <label for="direccionP" class="text-lg block">
                         Dirección
                     </label>
-                    <textarea 
-                        rows="2" 
-                        cols="30" 
+                    <textarea
+                        rows="2"
+                        cols="30"
                         [(ngModel)]="nuevaInfo.direccionP"
-                        pInputTextarea>
+                        pInputTextarea
+                        required>
                     </textarea>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.direccionP">
+                        Dirección es requerida
+                    </small>
                 </div>
             </div>
             <div class="field grid">
@@ -117,10 +160,16 @@
                     <input
                         type="text"
                         pInputText
-                        [pKeyFilter]="blockSpace"
+                        [pKeyFilter]="mail"
                         [(ngModel)]="nuevaInfo.emailP"
                         placeholder="xxxxxxxxx@ejemplo.com"
+                        required
                     />
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.emailP">
+                        E-mail es requerido
+                    </small>
                 </div>
             </div>
             <div class="field grid">
@@ -148,9 +197,17 @@
                         name="category"
                         [value]="category.idNaturaleza"
                         [(ngModel)]="nuevaInfo.idNaturaleza"
-                        [inputId]="category.idNaturaleza">
+                        [inputId]="category.idNaturaleza"
+                        required>
                     </p-radioButton>
                     <label for="category.idNaturaleza">{{ category.nombreNaturaleza }}</label>
+                </div>
+                <div class="col-12">
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.idNaturaleza">
+                        Naturaleza del Negocio es requerida
+                    </small>
                 </div>
             </div>
             <div class="field grid">
@@ -158,11 +215,17 @@
                     <label for="actividadEconomicaP" class="text-lg block">
                         Actividad Económica
                     </label>
-                    <input 
-                        id="actividadEconomicaP" 
-                        type="text" 
+                    <input
+                        id="actividadEconomicaP"
+                        type="text"
                         [(ngModel)]="nuevaInfo.actividadEconomicaP"
-                        pInputText/>
+                        pInputText
+                        required/>
+                    <small
+                        class="p-error"
+                        *ngIf="submitted && !nuevaInfo.actividadEconomicaP">
+                        Actividad Económica es requerida
+                    </small>
                 </div>
             </div>
         </ng-template>

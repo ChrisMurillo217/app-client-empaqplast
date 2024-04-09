@@ -40,10 +40,9 @@ export class LoginComponent {
                 this.router.navigate( [ '/panel' ] ); // Permite que nos redirija hacia la pagina seleccionada
             },
             ( error ) => {
-                console.error( error );
                 this.messageService.add( { // Función para enviar una alerta un mensaje en color rojo donde nos informa que son incorrectas las credenciales
                     severity:'error',
-                    summary: 'Error',
+                    summary: error.error,
                     detail: 'El usuario o contraseña son incorrectos o no existen.'
                 } );
             }

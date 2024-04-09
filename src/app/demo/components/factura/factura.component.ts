@@ -64,7 +64,6 @@ export class FacturaComponent implements OnInit {
                 this.dataLoaded = true; // Variable que envia verdadero para poder mostrar la información en pantalla
             },
             ( error ) => {
-                console.error( error );
                 this.dataLoaded = true; // Variable que envia verdadero para poder mostrar la información en pantalla
             }
         );

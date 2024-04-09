@@ -8,21 +8,23 @@ import { Naturaleza }                   from 'src/app/demo/models/proveedores/na
 import { GeneralService }               from 'src/app/demo/service/proveedores/general.service';
 import { GeolocationService }           from 'src/app/demo/service/proveedores/geolocation.service';
 
-@Component({
+@Component( {
   selector: 'app-general',
   templateUrl: './general.component.html'
-})
+} )
 export class GeneralComponent implements OnInit {
     blockSpace:         RegExp = /[^\s]/;
+    mail:               RegExp = /[]@[].[]/;
     filteredCountries:  any[];
     filteredStates:     any[];
     filteredCities:     any[];
     paisNombre:         string;
-    paisId:             number;
     estadoNombre:       string;
-    estadoId:           number;
     ciudadNombre:       string;
+    paisId:             number;
+    estadoId:           number;
     ciudadId:           number;
+    submitted:          boolean = false;
     ciudadP:            Ciudad;
     estadoP:            Estado;
     paisP:              Pais;
@@ -144,6 +146,7 @@ export class GeneralComponent implements OnInit {
     }
 
     nextPage() {
+        this.submitted = true;
         if (
             this.nuevaInfo.rucP.trim() !== '' &&
             this.nuevaInfo.razonSocialP.trim() !== '' &&
@@ -188,9 +191,9 @@ export class GeneralComponent implements OnInit {
             this.nuevaInfo.paginaWp = '';
             this.nuevaInfo.idNaturaleza = 0;
             this.nuevaInfo.actividadEconomicaP = '';
-        }
 
-        this.router.navigate( [ 'registro/datos' ] );
+            this.router.navigate( [ 'registro/datos' ] );
+        }
     }
 
     filterCountry( event ) {

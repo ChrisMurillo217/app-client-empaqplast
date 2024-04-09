@@ -86,9 +86,6 @@ export class DocumentoComponent implements OnInit {
                 } else {
                     console.log( "No se encontró un número y una palabra en el string." );
                 }
-            },
-            ( error ) => {
-                console.error( error );
             }
         );
     }

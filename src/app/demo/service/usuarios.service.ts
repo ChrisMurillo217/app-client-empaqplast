@@ -5,8 +5,8 @@ import { Observable, catchError, throwError }           from 'rxjs';
 
 import { TokenService }                                 from './token.service';
 
-import { Person }                                        from '../models/admin/person.model';
-import { InfoUsers } from '../models/admin/info-users.model';
+import { Person }                                       from '../models/admin/person.model';
+import { InfoUsers }                                    from '../models/admin/info-users.model';
 
 @Injectable()
 export class UsuariosService {
@@ -45,9 +45,9 @@ export class UsuariosService {
     }
 
     getDatosUsuarios( ): Observable< any[] > { // Con este método obtenemos la lista de todos los Usuarios
-        const url = `${ this.urlAPI }/usuarios/lista/datos`;
+        const url = `${ this.urlAPI }/usuarios/lista/DatosPersona`;
         const headers = this.getAuthHeaders();
-        return this.__http.get< Document[] >( url, { headers } ).pipe(
+        return this.__http.get< any[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )
@@ -57,7 +57,27 @@ export class UsuariosService {
     getRoles( ): Observable< any[] > { // Con este método obtenemos la lista de todos los roles
         const url = `${ this.urlAPI }/usuarios/lista/rol`;
         const headers = this.getAuthHeaders();
-        return this.__http.get< Document[] >( url, { headers } ).pipe(
+        return this.__http.get< any[] >( url, { headers } ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        );
+    }
+
+    getTiposUsuarios( ): Observable< any[] > { // Con este método obtenemos la lista de todos los tipos de usuario
+        const url = `${ this.urlAPI }/usuarios/lista/tipoUsuarios`;
+        const headers = this.getAuthHeaders();
+        return this.__http.get< any[] >( url, { headers } ).pipe(
+            catchError( ( error ) => {
+                return throwError( error );
+            } )
+        );
+    }
+
+    getClienteOProveedor( tipoUsuario: string ): Observable< any[] > { // Con este método obtenemos la lista de todos los clientes y proveedores
+        const url = `${ this.urlAPI }/usuarios/lista/cliente-proveedor?tipoCliente=${ tipoUsuario }`;
+        const headers = this.getAuthHeaders();
+        return this.__http.get< any[] >( url, { headers } ).pipe(
             catchError( ( error ) => {
                 return throwError( error );
             } )

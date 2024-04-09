@@ -161,44 +161,46 @@
 
             <!-- Modal para agregar un nuevo usuario -->
             <p-dialog
-                header="Crear"
+                header="Crear Persona"
                 [(visible)]="newPerson"
-                [style]="{width: '450px'}"
+                [style]="{width: '600px'}"
                 [modal]="true"
                 styleClass="p-fluid">
                 <ng-template pTemplate="content">
                     <form>
-                        <div class="field">
-                            <label for="nombreUsuarioTr">Nombre</label>
-                            <input
-                                pInputText
-                                required
-                                id="nombreUsuarioTr"
-                                type="text"
-                                [(ngModel)]="nombreUsuarioTr"
-                                name="nombreUsuarioTr"
-                            />
-                            <small
-                                class="p-error"
-                                *ngIf="submitted && !nombreUsuarioTr">
-                                Nombre es requerido.
-                            </small>
-                        </div>
-                        <div class="field">
-                            <label for="apellidoUsuarioTr">Apellido</label>
-                            <input
-                                pInputText
-                                required
-                                id="apellidoUsuarioTr"
-                                type="text"
-                                [(ngModel)]="apellidoUsuarioTr"
-                                name="apellidoUsuarioTr"
-                            />
-                            <small
-                                class="p-error"
-                                *ngIf="submitted && !apellidoUsuarioTr">
-                                Apellido es requerido.
-                            </small>
+                        <div class="field grid">
+                            <div class="col-6 pfluid">
+                                <label for="nombreUsuarioTr">Nombre</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="nombreUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="nombreUsuarioTr"
+                                    name="nombreUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !nombreUsuarioTr">
+                                    Nombre es requerido.
+                                </small>
+                            </div>
+                            <div class="col-6 pfluid">
+                                <label for="apellidoUsuarioTr">Apellido</label>
+                                <input
+                                    pInputText
+                                    required
+                                    id="apellidoUsuarioTr"
+                                    type="text"
+                                    [(ngModel)]="apellidoUsuarioTr"
+                                    name="apellidoUsuarioTr"
+                                />
+                                <small
+                                    class="p-error"
+                                    *ngIf="submitted && !apellidoUsuarioTr">
+                                    Apellido es requerido.
+                                </small>
+                            </div>
                         </div>
                         <div class="field">
                             <label for="direccionUsuarioTr">Dirección</label>
@@ -248,6 +250,110 @@
                                 N° de Teléfono es requerido.
                             </small>
                         </div>
+                        <div class="field">
+                            <label for="telefonoUsuarioTr">Tipo de Usuario</label>
+                            <div class="formgrid grid">
+                                <div *ngFor="let tipo of tipos" class="field-radiobutton col-4">
+                                    <p-radioButton
+                                        [inputId]="tipo.idTipoUsuario"
+                                        name="tipoUsuario"
+                                        [(ngModel)]="tipoUsuario"
+                                        [value]="tipo.idTipoUsuario"
+                                        (click)="handleTipoUsuario(tipoUsuario)">
+                                    </p-radioButton>
+                                    <label [for]="tipo.idTipoUsuario">{{ tipo.nombreTipoUsuario }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="tipoUsuario !== 0">
+                            <div class="field grid" *ngIf="tipoUsuario !== 3">
+                                <div class="col-6 p-fluid">
+                                    <label for="cardName">Nombre de la Empresa</label>
+                                    <p-autoComplete
+                                        field="cardName"
+                                        [dropdown]="true"
+                                        [(ngModel)]="cardName"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        [suggestions]="filteredSocios"
+                                        (completeMethod)="filterSocio($event)"
+                                        (onSelect)="filterSocioCode($event)"
+                                        required>
+                                        <ng-template let-socio pTemplate="item">
+                                            <div class="country-item">
+                                                <div>{{ socio.cardName }}</div>
+                                            </div>
+                                        </ng-template>
+                                    </p-autoComplete>
+                                </div>
+                                <div class="col-6 p-fluid">
+                                    <label for="cardCode">RUC</label>
+                                    <input
+                                        pInputText
+                                        required
+                                        id="cardCode"
+                                        type="text"
+                                        [(ngModel)]="cardCode"
+                                        name="cardCode"
+                                        disabled
+                                    />
+                                    <small
+                                        class="p-error"
+                                        *ngIf="submitted && !cardCode">
+                                        RUC es requerido.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="field grid" *ngIf="tipoUsuario === 3">
+                                <div class="col-6 p-fluid">
+                                    <label for="cardName">Nombre de la Empresa</label>
+                                    <input
+                                        pInputText
+                                        required
+                                        id="cardName"
+                                        type="text"
+                                        [(ngModel)]="cardName"
+                                        name="cardName"
+                                        disabled
+                                    />
+                                    <small
+                                        class="p-error"
+                                        *ngIf="submitted && !cardName">
+                                        Nombre de la Empresa es requerido.
+                                    </small>
+                                </div>
+                                <div class="col-6 p-fluid">
+                                    <label for="cardCode">RUC</label>
+                                    <input
+                                        pInputText
+                                        required
+                                        id="cardCode"
+                                        type="text"
+                                        [(ngModel)]="cardCode"
+                                        name="cardCode"
+                                        disabled
+                                    />
+                                    <small
+                                        class="p-error"
+                                        *ngIf="submitted && !cardCode">
+                                        RUC es requerido.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="seriesNameSucursal">Sucursal</label>
+                                <div class="formgrid grid">
+                                    <div *ngFor="let sucursal of sucursales" class="field-radiobutton col-6">
+                                        <p-radioButton
+                                            [inputId]="sucursal.key"
+                                            name="sucursal"
+                                            [(ngModel)]="seriesNameSucursal"
+                                            [value]="sucursal.name">
+                                        </p-radioButton>
+                                        <label [for]="sucursal.key">{{ sucursal.name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </ng-template>
 
@@ -268,6 +374,7 @@
                     </button>
                 </ng-template>
             </p-dialog>
+            <p-toast></p-toast>
         </ng-template>
     </div>
 </div>

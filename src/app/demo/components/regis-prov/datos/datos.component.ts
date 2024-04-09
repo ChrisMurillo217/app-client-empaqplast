@@ -162,9 +162,9 @@ export class DatosComponent implements OnInit {
             this.nuevoDatoFin.paisBp = 0;
             this.nuevoDatoFin.tipoCbp = '';
             this.nuevoDatoFin.codigoSwiftBp = '';
-        }
 
-        this.router.navigate( [ 'registro/sucursales' ] );
+            this.router.navigate( [ 'registro/sucursales' ] );
+        }
     }
 
     prevPage() {

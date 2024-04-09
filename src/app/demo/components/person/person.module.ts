@@ -13,6 +13,9 @@ import { DialogModule }                     from 'primeng/dialog';
 import { PasswordModule }                   from 'primeng/password';
 import { ConfirmDialogModule }              from 'primeng/confirmdialog';
 import { ToolbarModule }                    from 'primeng/toolbar';
+import { RadioButtonModule }                from 'primeng/radiobutton';
+import { AutoCompleteModule }               from 'primeng/autocomplete';
+import { ToastModule }                      from 'primeng/toast';
 
 @NgModule( {
 	imports: [
@@ -26,6 +29,9 @@ import { ToolbarModule }                    from 'primeng/toolbar';
         ConfirmDialogModule,
         ToolbarModule,
         FormsModule,
+        RadioButtonModule,
+        AutoCompleteModule,
+        ToastModule,
 	],
 	declarations: [
         PersonComponent
